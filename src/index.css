@@ -1,6 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 
 @layer base {
   :root {
@@ -32,10 +34,10 @@
 
     /* Cores próprias - figma */
     --wise-hyper_black: #000000;
-    --wise-hyper_white: #FFFFFF;
-    --wise-light_white: #FAFAFF;
+    --wise-hyper_white: #ffffff;
+    --wise-light_white: #fafaff;
     --wise-hyper_light_green: #0dff91;
-    --wise-dark_green: #00CD73;
+    --wise-dark_green: #00cd73;
   }
 
   .dark {
@@ -66,10 +68,10 @@
 
     /* Cores próprias - figma */
     --wise-hyper_black: #000000;
-    --wise-hyper_white: #FFFFFF;
-    --wise-light_white: #FAFAFF;
+    --wise-hyper_white: #ffffff;
+    --wise-light_white: #fafaff;
     --wise-hyper_light_green: #0dff91;
-    --wise-dark_green: #00CD73;
+    --wise-dark_green: #00cd73;
   }
 }
 
@@ -79,5 +81,36 @@
   }
   body {
     @apply bg-background text-foreground;
+    min-height: 100vh;
+  }
+  #root {
+    min-height: 100vh;
+  }
+}
+
+@layer utilities {
+  .glassmorph {
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 1px 80px 0 rgba(31, 135, 45, 0.2);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(6px);
+    border-radius: 10px;
+    border: 2px solid rgba(255, 255, 255, 0.18);
+  }
+
+  @keyframes derive {
+    0% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-35px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  .montserrat {
+    font-family: "Montserrat", sans-serif;
   }
 }

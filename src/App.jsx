@@ -5,6 +5,7 @@ import { Input } from "ui/input";
 import { Button } from "./components/ui/button";
 import { Logo } from "./components/Logo";
 import { Wisebox } from "./components/Wisebox";
+import { Link } from "react-router-dom";
 
 const viewportWidth = window.innerWidth;
 
@@ -37,12 +38,12 @@ function App() {
                 <img className="w-[22px]" src="/google.png" alt=""/>
                 Login com Google
               </Button>
-              <a
+              <Link
               className="block underline underline-offset-1 font-semibold w-full text-center hover:text-wise-dark_green transition-all"
-              href="#"
+              to={`/signup`}
             >
               Cadastre-se
-            </a>
+            </Link>
             </div>
           </form>
         </section>

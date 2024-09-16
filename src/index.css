@@ -92,7 +92,7 @@
   .glassmorph {
     background: rgba(255, 255, 255, 0.05);
     box-shadow: 0 1px 80px 0 rgba(31, 135, 45, 0.2);
-    backdrop-filter: blur(12px);
+    backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(6px);
     border-radius: 10px;
     border: 2px solid rgba(255, 255, 255, 0.18);
@@ -103,12 +103,13 @@
       transform: translateY(0);
     }
     50% {
-      transform: translateY(-35px);
+      transform: translateY(-60px);
     }
     100% {
       transform: translateY(0);
     }
   }
+
 
   .montserrat {
     font-family: "Montserrat", sans-serif;

@@ -1,11 +1,19 @@
 import { Label } from "ui/label";
 import { Input } from "ui/input";
 import { Button } from "ui/button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function LoginForm() {
+  const navigate = useNavigate()
+
+  function handleSubmit(formEvent) {
+    formEvent.preventDefault()
+  
+    navigate('/dashboard')
+  }
+
   return (
-    <form className="grid gap-y-[24px] md:w-full md:max-w-[400px]">
+    <form className="grid gap-y-[24px] md:w-full md:max-w-[400px]" onSubmit={handleSubmit}>
       <Label className="md:text-lg lg:text-xl">E-mail</Label>
       <Input type="email" placeholder="E-mail" required className="md:text-lg" />
       <Label className="md:text-lg lg:text-xl">Senha</Label>
@@ -17,10 +25,16 @@ function LoginForm() {
         Esqueceu a senha?
       </a>
       <div className="flex flex-col gap-y-[24px]">
-        <Button className="bg-wise-hyper_black w-full transition-all md:text-lg lg:text-xl">
+        <Button 
+          className="bg-wise-hyper_black w-full transition-all md:text-lg lg:text-xl"
+          type="submit"
+        >
           Login
         </Button>
-        <Button className="border-black border-2 bg-wise-hyper_white text-wise-hyper_black hover:bg-slate-200 w-full gap-1 md:text-lg lg:text-xl">
+
+        <Button 
+          className="border-black border-2 bg-wise-hyper_white text-wise-hyper_black hover:bg-slate-200 w-full gap-1 md:text-lg lg:text-xl"
+        >
           <img className="w-[22px]" src="/google.png" alt="" />
           Login com Google
         </Button>

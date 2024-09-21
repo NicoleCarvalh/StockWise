@@ -6,6 +6,7 @@ import { SignupForm } from "./pages/SignupForm";
 import { LoginForm } from "./pages/LoginForm";
 
 import "./index.css";
+import { Dashboard } from "./pages/Dashboard";
 
 const router = createBrowserRouter([
   {
@@ -13,7 +14,10 @@ const router = createBrowserRouter([
     element: <App />,
     children: [{ element: <LoginForm />, index: true }, { path: "/signup", element: <SignupForm /> }],
   },
-  // { path: "/signup", element: <Signup /> },
+  {
+    path: '/dashboard',
+    element: <Dashboard />
+  }
 ]);
 
 createRoot(document.getElementById("root")).render(

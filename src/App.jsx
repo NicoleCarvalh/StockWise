@@ -9,7 +9,7 @@ function App() {
   return (
     <main
       id="login-page"
-      className="h-[100vh] overflow-y-hidden md:overflow-auto grid grid-cols-8 gap-[12px] p-[24px]"
+      className="min-h-[100vh] overflow-y-hidden md:overflow-auto grid grid-cols-8 gap-[12px] p-[24px]"
     >
       <section
         id="main-login"

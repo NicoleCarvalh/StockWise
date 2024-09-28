@@ -1,17 +1,15 @@
 import { MainContainer } from "@/components/MainContainer"
 import { TopMenu } from "@/components/TopMenu"
 
-function Dashboard() {
-
+function Employees() {
     return (
         <>
             <TopMenu />
-
             <MainContainer>
-                <h1>Dashboard</h1>
+                <h1>Funcionários</h1>
             </MainContainer>
         </>
     )
 }
 
-export { Dashboard }
+export { Employees }

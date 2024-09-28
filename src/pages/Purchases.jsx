@@ -1,17 +1,16 @@
 import { MainContainer } from "@/components/MainContainer"
 import { TopMenu } from "@/components/TopMenu"
 
-function Dashboard() {
-
+function Purchases() {
     return (
         <>
             <TopMenu />
 
             <MainContainer>
-                <h1>Dashboard</h1>
+                <h1>Compras</h1>
             </MainContainer>
         </>
     )
 }
 
-export { Dashboard }
+export { Purchases }

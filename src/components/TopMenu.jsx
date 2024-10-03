@@ -62,7 +62,7 @@ function TopMenu() {
     const [mobileMenuIsOpen, setMobileMenuIsOpen] = useState(false)
 
     return (
-        <header className='flex flex-wrap justify-between items-center montserrat text-base py-4 px-8 w-[96%] text-wise-light_white bg-wise-hyper_black fixed rounded-md gap-3 mx-[2%] top-[1%] mt-[2%] lg:mt-[1%]'>
+        <header className='flex flex-wrap justify-between items-center montserrat text-base py-4 px-8 w-[96%] text-wise-light_white bg-wise-hyper_black fixed rounded-md gap-3 mx-[2%] top-[1%] mt-[2%] lg:mt-[1%] z-10'>
             <div className="text-2xl font-bold">
                 {
                    handlePageName(pathname.split('/')[1])

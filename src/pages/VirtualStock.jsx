@@ -35,7 +35,7 @@ function VirtualStock() {
                     </div>
                 </section>
 
-                <section className='flex gap-x-4 items-center flex-wrap'>
+                <section className='flex gap-4 items-center justify-center md:justify-normal flex-wrap'>
                     <Select>
                         <SelectTrigger className="max-w-[250px]">
                             <SelectValue placeholder="Cor: selecionar" />
@@ -68,16 +68,197 @@ function VirtualStock() {
                             <SelectItem value="CATEGORY_2">CATEGORIA 2</SelectItem>
                         </SelectContent>
                     </Select>
+                </section>
 
-                    {/* <Button className="flex items-center gap-2 bg-transparent text-wise-hyper_black p-0 hover:text-wise-light_white hover:p-2 transition-all">
-                        <ScanQrCode />
-                        Scanear QRCode
-                    </Button>
+                <section className="flex flex-wrap gap-3">
+                    <div className="max-w-[450px] bg-wise-hyper_white rounded-lg p-5 cursor-pointer">
+                        <div>
+                            <h2 className="text-xl w-full flex justify-between items-center font-semibold">
+                                Nome do container
+                                <span className="text-wise-dark_green text-sm">XHRF-65</span>
+                            </h2>
+                            <p className="text-sm font-light">Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam modi vitae autem deleniti ipsam. Maiores pariatur fugiat.</p>
+                        </div>
 
-                    <Button className="flex items-center gap-2 bg-transparent text-wise-hyper_black p-0 hover:text-wise-light_white hover:p-2 transition-all">
-                        <ScanBarcode />
-                        Scanear código de barras
-                    </Button> */}
+                        <div className="flex flex-wrap gap-4 justify-between">
+                            <div className="flex flex-col gap-2">
+                                <h3 className="text-wise-dark_green">Local</h3>
+                                <p>Local x</p>
+                            </div>
+
+                            <div className="flex flex-col gap-2">
+                                <h3 className="text-wise-dark_green">Categorias</h3>
+                                <ul className="columns-2">
+                                    <li>Camisas</li>
+                                    <li>Marcas: ...</li>
+                                    <li>Tamanho: M</li>
+                                    <li>Modelo: ...</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="max-w-[450px] bg-wise-hyper_white rounded-lg p-5 cursor-pointer">
+                        <div>
+                            <h2 className="text-xl w-full flex justify-between items-center font-semibold">
+                                Nome do container
+                                <span className="text-wise-dark_green text-sm">XHRF-65</span>
+                            </h2>
+                            <p className="text-sm font-light">Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam modi vitae autem deleniti ipsam. Maiores pariatur fugiat.</p>
+                        </div>
+
+                        <div className="flex flex-wrap gap-4 justify-between">
+                            <div className="flex flex-col gap-2">
+                                <h3 className="text-wise-dark_green">Local</h3>
+                                <p>Local x</p>
+                            </div>
+
+                            <div className="flex flex-col gap-2">
+                                <h3 className="text-wise-dark_green">Categorias</h3>
+                                <ul className="columns-2">
+                                    <li>Camisas</li>
+                                    <li>Marcas: ...</li>
+                                    <li>Tamanho: M</li>
+                                    <li>Modelo: ...</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="max-w-[450px] bg-wise-hyper_white rounded-lg p-5 cursor-pointer">
+                        <div>
+                            <h2 className="text-xl w-full flex justify-between items-center font-semibold">
+                                Nome do container
+                                <span className="text-wise-dark_green text-sm">XHRF-65</span>
+                            </h2>
+                            <p className="text-sm font-light">Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam modi vitae autem deleniti ipsam. Maiores pariatur fugiat.</p>
+                        </div>
+
+                        <div className="flex flex-wrap gap-4 justify-between">
+                            <div className="flex flex-col gap-2">
+                                <h3 className="text-wise-dark_green">Local</h3>
+                                <p>Local x</p>
+                            </div>
+
+                            <div className="flex flex-col gap-2">
+                                <h3 className="text-wise-dark_green">Categorias</h3>
+                                <ul className="columns-2">
+                                    <li>Camisas</li>
+                                    <li>Marcas: ...</li>
+                                    <li>Tamanho: M</li>
+                                    <li>Modelo: ...</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="max-w-[450px] bg-wise-hyper_white rounded-lg p-5 cursor-pointer">
+                        <div>
+                            <h2 className="text-xl w-full flex justify-between items-center font-semibold">
+                                Nome do container
+                                <span className="text-wise-dark_green text-sm">XHRF-65</span>
+                            </h2>
+                            <p className="text-sm font-light">Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam modi vitae autem deleniti ipsam. Maiores pariatur fugiat.</p>
+                        </div>
+
+                        <div className="flex flex-wrap gap-4 justify-between">
+                            <div className="flex flex-col gap-2">
+                                <h3 className="text-wise-dark_green">Local</h3>
+                                <p>Local x</p>
+                            </div>
+
+                            <div className="flex flex-col gap-2">
+                                <h3 className="text-wise-dark_green">Categorias</h3>
+                                <ul className="columns-2">
+                                    <li>Camisas</li>
+                                    <li>Marcas: ...</li>
+                                    <li>Tamanho: M</li>
+                                    <li>Modelo: ...</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="max-w-[450px] bg-wise-hyper_white rounded-lg p-5 cursor-pointer">
+                        <div>
+                            <h2 className="text-xl w-full flex justify-between items-center font-semibold">
+                                Nome do container
+                                <span className="text-wise-dark_green text-sm">XHRF-65</span>
+                            </h2>
+                            <p className="text-sm font-light">Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam modi vitae autem deleniti ipsam. Maiores pariatur fugiat.</p>
+                        </div>
+
+                        <div className="flex flex-wrap gap-4 justify-between">
+                            <div className="flex flex-col gap-2">
+                                <h3 className="text-wise-dark_green">Local</h3>
+                                <p>Local x</p>
+                            </div>
+
+                            <div className="flex flex-col gap-2">
+                                <h3 className="text-wise-dark_green">Categorias</h3>
+                                <ul className="columns-2">
+                                    <li>Camisas</li>
+                                    <li>Marcas: ...</li>
+                                    <li>Tamanho: M</li>
+                                    <li>Modelo: ...</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="max-w-[450px] bg-wise-hyper_white rounded-lg p-5 cursor-pointer">
+                        <div>
+                            <h2 className="text-xl w-full flex justify-between items-center font-semibold">
+                                Nome do container
+                                <span className="text-wise-dark_green text-sm">XHRF-65</span>
+                            </h2>
+                            <p className="text-sm font-light">Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam modi vitae autem deleniti ipsam. Maiores pariatur fugiat.</p>
+                        </div>
+
+                        <div className="flex flex-wrap gap-4 justify-between">
+                            <div className="flex flex-col gap-2">
+                                <h3 className="text-wise-dark_green">Local</h3>
+                                <p>Local x</p>
+                            </div>
+
+                            <div className="flex flex-col gap-2">
+                                <h3 className="text-wise-dark_green">Categorias</h3>
+                                <ul className="columns-2">
+                                    <li>Camisas</li>
+                                    <li>Marcas: ...</li>
+                                    <li>Tamanho: M</li>
+                                    <li>Modelo: ...</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="max-w-[450px] bg-wise-hyper_white rounded-lg p-5 cursor-pointer">
+                        <div>
+                            <h2 className="text-xl w-full flex justify-between items-center font-semibold">
+                                Nome do container
+                                <span className="text-wise-dark_green text-sm">XHRF-65</span>
+                            </h2>
+                            <p className="text-sm font-light">Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam modi vitae autem deleniti ipsam. Maiores pariatur fugiat.</p>
+                        </div>
+
+                        <div className="flex flex-wrap gap-4 justify-between">
+                            <div className="flex flex-col gap-2">
+                                <h3 className="text-wise-dark_green">Local</h3>
+                                <p>Local x</p>
+                            </div>
+
+                            <div className="flex flex-col gap-2">
+                                <h3 className="text-wise-dark_green">Categorias</h3>
+                                <ul className="columns-2">
+                                    <li>Camisas</li>
+                                    <li>Marcas: ...</li>
+                                    <li>Tamanho: M</li>
+                                    <li>Modelo: ...</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </section>
             </MainContainer>
         </>

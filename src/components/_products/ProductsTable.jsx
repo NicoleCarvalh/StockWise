@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/table"
 
 import { Checkbox } from "@/components/ui/checkbox"
-import { Barcode, Expand, QrCode } from "lucide-react"
+import { Trash2, Expand, QrCode } from "lucide-react"
 
 const products = [
     {
@@ -125,9 +125,9 @@ function ProductsTable() {
                                 <TableCell className="text-center">{product.stock}</TableCell>
                                 <TableCell>{product.category}</TableCell>
                                 <TableCell className="flex items-center justify-end gap-5">
-                                    <QrCode />
-                                    <Barcode />
-                                    <Expand />
+                                    <QrCode className="cursor-pointer" />
+                                    <Trash2 className="cursor-pointer" />
+                                    <Expand className="cursor-pointer" />
                                 </TableCell>
                             </TableRow>
                         )

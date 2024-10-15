@@ -1,7 +1,9 @@
 import { MainContainer } from "@/components/MainContainer"
 import { TopMenu } from "@/components/TopMenu"
+import { CreatePurchase } from "@/components/_purchases/CreatePurchase"
 import { PurchasesTable } from "@/components/_purchases/PurchasesTable"
 import { Button } from "@/components/ui/button"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { PackageSearch, ScanSearch, ShoppingCart } from "lucide-react"
@@ -24,10 +26,25 @@ function Purchases() {
                             </Button>
                         </Label>
 
-                        <Button className='flex-1 flex gap-3 items-center bg-wise-hyper_black text-wise-hyper_light_green h-[40px] hover:bg-wise-hyper_black hover:text-wise-light_white transition-all'>
-                            <ShoppingCart />
-                            Cadastrar nova compra
-                        </Button>
+                        <Dialog>
+                            <DialogTrigger>
+                                <Button className='flex-1 flex gap-3 items-center bg-wise-hyper_black text-wise-hyper_light_green h-[40px] hover:bg-wise-hyper_black hover:text-wise-light_white transition-all'>
+                                    <ShoppingCart />
+                                    Cadastrar nova compra
+                                </Button>
+                            </DialogTrigger>
+
+
+                            <DialogContent className="montserrat">
+                                <DialogHeader>
+                                    <DialogTitle className="text-lg font-semibold border-b-2 border-wise-dark_green py-3">
+                                        Cadastro de compra
+                                    </DialogTitle>
+                                </DialogHeader>
+
+                                <CreatePurchase />
+                            </DialogContent>
+                        </Dialog>
                     </div>
                 </section>
 

@@ -1,14 +1,23 @@
 import { CreateProduct } from "@/components/_products/CreateProduct"
 import { ProductsTable } from "@/components/_products/ProductsTable"
 import { MainContainer } from "@/components/MainContainer"
+import QrCodeScanner from "@/components/QRCodeScanner"
 import { TopMenu } from "@/components/TopMenu"
 import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { ArrowUpNarrowWide, Filter, PackagePlus, PackageSearch, ScanBarcode, ScanQrCode } from "lucide-react"
 
 function Products() {
+    const handleScanSuccess = (decodedText, decodedResult) => {
+        console.log("QR Code detectado:", decodedText);
+    };
+    
+    const handleScanError = (errorMessage) => {
+        console.error("Erro ao ler o QR Code:", errorMessage);
+    };
+
     return (
         <>
             <TopMenu />
@@ -34,23 +43,15 @@ function Products() {
                                 </Button>
                             </DialogTrigger>
 
-                            <DialogContent className="">
-                                {/* <ul>
-                                    <li>x</li>
-                                    <li>x</li>
-                                    <li>x</li>
-                                    <li>x</li>
-                                    <li>x</li>
-                                </ul> */}
-
+                            <DialogContent className="montserrat">
+                                <DialogHeader>
+                                    <DialogTitle className="text-lg font-semibold border-b-2 border-wise-dark_green py-3">
+                                        Cadastro de produto
+                                    </DialogTitle>
+                                </DialogHeader>
                                 <CreateProduct />
                             </DialogContent>
                         </Dialog>
-
-                        {/* <Button className='flex-1 flex gap-3 items-center bg-wise-hyper_black text-wise-hyper_light_green h-[40px] hover:bg-wise-hyper_black hover:text-wise-light_white transition-all'>
-                            <PackagePlus />
-                            Cadastrar novo produto
-                        </Button> */}
                     </div>
                 </section>
 
@@ -79,6 +80,9 @@ function Products() {
                         </Button>
                     </div>
                 </section>
+
+                <QrCodeScanner onScanSuccess={handleScanSuccess} onScanError={handleScanError} />
+
 
                 <section>
                     {/* Create an pattern component to tables */}

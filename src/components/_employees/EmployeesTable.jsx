@@ -87,8 +87,8 @@ function EmployeesTable() {
                                 <TableCell className="text-center">{employee.role}</TableCell>
                                 <TableCell className="text-center">{employee.created_at}</TableCell>
                                 <TableCell className="flex items-center justify-end gap-5">
-                                    <Trash2 />
-                                    <Expand />
+                                    <Trash2 className="cursor-pointer" />
+                                    <Expand className="cursor-pointer" />
                                 </TableCell>
                             </TableRow>
                         )

@@ -1,6 +1,8 @@
+import { CreateContainer } from "@/components/_virtualStock/CreateContainer"
 import { MainContainer } from "@/components/MainContainer"
 import { TopMenu } from "@/components/TopMenu"
 import { Button } from "@/components/ui/button"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -28,10 +30,25 @@ function VirtualStock() {
                             </Button>
                         </Label>
 
-                        <Button className='flex-1 flex gap-3 items-center bg-wise-hyper_black text-wise-hyper_light_green h-[40px] hover:bg-wise-hyper_black hover:text-wise-light_white transition-all'>
-                            <PackagePlus />
-                            Cadastrar novo container
-                        </Button>
+
+                        <Dialog>
+                            <DialogTrigger>
+                                <Button className='flex-1 flex gap-3 items-center bg-wise-hyper_black text-wise-hyper_light_green h-[40px] hover:bg-wise-hyper_black hover:text-wise-light_white transition-all'>
+                                    <PackagePlus />
+                                    Cadastrar novo container
+                                </Button>
+                            </DialogTrigger>
+
+                            <DialogContent className="montserrat">
+                                <DialogHeader>
+                                    <DialogTitle className="text-lg font-semibold border-b-2 border-wise-dark_green py-3">
+                                        Cadastro de container
+                                    </DialogTitle>
+                                </DialogHeader>
+
+                                <CreateContainer />
+                            </DialogContent>
+                        </Dialog>
                     </div>
                 </section>
 
@@ -70,8 +87,8 @@ function VirtualStock() {
                     </Select>
                 </section>
 
-                <section className="flex flex-wrap gap-3">
-                    <div className="max-w-[450px] bg-wise-hyper_white rounded-lg p-5 cursor-pointer">
+                <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-3">
+                    <div className="bg-wise-hyper_white rounded-lg p-5 cursor-pointer">
                         <div>
                             <h2 className="text-xl w-full flex justify-between items-center font-semibold">
                                 Nome do container
@@ -98,7 +115,7 @@ function VirtualStock() {
                         </div>
                     </div>
 
-                    <div className="max-w-[450px] bg-wise-hyper_white rounded-lg p-5 cursor-pointer">
+                    <div className="bg-wise-hyper_white rounded-lg p-5 cursor-pointer">
                         <div>
                             <h2 className="text-xl w-full flex justify-between items-center font-semibold">
                                 Nome do container
@@ -125,7 +142,7 @@ function VirtualStock() {
                         </div>
                     </div>
 
-                    <div className="max-w-[450px] bg-wise-hyper_white rounded-lg p-5 cursor-pointer">
+                    <div className="bg-wise-hyper_white rounded-lg p-5 cursor-pointer">
                         <div>
                             <h2 className="text-xl w-full flex justify-between items-center font-semibold">
                                 Nome do container
@@ -152,7 +169,7 @@ function VirtualStock() {
                         </div>
                     </div>
 
-                    <div className="max-w-[450px] bg-wise-hyper_white rounded-lg p-5 cursor-pointer">
+                    <div className="bg-wise-hyper_white rounded-lg p-5 cursor-pointer">
                         <div>
                             <h2 className="text-xl w-full flex justify-between items-center font-semibold">
                                 Nome do container
@@ -179,7 +196,7 @@ function VirtualStock() {
                         </div>
                     </div>
 
-                    <div className="max-w-[450px] bg-wise-hyper_white rounded-lg p-5 cursor-pointer">
+                    <div className="bg-wise-hyper_white rounded-lg p-5 cursor-pointer">
                         <div>
                             <h2 className="text-xl w-full flex justify-between items-center font-semibold">
                                 Nome do container
@@ -206,7 +223,7 @@ function VirtualStock() {
                         </div>
                     </div>
 
-                    <div className="max-w-[450px] bg-wise-hyper_white rounded-lg p-5 cursor-pointer">
+                    <div className="bg-wise-hyper_white rounded-lg p-5 cursor-pointer">
                         <div>
                             <h2 className="text-xl w-full flex justify-between items-center font-semibold">
                                 Nome do container
@@ -233,7 +250,7 @@ function VirtualStock() {
                         </div>
                     </div>
 
-                    <div className="max-w-[450px] bg-wise-hyper_white rounded-lg p-5 cursor-pointer">
+                    <div className="bg-wise-hyper_white rounded-lg p-5 cursor-pointer">
                         <div>
                             <h2 className="text-xl w-full flex justify-between items-center font-semibold">
                                 Nome do container

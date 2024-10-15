@@ -1,7 +1,9 @@
 import { MainContainer } from "@/components/MainContainer"
 import { TopMenu } from "@/components/TopMenu"
+import { CreateEmployee } from "@/components/_employees/CreateEmployee"
 import { EmployeesTable } from "@/components/_employees/EmployeesTable"
 import { Button } from "@/components/ui/button"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { UserPlus2, UserRoundSearch } from "lucide-react"
@@ -23,10 +25,26 @@ function Employees() {
                             </Button>
                         </Label>
 
-                        <Button className='flex-1 flex gap-3 items-center bg-wise-hyper_black text-wise-hyper_light_green h-[40px] hover:bg-wise-hyper_black hover:text-wise-light_white transition-all'>
-                            <UserPlus2 />
-                            Cadastrar novo funcionário
-                        </Button>
+                        <Dialog>
+                            <DialogTrigger>
+                                <Button className='flex-1 flex gap-3 items-center bg-wise-hyper_black text-wise-hyper_light_green h-[40px] hover:bg-wise-hyper_black hover:text-wise-light_white transition-all'>
+                                    <UserPlus2 />
+                                    Cadastrar novo funcionário
+                                </Button>
+                            </DialogTrigger>
+
+
+                            <DialogContent className="montserrat">
+                                <DialogHeader>
+                                    <DialogTitle className="text-lg font-semibold border-b-2 border-wise-dark_green py-3">
+                                        Cadastro de funcionário
+                                    </DialogTitle>
+                                </DialogHeader>
+
+                                <CreateEmployee />
+                            </DialogContent>
+                        </Dialog>
+                        
                     </div>
                 </section>
 

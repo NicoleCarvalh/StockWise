@@ -1,7 +1,9 @@
+import { CreateProduct } from "@/components/_products/CreateProduct"
 import { ProductsTable } from "@/components/_products/ProductsTable"
 import { MainContainer } from "@/components/MainContainer"
 import { TopMenu } from "@/components/TopMenu"
 import { Button } from "@/components/ui/button"
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { ArrowUpNarrowWide, Filter, PackagePlus, PackageSearch, ScanBarcode, ScanQrCode } from "lucide-react"
@@ -24,10 +26,31 @@ function Products() {
                             </Button>
                         </Label>
 
-                        <Button className='flex-1 flex gap-3 items-center bg-wise-hyper_black text-wise-hyper_light_green h-[40px] hover:bg-wise-hyper_black hover:text-wise-light_white transition-all'>
+                        <Dialog>
+                            <DialogTrigger>
+                                <Button className='flex-1 flex gap-3 items-center bg-wise-hyper_black text-wise-hyper_light_green h-[40px] hover:bg-wise-hyper_black hover:text-wise-light_white transition-all'>
+                                    <PackagePlus />
+                                    Cadastrar novo produto
+                                </Button>
+                            </DialogTrigger>
+
+                            <DialogContent className="">
+                                {/* <ul>
+                                    <li>x</li>
+                                    <li>x</li>
+                                    <li>x</li>
+                                    <li>x</li>
+                                    <li>x</li>
+                                </ul> */}
+
+                                <CreateProduct />
+                            </DialogContent>
+                        </Dialog>
+
+                        {/* <Button className='flex-1 flex gap-3 items-center bg-wise-hyper_black text-wise-hyper_light_green h-[40px] hover:bg-wise-hyper_black hover:text-wise-light_white transition-all'>
                             <PackagePlus />
                             Cadastrar novo produto
-                        </Button>
+                        </Button> */}
                     </div>
                 </section>
 

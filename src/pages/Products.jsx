@@ -81,7 +81,7 @@ function Products() {
                     </div>
                 </section>
 
-                <QrCodeScanner onScanSuccess={handleScanSuccess} onScanError={handleScanError} />
+                {/* {<QrCodeScanner onScanSuccess={handleScanSuccess} onScanError={handleScanError} />} */}
 
 
                 <section>

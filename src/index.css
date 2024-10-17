@@ -36,8 +36,8 @@
     --wise-hyper_black: #000000;
     --wise-hyper_white: #ffffff;
     --wise-light_white: #fafaff;
-    --wise-hyper_light_green: hsl(153, 100%, 53%);
-    --wise-dark_green: hsl(154, 100%, 40%);
+    --wise-hyper_light_green: #0fff93;
+    --wise-dark_green: #00cc74;
   }
 
   .dark {
@@ -98,6 +98,15 @@
     border: 2px solid rgba(255, 255, 255, 0.18);
   }
 
+  .deepGlassmorph {
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 1px 80px 0 rgba(31, 135, 45, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(6px);
+    border-radius: 10px;
+    border: 2px solid rgba(255, 255, 255, 0.18);
+  }
+
   @keyframes derive {
     0% {
       transform: translateY(0);
@@ -114,4 +123,42 @@
   .montserrat {
     font-family: "Montserrat", sans-serif;
   }
+}
+
+
+/* Firefox (uncomment to work in Firefox, although other properties will not work!)  */
+/** {
+  scrollbar-width: thin;
+  scrollbar-color: #00CC74 #FAFAFF;
+}*/
+
+/* Chrome, Edge and Safari */
+*::-webkit-scrollbar {
+  height: 10px;
+  width: 10px;
+}
+*::-webkit-scrollbar-track {
+  border-radius: 5px;
+  background-color: #FAFAFF;
+}
+
+*::-webkit-scrollbar-track:hover {
+  background-color: #FAFAFF;
+}
+
+*::-webkit-scrollbar-track:active {
+  background-color: #FFFFFF;
+}
+
+*::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background-color: #00CC74;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: #0FFF93;
+}
+
+*::-webkit-scrollbar-thumb:active {
+  background-color: #0FFF93;
 }

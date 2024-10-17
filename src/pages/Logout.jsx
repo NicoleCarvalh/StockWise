@@ -25,9 +25,9 @@ export function Logout() {
             <div className=" md:block absolute bottom-[50%] right-[-2%] md:bottom-[-2%] md:right-[80%] w-[120px] animate-[derive_11s_linear_infinite]"><Wisebox className="rotate-[-15deg]" /></div>
             <div className=" md:block absolute bottom-[-2%] left-[-2%] md:top-[-2%] md:right-[30%] w-[120px] animate-[derive_11s_linear_infinite]"><Wisebox className="rotate-[-15deg]" /></div>
 
-            <div className="overflow-auto deepGlassmorph size-full w-full max-w-[80%] max-h-[90%] my-3 flex flex-col gap-8 md:justify-between p-8 md:p-16">
+            <div className="overflow-auto font-semibold deepGlassmorph size-full w-full max-w-[80%] max-h-[90%] my-3 flex flex-col gap-8 items-center md:justify-between p-8 md:p-16">
 
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2 justify-start min-w-full">
                     <h1 className="montserrat font-[900] text-6xl 2xl:text-7xl">
                         Eii! Volte aqui
                     </h1>
@@ -35,8 +35,8 @@ export function Logout() {
                     <h3 className="text-xl">Você tem certeza que deseja sair do sistema?</h3>
                 </div>
 
-                <div className="flex gap-8 justify-between flex-wrap">
-                    <div className="flex flex-col justify-between gap-4 max-w-full">
+                <div className="flex gap-8 justify-center lg:justify-between flex-wrap min-w-full">
+                    <div className="flex flex-col justify-between gap-4 max-w-full flex-1">
                         <div className="flex flex-col gap-4">
                             <h3 className="text-xl">Deixe seu feedback sobre o projeto antes de ir</h3>
                             
@@ -77,7 +77,7 @@ export function Logout() {
                     </div>
 
                     <img 
-                        className="max-w-[500px] w-full hidden md:block"
+                        className="max-w-[500px] w-full hidden lg:block"
                         src="/undraw_reviews.svg" 
                         alt="Ilustração com uma mulher colocando um comentário avaliativo em uma parede." 
                     />

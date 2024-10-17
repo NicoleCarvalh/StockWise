@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { Input } from "../ui/input";
-import QRCode from 'qrcode';
+// import QRCode from 'qrcode';
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";

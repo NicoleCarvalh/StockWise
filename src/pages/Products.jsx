@@ -1,7 +1,7 @@
 import { CreateProduct } from "@/components/_products/CreateProduct"
 import { ProductsTable } from "@/components/_products/ProductsTable"
 import { MainContainer } from "@/components/MainContainer"
-import QrCodeScanner from "@/components/QRCodeScanner"
+// import QrCodeScanner from "@/components/QRCodeScanner"
 import { TopMenu } from "@/components/TopMenu"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"

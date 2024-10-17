@@ -27,7 +27,6 @@
     "qrcode": "^1.5.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-qr-reader": "^3.0.0-beta-1",
     "react-router-dom": "^6.26.2",
     "recharts": "^2.12.7",
     "tailwind-merge": "^2.5.2",

@@ -199,7 +199,7 @@ function TopMenu() {
 
                     <DropdownMenu>
                         <DropdownMenuTrigger>
-                            <img src="/default_profile_image.jpg" alt="" className="size-[50px] max-w-[50px] rounded-full" />
+                            <img src="/default_profile_image.jpg" alt="" className="size-[50px] max-w-[50px] rounded-full object-cover" />
                         </DropdownMenuTrigger>
 
                         <DropdownMenuContent className="mx-[1.5rem] my-[.5rem]">

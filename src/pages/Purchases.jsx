@@ -27,7 +27,7 @@ function Purchases() {
                         </Label>
 
                         <Dialog>
-                            <DialogTrigger>
+                            <DialogTrigger asChild>
                                 <Button className='flex-1 flex gap-3 items-center bg-wise-hyper_black text-wise-hyper_light_green h-[40px] hover:bg-wise-hyper_black hover:text-wise-light_white transition-all'>
                                     <ShoppingCart />
                                     Cadastrar nova compra
@@ -35,7 +35,7 @@ function Purchases() {
                             </DialogTrigger>
 
 
-                            <DialogContent className="montserrat">
+                            <DialogContent className="montserrat" aria-describedby={undefined}>
                                 <DialogHeader>
                                     <DialogTitle className="text-lg font-semibold border-b-2 border-wise-dark_green py-3">
                                         Cadastro de compra

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import { Label } from "../ui/label";
 
 function CreateEmployee() {
     const [photoExists, setPhotoExists] = useState(false)
@@ -17,55 +18,55 @@ function CreateEmployee() {
     return (
         <form action="" className="flex flex-col gap-2">
             <div className="flex flex-col gap-2">
-                <label htmlFor="name">
+                <Label htmlFor="name">
                     Nome
-                </label>
+                </Label>
 
                 <Input id="name" required />
             </div>
 
             <div className="flex gap-2">
-            <div className="flex flex-col gap-2 w-full">
-                <label htmlFor="photo">
-                    Foto do funcionário
-                </label>
+                <div className="flex flex-col gap-2 w-full">
+                    <Label htmlFor="photo">
+                        Foto do funcionário
+                    </Label>
 
-                <Input id="photo" type="file" onChange={handlePhotoPreview} />
-            </div>
-
-            {
-                photoExists && (
-                <div className="max-h-full h-full flex-1 flex items-center justify-end">
-                    <img src={photoUrl} alt="" className="h-full max-w-[80px] object-cover rounded-sm" />
+                    <Input id="photo" type="file" onChange={handlePhotoPreview} />
                 </div>
-                )
-            }
+
+                {
+                    photoExists && (
+                    <div className="max-h-full h-full flex-1 flex items-center justify-end">
+                        <img src={photoUrl} alt="" className="h-full max-w-[80px] object-cover rounded-sm" />
+                    </div>
+                    )
+                }
             
             </div>
           
             <div className="flex flex-col gap-2">
-                <label htmlFor="description">
+                <Label htmlFor="email">
                     E-mail
-                </label>
+                </Label>
 
-                <Input id="description" type="email" required />
+                <Input id="email" type="email" required />
             </div>
 
             <div className="flex flex-col gap-2 flex-1">
-                <label htmlFor="purchase_price">
-                Senha
-                </label>
+                <Label htmlFor="password">
+                    Senha
+                </Label>
 
-                <Input id="purchase_price" type="password" required />
+                <Input id="password" type="password" required />
             </div>
 
             <div className="flex flex-col gap-2 flex-1">
-                <label htmlFor="role">
+                <Label htmlFor="role">
                     Cargo
-                </label>
+                </Label>
 
-                <Input list="role_list" id="role" name="role" required />
-                <datalist id="role_list">
+                <Input list="role" id="role" name="role" required />
+                <datalist id="role">
                     <option value="Vendedor">Vendedor</option>
                     <option value="Gerente de estoque">Gerente de estoque</option>
                 </datalist>

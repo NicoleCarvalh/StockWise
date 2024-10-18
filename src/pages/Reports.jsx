@@ -13,7 +13,10 @@ function Reports() {
                     <h1 className='text-2xl font-bold'>Relatórios</h1>
 
                     <div className='flex gap-4 flex-wrap justify-center'>
-                        <Button className='flex-1 flex gap-3 items-center bg-wise-hyper_black text-wise-hyper_light_green h-[40px] hover:bg-wise-hyper_black hover:text-wise-light_white transition-all'>
+                        <Button 
+                            className='flex-1 flex gap-3 items-center bg-wise-hyper_black text-wise-hyper_light_green h-[40px] hover:bg-wise-hyper_black hover:text-wise-light_white transition-all'
+                            onClick={() => alert("O relatório do mês atual já esta sendo criado no sistema e será baixada a cópia em breve.")}
+                        >
                             <FilePlus2 />
                             Criar novo relatório
                         </Button>

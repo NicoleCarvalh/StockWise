@@ -1,15 +1,11 @@
 import { useRef, useState } from "react";
 import { Input } from "../ui/input";
-// import QRCode from 'qrcode';
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Label } from "../ui/label";
 
 function CreateProduct() {
-    // const [qrCodeUrl, setQrCodeUrl] = useState("#");
-    // const [productId, setProductId] = useState("32RG-53D");
-
     const [photoExists, setPhotoExists] = useState(false)
     const [photoUrl, setPhotoUrl] = useState("")
 
@@ -20,23 +16,6 @@ function CreateProduct() {
         setPhotoExists(true)
       }
     }
-
-    // function generateQRCode() {
-    //     QRCode.toDataURL(productId, {
-    //       width: 100,
-    //       margin: 2,
-    //       color: {
-    //         dark: "#00cc74"
-    //       }
-    //     }, (err, url) => {
-    //       if (err) {
-    //         console.error(err);
-    //         // Exibir uma mensagem de erro ao usuário
-    //       } else {
-    //         setQrCodeUrl(url);
-    //       }
-    //     });
-    // }
 
     return (
         <form action="" className="flex flex-col gap-2">
@@ -74,11 +53,6 @@ function CreateProduct() {
 
               <Textarea id="description" className="resize-none" />
           </div>
-
-          {/* <div>
-            <button type="button" onClick={() => generateQRCode()}>Gerar</button>
-            <img id="qrcode" alt="QR Code" src={qrCodeUrl} className="rounded-md" />
-          </div> */}
 
           <div className="flex gap-2">
             <div className="flex flex-col gap-2 flex-1">

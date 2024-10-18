@@ -77,7 +77,7 @@ function Profile() {
                             {
                                 notifications.map((notification, idx) => {
                                     return (
-                                        <li id={idx} className={`${notification.visualized && 'opacity-55'} flex justify-between flex-wrap items-center gap-3 py-3 border-b border-b-wise-dark_green last:border-none`}>
+                                        <li key={idx} className={`${notification.visualized && 'opacity-55'} flex justify-between flex-wrap items-center gap-3 py-3 border-b border-b-wise-dark_green last:border-none`}>
                                             <div>
                                                 <h2 className="font-semibold">{notification.name} - {notification.datetime}</h2>
                                                 <p className="text-sm">{notification.description}</p>

@@ -62,7 +62,7 @@ function CreateContainer() {
             </div>
 
             <div className="flex-1 flex gap-2 flex-wrap">
-                <Button type="reset" variant="outline" className="flex-1 flex items-center justify-center" onClick={() => setPhotoExists(false)}>Limpar formulário</Button>
+                <Button type="reset" variant="outline" className="flex-1 flex items-center justify-center">Limpar formulário</Button>
                 <Button type="submit" className="flex-1 flex items-center justify-center">Cadastrar</Button>
             </div>
         </form>

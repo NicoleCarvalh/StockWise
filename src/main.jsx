@@ -15,6 +15,7 @@ import { Reports } from "./pages/Reports";
 import { Employees } from "./pages/Employees";
 import { Profile } from "./pages/Profile";
 import { Logout } from "./pages/Logout";
+import { Toaster } from "./components/ui/toaster";
 
 const router = createBrowserRouter([
   {
@@ -63,5 +64,6 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <RouterProvider router={router} />
+    <Toaster />
   </StrictMode>
 );

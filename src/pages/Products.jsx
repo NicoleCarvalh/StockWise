@@ -1,7 +1,7 @@
 import { CreateProduct } from "@/components/_products/CreateProduct"
 import { ProductsTable } from "@/components/_products/ProductsTable"
 import { MainContainer } from "@/components/MainContainer"
-// import QrCodeScanner from "@/components/QRCodeScanner"
+import { QRCodeScanner } from "@/components/QRCodeScanner"
 import { TopMenu } from "@/components/TopMenu"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
@@ -10,13 +10,6 @@ import { Label } from "@/components/ui/label"
 import { ArrowUpNarrowWide, Filter, PackagePlus, PackageSearch, ScanBarcode, ScanQrCode } from "lucide-react"
 
 function Products() {
-    const handleScanSuccess = (decodedText, decodedResult) => {
-        console.log("QR Code detectado:", decodedText);
-    };
-    
-    const handleScanError = (errorMessage) => {
-        console.error("Erro ao ler o QR Code:", errorMessage);
-    };
 
     return (
         <>
@@ -57,10 +50,10 @@ function Products() {
 
                 <section className='flex gap-x-4 items-center justify-between flex-wrap'>
                     <div className='flex gap-x-8 items-center flex-wrap'>
-                        <Button className="flex items-center gap-2 bg-transparent text-wise-hyper_black p-0 hover:text-wise-light_white hover:p-2 transition-all">
-                            <ScanQrCode />
-                            Scanear QRCode
-                        </Button>
+                        
+                            
+                        <QRCodeScanner>
+                        </QRCodeScanner>
 
                         <Button className="flex items-center gap-2 bg-transparent text-wise-hyper_black p-0 hover:text-wise-light_white hover:p-2 transition-all">
                             <ScanBarcode />
@@ -80,9 +73,6 @@ function Products() {
                         </Button>
                     </div>
                 </section>
-
-                {/* {<QrCodeScanner onScanSuccess={handleScanSuccess} onScanError={handleScanError} />} */}
-
 
                 <section>
                     {/* Create an pattern component to tables */}

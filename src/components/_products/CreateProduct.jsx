@@ -118,63 +118,63 @@ function CreateProduct() {
           </div>
 
           <div className="flex-1 flex gap-2 flex-wrap">
-            <Popover>
+            <Popover className="max-w-full">
               <PopoverTrigger asChild>
                 <Button variant="outline">Detalhes técnicos</Button>
               </PopoverTrigger>
 
-              <PopoverContent className="w-80 translate-x-[2rem]">
-                <div className="grid gap-4">
+              <PopoverContent className="ml-[10%] md:ml-[20%] max-w-full">
+                <div className="grid gap-4 max-w-full">
                   <div className="space-y-2">
                     <h4 className="font-medium leading-none">Dimensões e peso</h4>
                     <p className="text-sm text-muted-foreground">
                       Coloque as dimensões e o peso do produto ou embalagem, caso necessário.
                     </p>
                   </div>
-
-                  <div className="grid gap-2">
-                    <div className="grid grid-cols-3 items-center gap-4">
+                  {/* flex flex-col gap-2 */}
+                  <div className="grid gap-2 max-w-full">
+                    <div className="md:grid md:grid-cols-3 md:items-center md:gap-4 flex flex-col gap-2">
                       <Label htmlFor="width">Largura (cm)</Label>
                       <Input
                         id="width"
                         defaultValue="0"
-                        className="col-span-2 h-8"
+                        className="md:col-span-2 flex-1 max-w-full h-8"
                         type="number"
                         min={0}
                         step={0.01}
                       />
                     </div>
 
-                    <div className="grid grid-cols-3 items-center gap-4">
+                    <div className="md:grid md:grid-cols-3 md:items-center md:gap-4 flex flex-col gap-2">
                       <Label htmlFor="height">Altura (cm)</Label>
                       <Input
                         id="height"
                         defaultValue="0"
-                        className="col-span-2 h-8"
+                        className="md:col-span-2 flex-1 max-w-full h-8"
                         type="number"
                         min={0}
                         step={0.01}
                       />
                     </div>
 
-                    <div className="grid grid-cols-3 items-center gap-4">
+                    <div className="md:grid md:grid-cols-3 md:items-center md:gap-4 flex flex-col gap-2">
                       <Label htmlFor="length">Comprimento (cm)</Label>
                       <Input
                         id="length"
                         defaultValue="0"
-                        className="col-span-2 h-8"
+                        className="md:col-span-2 flex-1 max-w-full h-8"
                         type="number"
                         min={0}
                         step={0.01}
                       />
                     </div>
                    
-                    <div className="grid grid-cols-3 items-center gap-4">
+                    <div className="md:grid md:grid-cols-3 md:items-center md:gap-4 flex flex-col gap-2">
                       <Label htmlFor="weight">Peso (Kg)</Label>
                       <Input
                         id="weight"
                         defaultValue="0"
-                        className="col-span-2 h-8"
+                        className="md:col-span-2 flex-1 max-w-full h-8"
                         type="number"
                         min={0}
                         step={0.01}

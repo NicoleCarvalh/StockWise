@@ -36,7 +36,7 @@ function Products() {
                                 </Button>
                             </DialogTrigger>
 
-                            <DialogContent className="montserrat" aria-describedby={undefined}>
+                            <DialogContent className="montserrat overflow-x-hidden" aria-describedby={undefined}>
                                 <DialogHeader>
                                     <DialogTitle className="text-lg font-semibold border-b-2 border-wise-dark_green py-3">
                                         Cadastro de produto
@@ -50,10 +50,8 @@ function Products() {
 
                 <section className='flex gap-x-4 items-center justify-between flex-wrap'>
                     <div className='flex gap-x-8 items-center flex-wrap'>
-                        
-                            
-                        <QRCodeScanner>
-                        </QRCodeScanner>
+                    
+                        <QRCodeScanner />                        
 
                         <Button className="flex items-center gap-2 bg-transparent text-wise-hyper_black p-0 hover:text-wise-light_white hover:p-2 transition-all">
                             <ScanBarcode />

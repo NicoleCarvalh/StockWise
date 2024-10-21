@@ -1,7 +1,5 @@
 import QrScanner from "qr-scanner"
-import { useEffect, useRef, useState } from "react"
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTrigger } from "./ui/dialog"
-import { DialogTitle } from "@radix-ui/react-dialog"
+import { useRef, useState } from "react"
 import { Button } from "./ui/button"
 import { ScanQrCode, X } from "lucide-react"
 

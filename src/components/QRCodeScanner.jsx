@@ -10,7 +10,7 @@ function QRCodeScanner() {
     const [scannerInstance, setScannerInstance] = useState(null)
 
     function handleScanner(toStart) {
-        setIsScanning(!isScanning)
+        setIsScanning(toStart)
 
         if(!toStart && scannerInstance) {
             scannerInstance.stop()
@@ -20,9 +20,9 @@ function QRCodeScanner() {
 
             document.body.style.overflow = 'unset';
             
-            return null
+            return
         }
-        
+
         document.body.style.overflow = 'hidden';
 
         const scanner = new QrScanner(videoElement.current, (scannResult) => {
@@ -49,7 +49,7 @@ function QRCodeScanner() {
     return (
         <>
             <Button 
-                onClick={handleScanner}
+                onClick={() => handleScanner(true)}
                 className="flex items-center gap-2 bg-transparent text-wise-hyper_black p-0 hover:text-wise-light_white hover:p-2 transition-all"
             >
                 <ScanQrCode />
@@ -71,7 +71,7 @@ function QRCodeScanner() {
 
                         <Button 
                             type="button" 
-                            onClick={handleScanner}
+                            onClick={() => handleScanner(false)}
                             className="bg-transparent text-wise-hyper_black hover:bg-transparent hover:text-wise-dark_green"
                             data-is-close-modal-element={true}
                         >

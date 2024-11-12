@@ -12,10 +12,31 @@ import {
 import { Link } from "react-router-dom";
 import { Camera } from "lucide-react";
 
+// console.log( import.meta .REACT_APP_API_BASE_URL)
+
 function SignupForm() {
-  const [imagePreview, setImagePreview] = useState(null);
-  const dropAreaRef = useRef(null);
-  const inputFileRef = useRef(null);
+  const [imagePreview, setImagePreview] = useState(null)
+  const dropAreaRef = useRef(null)
+  const inputFileRef = useRef(null)
+
+  const nameRef = useRef(null)
+  const emailRef = useRef(null)
+  const passwordRef = useRef(null)
+  const categoryRef = useRef("PF")
+
+  const handleSignupForm = (ev) => {
+    ev.preventDefault()
+
+    console.log(imagePreview)
+
+    console.log(nameRef.current)
+    console.log(emailRef.current)
+    console.log(passwordRef.current)
+    console.log(categoryRef.current)
+
+    // TODO: call the api and create company -> receive token -> save token on localStorage -> redirect to login
+    // TODO: add supabase image store
+  }
 
   const uploadImage = (file) => {
     const imgLink = URL.createObjectURL(file);
@@ -43,7 +64,10 @@ function SignupForm() {
   };
 
   return (
-    <form className="grid gap-y-[24px] md:gap-y-[14px] md:w-full md:max-w-[450px]">
+    <form 
+      className="grid gap-y-[24px] md:gap-y-[14px] md:w-full md:max-w-[450px]"
+      onSubmit={handleSignupForm}  
+    >
       <div
         id="drop-area"
         ref={dropAreaRef}
@@ -80,9 +104,14 @@ function SignupForm() {
         placeholder="Nome PF ou PJ"
         required
         className="md:text-lg"
+        ref={nameRef}
+        onChange={(ev) => nameRef.current = ev.target.value}
       />
 
-      <Select>
+      <Select
+      // ref={categoryRef}
+      onValueChange={(newValue) => categoryRef.current = newValue}
+      >
         <SelectTrigger className="w-full md:text-lg">
           <SelectValue placeholder="Categoria do perfil" />
         </SelectTrigger>
@@ -99,6 +128,8 @@ function SignupForm() {
         placeholder="E-mail"
         required
         className="md:text-lg"
+        ref={emailRef}
+        onChange={(ev) => emailRef.current = ev.target.value}
       />
 
       <Label className="md:text-lg lg:text-xl">Senha</Label>
@@ -107,6 +138,8 @@ function SignupForm() {
         placeholder="Senha"
         required
         className="md:text-lg"
+        ref={passwordRef}
+        onChange={(ev) => passwordRef.current = ev.target.value}
       />
 
       <div className="flex flex-col gap-y-[24px]">

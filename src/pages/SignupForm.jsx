@@ -9,16 +9,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "ui/select";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Camera } from "lucide-react";
-
-// console.log( import.meta .REACT_APP_API_BASE_URL)
+import { useToast } from "@/hooks/use-toast";
+import { ToastAction } from "@/components/ui/toast";
 
 function SignupForm() {
   const [imagePreview, setImagePreview] = useState(null)
+  const { toast } = useToast()
+  const navigate = useNavigate();
+
   const dropAreaRef = useRef(null)
   const inputFileRef = useRef(null)
-
   const nameRef = useRef(null)
   const emailRef = useRef(null)
   const passwordRef = useRef(null)
@@ -26,13 +28,54 @@ function SignupForm() {
 
   const handleSignupForm = (ev) => {
     ev.preventDefault()
+    const formDataToSend = new FormData()
 
-    console.log(imagePreview)
+    if(inputFileRef?.current?.files && inputFileRef?.current?.files?.length > 0) {
+      formDataToSend.append("image", inputFileRef.current.files[0])
+    }
 
-    console.log(nameRef.current)
-    console.log(emailRef.current)
-    console.log(passwordRef.current)
-    console.log(categoryRef.current)
+    formDataToSend.append("name", nameRef.current)
+    formDataToSend.append("email", emailRef.current)
+    formDataToSend.append("password", passwordRef.current)
+    formDataToSend.append("category", categoryRef.current)
+
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/company`, {
+      method: "POST",
+      body: formDataToSend
+    }).then(json => json.json()).then(data => {
+      if(data.isError) {
+        toast({
+          title: "Ocorreu um erro durante o cadastro!",
+          variant: "destructive",
+          description: <><p>{data.error}</p> <p>Tente novamente.</p></>,
+          action: (
+            <ToastAction altText="Fechar">Fechar</ToastAction>
+          )
+        })
+
+        return
+      }
+
+      toast({
+        title: "Cadastro realizado com sucesso!",
+        description: <><p>{data.error}</p></>,
+        action: (
+          <ToastAction altText="Fechar">Fechar</ToastAction>
+        )
+      })
+
+      navigate("/")
+    })
+    .catch(error => {
+      toast({
+        title: "Ocorreu um erro durante o cadastro!",
+        variant: "destructive",
+        description: <><p>{error}</p> <p>Tente novamente.</p></>,
+        action: (
+          <ToastAction altText="Fechar">Fechar</ToastAction>
+        )
+      })
+    })
 
     // TODO: call the api and create company -> receive token -> save token on localStorage -> redirect to login
     // TODO: add supabase image store
@@ -152,6 +195,8 @@ function SignupForm() {
           </Button>
         </Link>
       </div>
+
+      {/* <img src="https://ehjfjfpjrrumhuycxjwf.supabase.co/storage/v1/object/public/stock_images/company/6734e0c3cdfa3db8f1a19141.jpg" alt="AQUI" srcset="" /> */}
     </form>
   );
 }

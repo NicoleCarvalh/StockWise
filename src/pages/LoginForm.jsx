@@ -2,22 +2,79 @@ import { Label } from "ui/label";
 import { Input } from "ui/input";
 import { Button } from "ui/button";
 import { Link, useNavigate } from "react-router-dom";
+import { useRef } from "react";
+import { useToast } from "@/hooks/use-toast";
+import { ToastAction } from "@/components/ui/toast";
 
 function LoginForm() {
   const navigate = useNavigate()
+  const emailRef = useRef(null)
+  const passwordRef = useRef(null)
+  const { toast } = useToast()
 
-  function handleSubmit(formEvent) {
+  const handleSubmit = (formEvent) => {
     formEvent.preventDefault()
+
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/company/validate`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        email: emailRef.current,
+        password: passwordRef.current
+      })
+    }).then(json => json.json()).then(data => {
+      if(data?.companyExists) {
+        navigate("/dashboard")
+        return
+      } else if(data?.companyExists == false) {
+        toast({
+          title: "Credenciais incorretas!",
+          variant: "destructive",
+          description: "Verifique se o email e senha estão corretos e tente novamente!",
+          action: (
+            <ToastAction altText="Fechar">Fechar</ToastAction>
+          )
+        })
+
+        return
+      }
+
+      console.log(data)
+
+      toast({
+        title: "Ocorreu um erro durante o login!",
+        variant: "destructive",
+        description: <><p>{data?.message}</p> <p>Tente novamente.</p></>,
+        action: (
+          <ToastAction altText="Fechar">Fechar</ToastAction>
+        )
+      })
+
+
+    }).catch(error => {
+      toast({
+        title: "Ocorreu um erro durante o login!",
+        variant: "destructive",
+        description: <><p>{error}</p> <p>Tente novamente.</p></>,
+        action: (
+          <ToastAction altText="Fechar">Fechar</ToastAction>
+        )
+      })
+    })
   
-    navigate('/dashboard')
+    // navigate('/dashboard')
   }
 
   return (
     <form className="grid gap-y-[24px] md:w-full md:max-w-[400px]" onSubmit={handleSubmit}>
       <Label className="md:text-lg lg:text-xl">E-mail</Label>
-      <Input type="email" placeholder="E-mail" required className="md:text-lg" />
+      <Input type="email" placeholder="E-mail" required className="md:text-lg" ref={emailRef}
+        onChange={(ev) => emailRef.current = ev.target.value} />
       <Label className="md:text-lg lg:text-xl">Senha</Label>
-      <Input type="password" placeholder="Senha" required className="md:text-lg"/>
+      <Input type="password" placeholder="Senha" required className="md:text-lg"  ref={passwordRef}
+        onChange={(ev) => passwordRef.current = ev.target.value}/>
       <a
         className="block underline underline-offset-1 font-semibold w-full text-right hover:text-wise-dark_green transition-all md:text-lg lg:text-xl"
         href="#"

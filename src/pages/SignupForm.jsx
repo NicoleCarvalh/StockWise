@@ -47,7 +47,7 @@ function SignupForm() {
         toast({
           title: "Ocorreu um erro durante o cadastro!",
           variant: "destructive",
-          description: <><p>{data.error}</p> <p>Tente novamente.</p></>,
+          description: <p>{data.error}<br/> Tente novamente.</p>,
           action: (
             <ToastAction altText="Fechar">Fechar</ToastAction>
           )
@@ -58,7 +58,7 @@ function SignupForm() {
 
       toast({
         title: "Cadastro realizado com sucesso!",
-        description: <><p>{data.error}</p></>,
+        description: <p>{data.error}</p>,
         action: (
           <ToastAction altText="Fechar">Fechar</ToastAction>
         )
@@ -70,7 +70,7 @@ function SignupForm() {
       toast({
         title: "Ocorreu um erro durante o cadastro!",
         variant: "destructive",
-        description: <><p>{error}</p> <p>Tente novamente.</p></>,
+        description: <p>{error}<br/> Tente novamente.</p>,
         action: (
           <ToastAction altText="Fechar">Fechar</ToastAction>
         )
@@ -153,15 +153,19 @@ function SignupForm() {
 
       <Select
       // ref={categoryRef}
+      value={categoryRef.current}
       onValueChange={(newValue) => categoryRef.current = newValue}
       >
         <SelectTrigger className="w-full md:text-lg">
           <SelectValue placeholder="Categoria do perfil" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="PF">Uso pessoal</SelectItem>
-          <SelectItem value="logistica">Logística</SelectItem>
-          <SelectItem value="cosmetico">Cosméticos</SelectItem>
+          <SelectItem value="PF">Categoria: Uso pessoal</SelectItem>
+          <SelectItem value="logistica">Categoria: Logística</SelectItem>
+          <SelectItem value="cosmetico">Categoria: Cosméticos</SelectItem>
+          <SelectItem value="tecnologia">Categoria: Tecnologia e inovação</SelectItem>
+          <SelectItem value="varejo">Categoria: Varejo</SelectItem>
+          <SelectItem value="outros">Categoria: outros...</SelectItem>
         </SelectContent>
       </Select>
 
@@ -171,6 +175,7 @@ function SignupForm() {
         placeholder="E-mail"
         required
         className="md:text-lg"
+        minLength="8"
         ref={emailRef}
         onChange={(ev) => emailRef.current = ev.target.value}
       />
@@ -183,6 +188,7 @@ function SignupForm() {
         className="md:text-lg"
         ref={passwordRef}
         onChange={(ev) => passwordRef.current = ev.target.value}
+        minLength={8}
       />
 
       <div className="flex flex-col gap-y-[24px]">

@@ -26,7 +26,8 @@ function LoginForm() {
       })
     }).then(json => json.json()).then(data => {
       if(data?.companyExists) {
-        navigate("/dashboard")
+        console.log(data)
+        // navigate("/dashboard")
         return
       } else if(data?.companyExists == false) {
         toast({
@@ -41,12 +42,10 @@ function LoginForm() {
         return
       }
 
-      console.log(data)
-
       toast({
         title: "Ocorreu um erro durante o login!",
         variant: "destructive",
-        description: <><p>{data?.message}</p> <p>Tente novamente.</p></>,
+        description: <p>{data?.message} <br/> Tente novamente.</p>,
         action: (
           <ToastAction altText="Fechar">Fechar</ToastAction>
         )
@@ -54,14 +53,17 @@ function LoginForm() {
 
 
     }).catch(error => {
-      toast({
-        title: "Ocorreu um erro durante o login!",
-        variant: "destructive",
-        description: <><p>{error}</p> <p>Tente novamente.</p></>,
-        action: (
-          <ToastAction altText="Fechar">Fechar</ToastAction>
-        )
-      })
+      console.log("erro AQUI")
+      console.log(error)
+
+      // toast({
+      //   title: "Ocorreu um erro durante o login!",
+      //   variant: "destructive",
+      //   description: <p>{error}<br/>Tente novamente.</p>,
+      //   action: (
+      //     <ToastAction altText="Fechar">Fechar</ToastAction>
+      //   )
+      // })
     })
   
     // navigate('/dashboard')
@@ -73,7 +75,7 @@ function LoginForm() {
       <Input type="email" placeholder="E-mail" required className="md:text-lg" ref={emailRef}
         onChange={(ev) => emailRef.current = ev.target.value} />
       <Label className="md:text-lg lg:text-xl">Senha</Label>
-      <Input type="password" placeholder="Senha" required className="md:text-lg"  ref={passwordRef}
+      <Input type="password" placeholder="Senha" required className="md:text-lg" minLength={8} ref={passwordRef}
         onChange={(ev) => passwordRef.current = ev.target.value}/>
       <a
         className="block underline underline-offset-1 font-semibold w-full text-right hover:text-wise-dark_green transition-all md:text-lg lg:text-xl"

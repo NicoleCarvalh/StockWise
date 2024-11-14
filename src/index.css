@@ -35,7 +35,8 @@
     /* Cores próprias - figma */
     --wise-hyper_black: #000000;
     --wise-hyper_white: #ffffff;
-    --wise-light_white: #fafaff;
+    /* --wise-light_white: #fafaff; */
+    --wise-light_white: #f5f3f3;
     --wise-hyper_light_green: #0fff93;
     --wise-dark_green: #00cc74;
   }

@@ -122,7 +122,7 @@ function TopMenu() {
                                         className='p-2 rounded hover:text-wise-hyper_black hover:px-4 hover:bg-wise-hyper_white transition-all'
                                     >
                                         <h3 className='font-medium'>Compras</h3>
-                                        <p className="text-sm">Acompanhe as compras que a sua empresa já vez. Aproveite e cadastre + uma!</p>
+                                        <p className="text-sm">Acompanhe as compras que a sua empresa já fez. Aproveite e cadastre + uma!</p>
                                     </NavLink>
                                 </ul>
                             </NavigationMenuContent>

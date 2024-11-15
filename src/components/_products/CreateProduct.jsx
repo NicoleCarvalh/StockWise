@@ -18,7 +18,7 @@ function CreateProduct() {
     const purchasePriceRef = useRef(null)
     const salePriceRef = useRef(null)
     const suplierRef = useRef(null)
-
+ 
     const widthRef = useRef(null)
     const heightRef = useRef(null)
     const lengthRef = useRef(null)

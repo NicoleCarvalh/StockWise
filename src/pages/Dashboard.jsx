@@ -53,7 +53,6 @@ const endingList = [
 ]
 
 function Dashboard() {
-
     return (
         <>
             <TopMenu />

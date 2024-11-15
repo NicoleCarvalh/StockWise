@@ -1,30 +1,85 @@
-import { useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Label } from "../ui/label";
+import { AuthContext } from "@/auth/AuthProvider";
 
 function CreateProduct() {
+    const {credentials} = useContext(AuthContext) 
     const [photoExists, setPhotoExists] = useState(false)
     const [photoUrl, setPhotoUrl] = useState("")
+    const nameRef = useRef(null)
+    const imageRef = useRef(null)
+    const descriptionRef = useRef(null)
+    const categoryRef = useRef(null)
+    const quantityInStockRef = useRef(null)
+    const purchasePriceRef = useRef(null)
+    const salePriceRef = useRef(null)
+    const suplierRef = useRef(null)
 
+    const widthRef = useRef(null)
+    const heightRef = useRef(null)
+    const lengthRef = useRef(null)
+    const weightRef = useRef(null)
+
+    function handleForm(formEvent) {
+      formEvent.preventDefault()
+      const formDataToSend = new FormData()
+
+      formDataToSend.append("name", nameRef.current)
+      formDataToSend.append("category", categoryRef.current)
+      formDataToSend.append("quantityInStock", quantityInStockRef.current)
+      formDataToSend.append("purchasePrice", purchasePriceRef.current)
+      formDataToSend.append("salePrice", salePriceRef.current)
+      formDataToSend.append("suplier", suplierRef.current)
+      
+      imageRef && formDataToSend.append("image", imageRef.current.files[0])
+      descriptionRef && formDataToSend.append("description", descriptionRef.current)
+      
+      const technicalDetails = {
+        width: widthRef.current ?? null,
+        height:heightRef ?? null,
+        length: lengthRef ?? null,
+        weigh: weightRef ?? null
+      }
+      
+      formDataToSend.append("technicalDetails", JSON.stringify(technicalDetails))
+
+
+      fetch(`${import.meta.env.VITE_API_BASE_URL}/product`, {
+        method: "POST",
+        headers: {
+          'Authorization': `Bearer ${credentials.token}`
+        },
+        body: formDataToSend
+      }).then(json => json.json()).then(data => {
+        console.log(data)
+      }).catch(error => {
+        console.log(error)
+      })
+    }
+
+    
     function handlePhotoPreview(ev) {
       if(ev.target.files && ev.target.files[0]) {
         setPhotoUrl(URL.createObjectURL(ev.target.files[0]))
 
         setPhotoExists(true)
+
+        imageRef.current = ev.target.value
       }
     }
 
     return (
-        <form action="" className="flex flex-col gap-2">
+        <form method="POST" className="flex flex-col gap-2" onSubmit={handleForm}>
           <div className="flex flex-col gap-2">
               <label htmlFor="name">
                 Nome
               </label>
 
-              <Input id="name" required />
+              <Input id="name" required ref={nameRef} onChange={(ev) => {nameRef.current = ev.target.value}} />
           </div>
 
           <div className="flex gap-2">
@@ -33,7 +88,7 @@ function CreateProduct() {
                 Foto do produto
               </label>
 
-              <Input id="photo" type="file" onChange={handlePhotoPreview} />
+              <Input id="photo" type="file" ref={imageRef} onChange={handlePhotoPreview} />
             </div>
 
             {
@@ -51,7 +106,7 @@ function CreateProduct() {
                 Descrição
               </label>
 
-              <Textarea id="description" className="resize-none" />
+              <Textarea id="description" className="resize-none" ref={descriptionRef} onChange={(ev) => {descriptionRef.current = ev.target.value}} />
           </div>
 
           <div className="flex gap-2">
@@ -60,7 +115,7 @@ function CreateProduct() {
                 Categoria
               </label>
 
-              <Input list="category_list" id="category" name="category" required />
+              <Input list="category_list" id="category" name="category" required ref={categoryRef} onChange={(ev) => {categoryRef.current = ev.target.value}} />
               <datalist id="category_list">
                 <option value="Alimentação e Bebidas">Alimentação e Bebidas</option>
                 <option value="Vestuário e Acessórios">Vestuário e Acessórios</option>
@@ -81,7 +136,7 @@ function CreateProduct() {
                 Qtd. em estoque
               </label>
 
-              <Input id="quantity" type="number" min="0" step={1} required />
+              <Input id="quantity" type="number" min="0" step={1} required ref={quantityInStockRef} onChange={(ev) => {quantityInStockRef.current = ev.target.value}} />
             </div>
           </div>
 
@@ -91,7 +146,7 @@ function CreateProduct() {
                 Preço de compra
               </label>
 
-              <Input id="purchase_price" type="number" min="0.01" step={0.01} required />
+              <Input id="purchase_price" type="number" min="0.01" step={0.01} required ref={purchasePriceRef} onChange={(ev) => {purchasePriceRef.current = ev.target.value}} />
             </div>
 
             <div className="flex flex-col gap-2 flex-1">
@@ -99,7 +154,7 @@ function CreateProduct() {
                 Preço de venda
               </label>
 
-              <Input id="sale_price" type="number" min="0.01" step={0.01} required />
+              <Input id="sale_price" type="number" min="0.01" step={0.01} required ref={salePriceRef} onChange={(ev) => {salePriceRef.current = ev.target.value}}/>
             </div>
           </div>
 
@@ -108,7 +163,7 @@ function CreateProduct() {
               Fornecedor
             </label>
 
-            <Input list="supplier_list" id="supplier" name="supplier" required />
+            <Input list="supplier_list" id="supplier" name="supplier" required ref={suplierRef} onChange={(ev) => {suplierRef.current = ev.target.value}} />
             <datalist id="supplier_list">
               <option value="Casas Bahia">Casas Bahia</option>
               <option value="JBL">JBL - Tecnologia de ponta</option>
@@ -142,6 +197,7 @@ function CreateProduct() {
                         type="number"
                         min={0}
                         step={0.01}
+                        ref={widthRef} onChange={(ev) => {widthRef.current = ev.target.value}}
                       />
                     </div>
 
@@ -154,6 +210,7 @@ function CreateProduct() {
                         type="number"
                         min={0}
                         step={0.01}
+                        ref={heightRef} onChange={(ev) => {heightRef.current = ev.target.value}}
                       />
                     </div>
 
@@ -166,6 +223,7 @@ function CreateProduct() {
                         type="number"
                         min={0}
                         step={0.01}
+                        ref={lengthRef} onChange={(ev) => {lengthRef.current = ev.target.value}}
                       />
                     </div>
                    
@@ -178,6 +236,7 @@ function CreateProduct() {
                         type="number"
                         min={0}
                         step={0.01}
+                        ref={weightRef} onChange={(ev) => {weightRef.current = ev.target.value}}
                       />
                     </div>
                   </div>

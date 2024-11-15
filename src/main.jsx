@@ -16,6 +16,8 @@ import { Employees } from "./pages/Employees";
 import { Profile } from "./pages/Profile";
 import { Logout } from "./pages/Logout";
 import { Toaster } from "./components/ui/toaster";
+import { AuthProvider } from "./auth/AuthProvider";
+// import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const router = createBrowserRouter([
   {
@@ -61,9 +63,18 @@ const router = createBrowserRouter([
   },
 ]);
 
+// const queryClient = new QueryClient()
+
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={router} />
+
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
+    {/* <QueryClientProvider client={queryClient}> */}
+
+    {/* </QueryClientProvider> */}
+
     <Toaster />
   </StrictMode>
 );

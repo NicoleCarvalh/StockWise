@@ -2,15 +2,17 @@ import { Label } from "ui/label";
 import { Input } from "ui/input";
 import { Button } from "ui/button";
 import { Link, useNavigate } from "react-router-dom";
-import { useRef } from "react";
+import { useContext, useRef } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast";
+import { AuthContext } from "@/auth/AuthProvider";
 
 function LoginForm() {
   const navigate = useNavigate()
   const emailRef = useRef(null)
   const passwordRef = useRef(null)
   const { toast } = useToast()
+  const {handleCredentials} = useContext(AuthContext)
 
   const handleSubmit = (formEvent) => {
     formEvent.preventDefault()
@@ -26,8 +28,9 @@ function LoginForm() {
       })
     }).then(json => json.json()).then(data => {
       if(data?.companyExists) {
-        console.log(data)
-        // navigate("/dashboard")
+        handleCredentials(data.company, data.token).then(() => {
+          navigate("/dashboard")
+        })
         return
       } else if(data?.companyExists == false) {
         toast({
@@ -53,17 +56,14 @@ function LoginForm() {
 
 
     }).catch(error => {
-      console.log("erro AQUI")
-      console.log(error)
-
-      // toast({
-      //   title: "Ocorreu um erro durante o login!",
-      //   variant: "destructive",
-      //   description: <p>{error}<br/>Tente novamente.</p>,
-      //   action: (
-      //     <ToastAction altText="Fechar">Fechar</ToastAction>
-      //   )
-      // })
+      toast({
+        title: "Ocorreu um erro durante o login!",
+        variant: "destructive",
+        description: <p>O erro foi interno em nosso servidor. Por favor, tente novamente mais tarde.</p>,
+        action: (
+          <ToastAction altText="Fechar">Fechar</ToastAction>
+        )
+      })
     })
   
     // navigate('/dashboard')

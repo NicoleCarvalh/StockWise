@@ -116,6 +116,8 @@ function ProductsTable() {
             console.error(err);
             // Exibir uma mensagem de erro ao usuário
           } else {
+            console.log(url);
+
             setQrCodeUrl(url);
           }
         });

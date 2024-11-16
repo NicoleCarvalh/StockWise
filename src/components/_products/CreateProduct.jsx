@@ -5,11 +5,15 @@ import { Button } from "../ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Label } from "../ui/label";
 import { AuthContext } from "@/auth/AuthProvider";
+import { useToast } from "@/hooks/use-toast";
+import { ToastAction } from "../ui/toast";
 
 function CreateProduct() {
     const {credentials} = useContext(AuthContext) 
+    const { toast } = useToast()
     const [photoExists, setPhotoExists] = useState(false)
     const [photoUrl, setPhotoUrl] = useState("")
+
     const nameRef = useRef(null)
     const imageRef = useRef(null)
     const descriptionRef = useRef(null)
@@ -17,7 +21,7 @@ function CreateProduct() {
     const quantityInStockRef = useRef(null)
     const purchasePriceRef = useRef(null)
     const salePriceRef = useRef(null)
-    const suplierRef = useRef(null)
+    const supplierRef = useRef(null)
  
     const widthRef = useRef(null)
     const heightRef = useRef(null)
@@ -28,25 +32,44 @@ function CreateProduct() {
       formEvent.preventDefault()
       const formDataToSend = new FormData()
 
-      formDataToSend.append("name", nameRef.current)
-      formDataToSend.append("category", categoryRef.current)
-      formDataToSend.append("quantityInStock", quantityInStockRef.current)
-      formDataToSend.append("purchasePrice", purchasePriceRef.current)
-      formDataToSend.append("salePrice", salePriceRef.current)
-      formDataToSend.append("suplier", suplierRef.current)
+      formDataToSend.append("name", nameRef.current.value)
+      formDataToSend.append("category", categoryRef.current.value)
+      formDataToSend.append("quantityInStock", quantityInStockRef.current.value)
+      formDataToSend.append("purchasePrice", purchasePriceRef.current.value)
+      formDataToSend.append("salePrice", salePriceRef.current.value)
+      formDataToSend.append("supplier", supplierRef.current.value)
       
-      imageRef && formDataToSend.append("image", imageRef.current.files[0])
-      descriptionRef && formDataToSend.append("description", descriptionRef.current)
+      imageRef?.current && formDataToSend.append("image", imageRef?.current ? imageRef?.current[0] ?? null : null)
+      descriptionRef && formDataToSend.append("description", typeof descriptionRef.current?.value == 'object' ? null : descriptionRef.current.value)
       
       const technicalDetails = {
-        width: widthRef.current ?? null,
-        height:heightRef ?? null,
-        length: lengthRef ?? null,
-        weigh: weightRef ?? null
+        width: widthRef.current?.value ?? null,
+        height:heightRef.current?.value ?? null,
+        length: lengthRef.current?.value ?? null,
+        weigh: weightRef.current?.value ?? null
       }
       
       formDataToSend.append("technicalDetails", JSON.stringify(technicalDetails))
 
+      nameRef.current.value = ""
+      imageRef.current.value = ""
+      descriptionRef.current.value = ""
+      categoryRef.current.value = ""
+      quantityInStockRef.current.value = ""
+      purchasePriceRef.current.value = ""
+      salePriceRef.current.value = ""
+      supplierRef.current.value = ""
+      
+      widthRef.current ? widthRef.current.value = "" : null
+      heightRef.current ? heightRef.current.value = "" : null
+      lengthRef.current ? lengthRef.current.value = "" : null
+      weightRef.current ? weightRef.current.value = "" : null
+
+      setPhotoExists(false)
+      setPhotoUrl("")
+
+      nameRef.current.focus()
+      formEvent.target.reset()
 
       fetch(`${import.meta.env.VITE_API_BASE_URL}/product`, {
         method: "POST",
@@ -56,8 +79,24 @@ function CreateProduct() {
         body: formDataToSend
       }).then(json => json.json()).then(data => {
         console.log(data)
+
+        toast({
+          title: `Produto ${data.code} cadastrado com sucesso!`,
+          description: "Foram criados um QRCode e um código para o novo produto! Veja mais na listagem.",
+          action: (
+            <ToastAction altText="Fechar">Fechar</ToastAction>
+          )
+        })
+
       }).catch(error => {
-        console.log(error)
+        toast({
+          title: "Ocorreu um erro durante o login!",
+          variant: "destructive",
+          description: <p>{error?.message} <br/> Tente novamente.</p>,
+          action: (
+            <ToastAction altText="Fechar">Fechar</ToastAction>
+          )
+        })
       })
     }
 
@@ -68,7 +107,7 @@ function CreateProduct() {
 
         setPhotoExists(true)
 
-        imageRef.current = ev.target.value
+        imageRef.current = ev.target.files
       }
     }
 
@@ -79,7 +118,7 @@ function CreateProduct() {
                 Nome
               </label>
 
-              <Input id="name" required ref={nameRef} onChange={(ev) => {nameRef.current = ev.target.value}} />
+              <Input id="name" required ref={nameRef} onChange={(ev) => {nameRef.current = ev.target}} />
           </div>
 
           <div className="flex gap-2">
@@ -106,7 +145,7 @@ function CreateProduct() {
                 Descrição
               </label>
 
-              <Textarea id="description" className="resize-none" ref={descriptionRef} onChange={(ev) => {descriptionRef.current = ev.target.value}} />
+              <Textarea id="description" className="resize-none" ref={descriptionRef} onChange={(ev) => {descriptionRef.current = ev.target}} />
           </div>
 
           <div className="flex gap-2">
@@ -115,7 +154,7 @@ function CreateProduct() {
                 Categoria
               </label>
 
-              <Input list="category_list" id="category" name="category" required ref={categoryRef} onChange={(ev) => {categoryRef.current = ev.target.value}} />
+              <Input list="category_list" id="category" name="category" required ref={categoryRef} onChange={(ev) => {categoryRef.current = ev.target}} />
               <datalist id="category_list">
                 <option value="Alimentação e Bebidas">Alimentação e Bebidas</option>
                 <option value="Vestuário e Acessórios">Vestuário e Acessórios</option>
@@ -136,7 +175,7 @@ function CreateProduct() {
                 Qtd. em estoque
               </label>
 
-              <Input id="quantity" type="number" min="0" step={1} required ref={quantityInStockRef} onChange={(ev) => {quantityInStockRef.current = ev.target.value}} />
+              <Input id="quantity" type="number" min="0" step={1} required ref={quantityInStockRef} onChange={(ev) => {quantityInStockRef.current = ev.target}} />
             </div>
           </div>
 
@@ -146,7 +185,7 @@ function CreateProduct() {
                 Preço de compra
               </label>
 
-              <Input id="purchase_price" type="number" min="0.01" step={0.01} required ref={purchasePriceRef} onChange={(ev) => {purchasePriceRef.current = ev.target.value}} />
+              <Input id="purchase_price" type="number" min="0.01" step={0.01} required ref={purchasePriceRef} onChange={(ev) => {purchasePriceRef.current = ev.target}} />
             </div>
 
             <div className="flex flex-col gap-2 flex-1">
@@ -154,7 +193,7 @@ function CreateProduct() {
                 Preço de venda
               </label>
 
-              <Input id="sale_price" type="number" min="0.01" step={0.01} required ref={salePriceRef} onChange={(ev) => {salePriceRef.current = ev.target.value}}/>
+              <Input id="sale_price" type="number" min="0.01" step={0.01} required ref={salePriceRef} onChange={(ev) => {salePriceRef.current = ev.target}}/>
             </div>
           </div>
 
@@ -163,7 +202,7 @@ function CreateProduct() {
               Fornecedor
             </label>
 
-            <Input list="supplier_list" id="supplier" name="supplier" required ref={suplierRef} onChange={(ev) => {suplierRef.current = ev.target.value}} />
+            <Input list="supplier_list" id="supplier" name="supplier" required ref={supplierRef} onChange={(ev) => {supplierRef.current = ev.target}} />
             <datalist id="supplier_list">
               <option value="Casas Bahia">Casas Bahia</option>
               <option value="JBL">JBL - Tecnologia de ponta</option>
@@ -197,7 +236,7 @@ function CreateProduct() {
                         type="number"
                         min={0}
                         step={0.01}
-                        ref={widthRef} onChange={(ev) => {widthRef.current = ev.target.value}}
+                        ref={widthRef} onChange={(ev) => {widthRef.current = ev.target}}
                       />
                     </div>
 
@@ -210,7 +249,7 @@ function CreateProduct() {
                         type="number"
                         min={0}
                         step={0.01}
-                        ref={heightRef} onChange={(ev) => {heightRef.current = ev.target.value}}
+                        ref={heightRef} onChange={(ev) => {heightRef.current = ev.target}}
                       />
                     </div>
 
@@ -223,7 +262,7 @@ function CreateProduct() {
                         type="number"
                         min={0}
                         step={0.01}
-                        ref={lengthRef} onChange={(ev) => {lengthRef.current = ev.target.value}}
+                        ref={lengthRef} onChange={(ev) => {lengthRef.current = ev.target}}
                       />
                     </div>
                    
@@ -236,7 +275,7 @@ function CreateProduct() {
                         type="number"
                         min={0}
                         step={0.01}
-                        ref={weightRef} onChange={(ev) => {weightRef.current = ev.target.value}}
+                        ref={weightRef} onChange={(ev) => {weightRef.current = ev.target}}
                       />
                     </div>
                   </div>

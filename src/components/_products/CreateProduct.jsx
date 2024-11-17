@@ -41,12 +41,12 @@ function CreateProduct() {
       
       imageRef?.current && formDataToSend.append("image", imageRef?.current ? imageRef?.current[0] ?? null : null)
       descriptionRef && formDataToSend.append("description", typeof descriptionRef.current?.value == 'object' ? null : descriptionRef.current.value)
-      
+
       const technicalDetails = {
-        width: widthRef.current?.value ?? null,
-        height:heightRef.current?.value ?? null,
-        length: lengthRef.current?.value ?? null,
-        weigh: weightRef.current?.value ?? null
+        width: widthRef.current?.value ? Number.parseFloat(widthRef.current?.value) : null,
+        height: widthRef.current?.value ? Number.parseFloat(heightRef.current?.value) : null,
+        length: widthRef.current?.value ? Number.parseFloat(lengthRef.current?.value) : null,
+        weigh: widthRef.current?.value ? Number.parseFloat(weightRef.current?.value) : null
       }
       
       formDataToSend.append("technicalDetails", JSON.stringify(technicalDetails))
@@ -110,6 +110,7 @@ function CreateProduct() {
         imageRef.current = ev.target.files
       }
     }
+
 
     return (
         <form method="POST" className="flex flex-col gap-2" onSubmit={handleForm}>

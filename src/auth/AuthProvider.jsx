@@ -11,7 +11,11 @@ function AuthProvider({children}) {
         setCredentials(JSON.parse(jsonData))
     }, [])
 
-    const isLogged = () => credentials == null ? false : true
+    const isLogged = () => {
+        const jsonData = localStorage.getItem("credentials")
+
+        return jsonData ? true : false
+    }
 
     const handleCredentials = async (companyData, token) => {
         localStorage.removeItem("credentials")

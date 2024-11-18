@@ -17,6 +17,8 @@ import { Profile } from "./pages/Profile";
 import { Logout } from "./pages/Logout";
 import { Toaster } from "./components/ui/toaster";
 import { AuthProvider } from "./auth/AuthProvider";
+import { ProductsContextProvider } from "./context/ProductsContextProvider";
+import { PrivateRoute } from "./auth/PrivateRoute";
 // import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const router = createBrowserRouter([
@@ -27,49 +29,89 @@ const router = createBrowserRouter([
   },
   {
     path: '/dashboard',
-    element: <Dashboard />
+    element:(
+      <PrivateRoute>
+        <Dashboard />
+      </PrivateRoute>
+    )
   },
   {
     path: '/products',
-    element: <Products />
+    element:(
+      <PrivateRoute>
+        <Products />
+      </PrivateRoute>
+    )
   },
   {
     path: '/virtualStock',
-    element: <VirtualStock />
+    element:(
+      <PrivateRoute>
+        <VirtualStock />
+      </PrivateRoute>
+    )
   },
   {
     path: '/sales',
-    element: <Sales />
+    element:(
+      <PrivateRoute>
+        <Sales />
+      </PrivateRoute>
+    )
   },
   {
     path: '/purchases',
-    element: <Purchases />
+    element:(
+      <PrivateRoute>
+        <Purchases />
+      </PrivateRoute>
+    )
   },
   {
     path: '/reports',
-    element: <Reports />
+    element:(
+      <PrivateRoute>
+        <Reports />
+      </PrivateRoute>
+    )
   },
   {
     path: '/employees',
-    element: <Employees />
+    element:(
+      <PrivateRoute>
+        <Employees />
+      </PrivateRoute>
+    )
   },
   {
     path: '/profile',
-    element: <Profile />
+    element:(
+      <PrivateRoute>
+        <Profile />
+      </PrivateRoute>
+    )
   },
   {
     path: '/logout',
-    element: <Logout />
+    element:(
+      <PrivateRoute>
+        <Logout />
+      </PrivateRoute>
+    )
   },
 ]);
 
 // const queryClient = new QueryClient()
 
+
+
 createRoot(document.getElementById("root")).render(
   <StrictMode>
 
     <AuthProvider>
-      <RouterProvider router={router} />
+        <ProductsContextProvider>
+            <RouterProvider router={router} />
+        </ProductsContextProvider>
     </AuthProvider>
     {/* <QueryClientProvider client={queryClient}> */}
 

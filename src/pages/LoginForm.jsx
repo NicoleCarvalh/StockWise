@@ -59,14 +59,12 @@ function LoginForm() {
       toast({
         title: "Ocorreu um erro durante o login!",
         variant: "destructive",
-        description: <p>O erro foi interno em nosso servidor. Por favor, tente novamente mais tarde.</p>,
+        description: <p>{error?.message ?? error} <br /> O erro foi interno em nosso servidor. Por favor, tente novamente mais tarde.</p>,
         action: (
           <ToastAction altText="Fechar">Fechar</ToastAction>
         )
       })
     })
-  
-    // navigate('/dashboard')
   }
 
   return (

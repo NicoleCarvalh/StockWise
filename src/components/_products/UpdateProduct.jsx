@@ -9,108 +9,71 @@ import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "../ui/toast";
 import { ProductsContext } from "@/context/ProductsContextProvider";
 
-function CreateProduct() {
+function UpdateProduct({product}) {
     const {credentials} = useContext(AuthContext) 
     const { toast } = useToast()
-    const [photoExists, setPhotoExists] = useState(false)
-    const [photoUrl, setPhotoUrl] = useState("")
-    const { products, setProducts } = useContext(ProductsContext)
+    const [photoExists, setPhotoExists] = useState(product?.photoUrl ? true : false)
+    const [photoUrl, setPhotoUrl] = useState(product?.photoUrl ?? "")
+    const { refreshProducts } = useContext(ProductsContext)
 
-    const nameRef = useRef(null)
     const imageRef = useRef(null)
-    const descriptionRef = useRef(null)
-    const categoryRef = useRef(null)
-    const quantityInStockRef = useRef(null)
-    const purchasePriceRef = useRef(null)
-    const salePriceRef = useRef(null)
-    const supplierRef = useRef(null)
+
+    const [name, setName] = useState(product?.name ?? '')
+    const [description, setDescription] = useState(product?.description ?? '')
+    const [category, setCategory] = useState(product?.category ?? '')
+    const [quantityInStock, setQuantityInStock] = useState(product?.quantityInStock ?? 0)
+    const [purchasePrice, setPurchasePrice] = useState(product?.purchasePrice ?? 0)
+    const [salePrice, setSalePrice] = useState(product?.salePrice ?? 0)
+    const [supplier, setSupplier] = useState(product?.supplier ?? '')
  
-    const widthRef = useRef(null)
-    const heightRef = useRef(null)
-    const lengthRef = useRef(null)
-    const weightRef = useRef(null)
+    const [width, setWidth] = useState(product?.technicalDetails?.width ?? 0)
+    const [height, setHeight] = useState(product?.technicalDetails?.height ?? 0)
+    const [length, setLength] = useState(product?.technicalDetails?.length ?? 0)
+    const [weight, setWeight] = useState(product?.technicalDetails?.weight ?? 0)
+
 
     function handleForm(formEvent) {
       formEvent.preventDefault()
       const formDataToSend = new FormData()
-
-      formDataToSend.append("name", nameRef.current.value)
-      formDataToSend.append("category", categoryRef.current.value)
-      formDataToSend.append("quantityInStock", quantityInStockRef.current.value)
-      formDataToSend.append("purchasePrice", purchasePriceRef.current.value)
-      formDataToSend.append("salePrice", salePriceRef.current.value)
-      formDataToSend.append("supplier", supplierRef.current.value)
       
-      imageRef?.current && formDataToSend.append("image", imageRef?.current ? imageRef?.current[0] ?? null : null)
-      descriptionRef && formDataToSend.append("description", typeof descriptionRef.current?.value == 'object' ? null : descriptionRef.current.value)
-
+      formDataToSend.append("id", product.id)
+      formDataToSend.append("name", name)
+      formDataToSend.append("category", category)
+      formDataToSend.append("quantityInStock", quantityInStock)
+      formDataToSend.append("purchasePrice", purchasePrice)
+      formDataToSend.append("salePrice", salePrice)
+      formDataToSend.append("supplier", supplier)
+      
+      imageRef?.current && formDataToSend.append("image", imageRef?.current[0] ?? null)
+      formDataToSend.append("description", description ?? null)
+      
       const technicalDetails = {
-        width: widthRef.current?.value ? Number.parseFloat(widthRef.current?.value) : null,
-        height: widthRef.current?.value ? Number.parseFloat(heightRef.current?.value) : null,
-        length: widthRef.current?.value ? Number.parseFloat(lengthRef.current?.value) : null,
-        weight: widthRef.current?.value ? Number.parseFloat(weightRef.current?.value) : null
+        width: width ?? null,
+        height: height ?? null,
+        length: length ?? null,
+        weight: weight ?? null
       }
-      
+        
       formDataToSend.append("technicalDetails", JSON.stringify(technicalDetails))
 
-      nameRef.current.value = ""
-      imageRef.current.value = ""
-      descriptionRef.current.value = ""
-      categoryRef.current.value = ""
-      quantityInStockRef.current.value = ""
-      purchasePriceRef.current.value = ""
-      salePriceRef.current.value = ""
-      supplierRef.current.value = ""
-      
-      widthRef.current ? widthRef.current.value = "" : null
-      heightRef.current ? heightRef.current.value = "" : null
-      lengthRef.current ? lengthRef.current.value = "" : null
-      weightRef.current ? weightRef.current.value = "" : null
-
-      setPhotoExists(false)
-      setPhotoUrl("")
-
-      nameRef.current.focus()
-      formEvent.target.reset()
-
-      toast({
-        title: `O produto está sendo cadastrado em sistema...`,
-        description: "Aguarde que você ja será notificado quando a for completada.",
-        action: (
-          <ToastAction altText="Fechar">Ok!</ToastAction>
-        )
-      })
-
       fetch(`${import.meta.env.VITE_API_BASE_URL}/product`, {
-        method: "POST",
+        method: "PUT",
         headers: {
           'Authorization': `Bearer ${credentials.token}`
         },
         body: formDataToSend
       }).then(json => json.json()).then(data => {
-        if(data?.ERROR) {
-          toast({
-            title: "Ocorreu um erro durante o cadastro!",
-            variant: "destructive",
-            description: <p>{data?.ERROR} <br/> Tente novamente.</p>,
-            action: (
-              <ToastAction altText="Fechar">Fechar</ToastAction>
-            )
-          })
-        } else {
-          toast({
-            title: `Produto ${data.code} cadastrado com sucesso!`,
-            description: "Foram criados um QRCode e um código para o novo produto! Veja mais na listagem.",
-            action: (
-              <ToastAction altText="Fechar">Fechar</ToastAction>
-            )
-          })
+        toast({
+          title: `Produto ${data.code} atualizado com sucesso!`,
+          action: (
+            <ToastAction altText="Fechar">Fechar</ToastAction>
+          )
+        })
 
-          setProducts([...products, data])
-        }
+        refreshProducts()
       }).catch(error => {
         toast({
-          title: "Ocorreu um erro durante o cadastro!",
+          title: "Ocorreu um erro durante a atualização do registro!",
           variant: "destructive",
           description: <p>{error?.message} <br/> Tente novamente.</p>,
           action: (
@@ -118,9 +81,16 @@ function CreateProduct() {
           )
         })
       })
+
+      toast({
+        title: `O produto está sendo atualizado em sistema...`,
+        description: "Aguarde que você ja será notificado quando a for completada.",
+        action: (
+          <ToastAction altText="Fechar">Ok!</ToastAction>
+        )
+      })
     }
 
-    
     function handlePhotoPreview(ev) {
       if(ev.target.files && ev.target.files[0]) {
         setPhotoUrl(URL.createObjectURL(ev.target.files[0]))
@@ -131,7 +101,6 @@ function CreateProduct() {
       }
     }
 
-
     return (
         <form method="POST" className="flex flex-col gap-2" onSubmit={handleForm}>
           <div className="flex flex-col gap-2">
@@ -139,7 +108,12 @@ function CreateProduct() {
                 Nome
               </label>
 
-              <Input id="name" required ref={nameRef} onChange={(ev) => {nameRef.current = ev.target}} />
+              <Input 
+                id="name" 
+                required 
+                value={name}
+                onChange={(ev) => {setName(ev.target.value)}} 
+            />
           </div>
 
           <div className="flex gap-2">
@@ -162,11 +136,16 @@ function CreateProduct() {
           </div>
           
           <div className="flex flex-col gap-2">
-              <label htmlFor="description">
-                Descrição
-              </label>
+                <label htmlFor="description">
+                    Descrição
+                </label>
 
-              <Textarea id="description" className="resize-none" ref={descriptionRef} onChange={(ev) => {descriptionRef.current = ev.target}} />
+                <Textarea 
+                    id="description" 
+                    className="resize-none" 
+                    value={description}
+                    onChange={(ev) => {setDescription(ev.target.value)}} 
+                />
           </div>
 
           <div className="flex gap-2">
@@ -175,7 +154,14 @@ function CreateProduct() {
                 Categoria
               </label>
 
-              <Input list="category_list" id="category" name="category" required ref={categoryRef} onChange={(ev) => {categoryRef.current = ev.target}} />
+              <Input 
+                list="category_list" 
+                id="category" 
+                name="category" 
+                value={category}
+                required 
+                onChange={(ev) => {setCategory(ev.target.value)}} 
+                />
               <datalist id="category_list">
                 <option value="Alimentação e Bebidas">Alimentação e Bebidas</option>
                 <option value="Vestuário e Acessórios">Vestuário e Acessórios</option>
@@ -196,7 +182,7 @@ function CreateProduct() {
                 Qtd. em estoque
               </label>
 
-              <Input id="quantity" type="number" min="0" step={1} required ref={quantityInStockRef} onChange={(ev) => {quantityInStockRef.current = ev.target}} />
+              <Input id="quantity" type="number" value={product?.quantityInStock ?? 0} min="0" step={1} required onChange={(ev) => {setQuantityInStock(ev.target.value)}} />
             </div>
           </div>
 
@@ -206,7 +192,7 @@ function CreateProduct() {
                 Preço de compra
               </label>
 
-              <Input id="purchase_price" type="number" min="0.01" step={0.01} required ref={purchasePriceRef} onChange={(ev) => {purchasePriceRef.current = ev.target}} />
+              <Input id="purchase_price" type="number" value={purchasePrice} min="0.01" step={0.01} required onChange={(ev) => {setPurchasePrice(ev.target.value)}} />
             </div>
 
             <div className="flex flex-col gap-2 flex-1">
@@ -214,7 +200,7 @@ function CreateProduct() {
                 Preço de venda
               </label>
 
-              <Input id="sale_price" type="number" min="0.01" step={0.01} required ref={salePriceRef} onChange={(ev) => {salePriceRef.current = ev.target}}/>
+              <Input id="sale_price" type="number" value={salePrice} min="0.01" step={0.01} required onChange={(ev) => {setSalePrice(ev.target.value)}}/>
             </div>
           </div>
 
@@ -223,7 +209,7 @@ function CreateProduct() {
               Fornecedor
             </label>
 
-            <Input list="supplier_list" id="supplier" name="supplier" required ref={supplierRef} onChange={(ev) => {supplierRef.current = ev.target}} />
+            <Input list="supplier_list" id="supplier" value={supplier} name="supplier" required onChange={(ev) => {setSupplier(ev.target.value)}} />
             <datalist id="supplier_list">
               <option value="Casas Bahia">Casas Bahia</option>
               <option value="JBL">JBL - Tecnologia de ponta</option>
@@ -252,12 +238,12 @@ function CreateProduct() {
                       <Label htmlFor="width">Largura (cm)</Label>
                       <Input
                         id="width"
-                        defaultValue="0"
                         className="md:col-span-2 flex-1 max-w-full h-8"
                         type="number"
+                        value={width}
                         min={0}
                         step={0.01}
-                        ref={widthRef} onChange={(ev) => {widthRef.current = ev.target}}
+                        onChange={(ev) => {setWidth(ev.target.value)}}
                       />
                     </div>
 
@@ -265,12 +251,12 @@ function CreateProduct() {
                       <Label htmlFor="height">Altura (cm)</Label>
                       <Input
                         id="height"
-                        defaultValue="0"
                         className="md:col-span-2 flex-1 max-w-full h-8"
                         type="number"
+                        value={height}
                         min={0}
                         step={0.01}
-                        ref={heightRef} onChange={(ev) => {heightRef.current = ev.target}}
+                        onChange={(ev) => {setHeight(ev.target.value)}}
                       />
                     </div>
 
@@ -278,12 +264,12 @@ function CreateProduct() {
                       <Label htmlFor="length">Comprimento (cm)</Label>
                       <Input
                         id="length"
-                        defaultValue="0"
                         className="md:col-span-2 flex-1 max-w-full h-8"
                         type="number"
+                        value={length}
                         min={0}
                         step={0.01}
-                        ref={lengthRef} onChange={(ev) => {lengthRef.current = ev.target}}
+                        onChange={(ev) => {setLength(ev.target.value)}}
                       />
                     </div>
                    
@@ -291,12 +277,12 @@ function CreateProduct() {
                       <Label htmlFor="weight">Peso (Kg)</Label>
                       <Input
                         id="weight"
-                        defaultValue="0"
                         className="md:col-span-2 flex-1 max-w-full h-8"
                         type="number"
+                        value={weight}
                         min={0}
                         step={0.01}
-                        ref={weightRef} onChange={(ev) => {weightRef.current = ev.target}}
+                        onChange={(ev) => {setWeight(ev.target.value)}}
                       />
                     </div>
                   </div>
@@ -304,11 +290,14 @@ function CreateProduct() {
               </PopoverContent>
             </Popover>
 
-            <Button type="reset" variant="outline" className="flex-1 flex items-center justify-center" onClick={() => setPhotoExists(false)}>Limpar formulário</Button>
-            <Button type="submit" className="flex-1 flex items-center justify-center">Cadastrar</Button>
+            <Button type="reset" variant="outline" className="flex-1 flex items-center justify-center" onClick={() => {
+                setPhotoExists(product?.photoUrl ? true : false)
+                setPhotoUrl(product?.photoUrl ?? "")
+            }}>Limpar formulário</Button>
+            <Button type="submit" className="flex-1 flex items-center justify-center">Atualizar</Button>
           </div>
         </form>
     );
 }
 
-export { CreateProduct };
+export { UpdateProduct };

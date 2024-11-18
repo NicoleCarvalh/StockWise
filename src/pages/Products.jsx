@@ -50,13 +50,7 @@ function Products() {
 
                 <section className='flex gap-x-4 items-center justify-between flex-wrap'>
                     <div className='flex gap-x-8 items-center flex-wrap'>
-                    
                         <QRCodeScanner />                        
-
-                        <Button className="flex items-center gap-2 bg-transparent text-wise-hyper_black p-0 hover:text-wise-light_white hover:p-2 transition-all">
-                            <ScanBarcode />
-                            Scanear código de barras
-                        </Button>
                     </div>
 
                     <div className='flex gap-x-8 items-center flex-wrap'>

@@ -58,6 +58,7 @@ export default {
 				light_white: 'var(--wise-light_white)',
 				hyper_light_green: 'var(--wise-hyper_light_green)',
 				dark_green: 'var(--wise-dark_green)',
+				dark_red: 'var(--wise-dark_red)',
 			}
   		}
   	}

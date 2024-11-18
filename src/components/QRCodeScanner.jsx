@@ -57,7 +57,7 @@ function QRCodeScanner() {
             </Button>
 
             <div
-                className={isScanning ? "absolute z-40 min-w-full min-h-full overflow-hidden bg-black/[.7] top-0 left-0 flex items-center justify-center" : "hidden"}
+                className={isScanning ? "absolute z-50 min-w-full min-h-full overflow-hidden bg-black/[.7] top-0 left-0 flex items-center justify-center" : "hidden"}
 
                 onClick={handleModal}
                 data-is-close-modal-element={true}

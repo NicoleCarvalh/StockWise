@@ -1,40 +1,206 @@
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Plus, Search } from "lucide-react";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { QRCodeScanner } from "../QRCodeScanner";
 import { AuthContext } from "@/auth/AuthProvider";
+import { useToast } from "@/hooks/use-toast";
+import { ToastAction } from "../ui/toast";
+import { ProductsContext } from "@/context/ProductsContextProvider";
+import { SalesContext } from "@/context/SalesContextProvider";
 
 function CreateSale() {
     const {credentials} = useContext(AuthContext) 
+    const { sales, setSales, refreshSales } = useContext(SalesContext)
+    const { refreshProducts } = useContext(ProductsContext)
     const [currentAddProduct, setCurrentAddProduct] = useState('')
     const [productsList, setProductsList] = useState([])
+    const [productsOrders, setProductsOrders] = useState([])
+    const [client, setClient] = useState('')
+    const [clientEmail, setClientEmail] = useState('')
+    const [paymentMethod, setPaymentMethod] = useState('') 
+
+    const [total, setTotal] = useState(0)
     const [currentFoundProduct, setCurrentFoundProduct] = useState(false)
+    const { toast } = useToast()
+
+    useEffect(() => {
+      if(productsOrders < 1) {
+        return
+      }
+
+      let totalCalc = 0
+
+      productsOrders.forEach(order => {
+        totalCalc += order.quantity * order.product.salePrice
+      })
+
+      setTotal(totalCalc)
+    }, [productsOrders])
+
+    function handleSubmitForm(formEvent) {
+      formEvent.preventDefault()
+
+      if(productsOrders.length < 1){
+        toast({
+          title: "Você esqueceu de adcionar os produtos!",
+          variant: "destructive",
+          description: "É necessário ter ao menos um produto cadastrado na compra.",
+          action: (
+            <ToastAction altText="Fechar">Fechar</ToastAction>
+          )
+        })
+
+        return
+      }
+
+      fetch(`${import.meta.env.VITE_API_BASE_URL}/transaction`, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearded ${credentials.token}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          products: productsOrders,
+          clientName: client,
+          clientEmail,
+          paymentMethod,
+          total: Number(total.toFixed(2)),
+          type: "SALE"
+        })
+
+      }).then(json => json.json()).then(data => {
+        if(data?.ERROR) {
+          toast({
+            title: "Ocorreu um erro durante o registro da nova venda!",
+            variant: "destructive",
+            description: <p>{data?.ERROR} <br/>Tente novamente</p>,
+            action: (
+              <ToastAction altText="Fechar">Fechar</ToastAction>
+            )
+          })
+
+          return
+        }
+
+        toast({
+          title: "Venda cadastrada com sucesso!",
+          action: (
+            <ToastAction altText="Fechar">Fechar</ToastAction>
+          )
+        })
+        
+        // atualizar a lista
+        refreshProducts()
+        refreshSales()
+        // setSales([...sales, data])
+      }).catch(error => {
+        toast({
+          title: "Ocorreu um erro durante o registro da nova venda!",
+          variant: "destructive",
+          description: <p>{error?.message} <br/>Tente novamente</p>,
+          action: (
+            <ToastAction altText="Fechar">Fechar</ToastAction>
+          )
+        })
+      })
+    }
 
     function handleSearchProduct() {
-      fetch(`${import.meta.env.VITE_API_BASE_URL}/product?code=${currentAddProduct}`, {
+      if(currentAddProduct.length < 4 || !currentAddProduct.startsWith("#")){
+        toast({
+          title: "Atenção ao campo de pesquisa por produto!",
+          variant: "destructive",
+          description: "É necessário ter ao menos 4 caracteres para buscar por produtos (deve começar com #)",
+          action: (
+            <ToastAction altText="Fechar">Fechar</ToastAction>
+          )
+        })
+
+        return
+      }
+
+      fetch(`${import.meta.env.VITE_API_BASE_URL}/product?code=${currentAddProduct.slice(1)}`, {
         headers: {
           "Authorization": `Bearded ${credentials.token}`
         }
       }).then(json => json.json())
       .then(data => {
+        
+        if(data?.ERROR) {
+          toast({
+            title: "Ocorreu um erro durante a pesquisa!",
+            variant: "destructive",
+            description: <p>{data?.ERROR} <br/>Tente novamente.</p>,
+            action: (
+              <ToastAction altText="Fechar">Fechar</ToastAction>
+            )
+          })
+
+          return
+        }
+
+        if(data.length > 0 && data[0].quantityInStock < 1) {
+          toast({
+            title: "Estoque vazio!",
+            variant: "destructive",
+            description: `O produto ${data[0]?.name} não possui estoque no momento.`,
+            action: (
+              <ToastAction altText="Fechar">Fechar</ToastAction>
+            )
+          })
+
+          return 
+        }
+
         if(data && data.length > 0) {
           setCurrentFoundProduct(data[0])
         }
       })
-      .catch(error => console.log(error))
+      .catch(error => {
+        toast({
+          title: "Ocorreu um erro durante a pesquisa!",
+          variant: "destructive",
+          description: <p>{error?.message} <br/>Tente novamente.</p>,
+          action: (
+            <ToastAction altText="Fechar">Fechar</ToastAction>
+          )
+        })
+      })
     }
 
     function handleAddNewProduct() {
-      if(currentFoundProduct) {
+      const productExistsOnList = productsList.find(prod => prod.code === currentFoundProduct.code)
+
+      if(currentFoundProduct && !productExistsOnList) {
         setProductsList([...productsList, currentFoundProduct])
         setCurrentFoundProduct(false)
+
+        setProductsOrders([
+          ...productsOrders,
+          {
+            product: currentFoundProduct,
+            quantity: 1
+          }
+        ])
       }
+
+    }
+
+    function handleProductsOrderList(quantity, product) {
+      const productsOrderCopy = [...productsOrders]
+
+      const foundProductOrder = productsOrderCopy.find(prod => prod.product.code === product.code)
+      const productOnListIndex = productsOrderCopy.indexOf(foundProductOrder)
+      
+      productsOrderCopy[productOnListIndex].quantity = quantity 
+
+      setProductsOrders(productsOrderCopy)
     }
 
     return (
-        <form action="" className="flex flex-col gap-2">
-          <div className="flex flex-col gap-2">
+        <form action="" className="flex flex-col gap-2" onSubmit={handleSubmitForm}>
+          {/* <div className="flex flex-col gap-2">
             <label htmlFor="supplier">
               Fornecedor
             </label>
@@ -46,30 +212,51 @@ function CreateSale() {
               <option value="Dell">Dell - Inovação tecnologica</option>
               <option value="Zara">Zara - Varejo mundial</option>
             </datalist>
+          </div> */}
+
+          <div className="flex flex-col gap-2">
+            <label htmlFor="client">
+              Nome do cliente
+            </label>
+
+            <Input id="client" name="client" required value={client} onChange={(ev) => setClient(ev.target.value)} />
+            {/* <Input list="client_list" id="client" name="client" required /> */}
+            {/* <datalist id="supplier_list">
+              <option value="Casas Bahia">Casas Bahia</option>
+              <option value="JBL">JBL - Tecnologia de ponta</option>
+              <option value="Dell">Dell - Inovação tecnologica</option>
+              <option value="Zara">Zara - Varejo mundial</option>
+            </datalist> */}
           </div>
         
-          <div className="flex flex-col gap-2">
-              <label htmlFor="payment_method">
-                Forma de pagamento
-              </label>
-
-              <Input id="payment_method" required />
-          </div>
-
           <div className="flex flex-col gap-2 flex-1">
             <label htmlFor="clientEmail">
               E-mail do cliente
             </label>
 
-            <Input id="clientEmail" type="email" />
+            <Input id="clientEmail" type="email" required value={clientEmail} onChange={(ev) => setClientEmail(ev.target.value)} />
+          </div>
+
+          <div className="flex flex-col gap-2">
+              <label htmlFor="payment_method">
+                Forma de pagamento
+              </label>
+
+              <Input list="payment_method_list" name="payment_method" id="payment_method" required value={paymentMethod} onChange={(ev) => setPaymentMethod(ev.target.value)} />
+              <datalist id="payment_method_list">
+                <option value="PIX">PIX</option>
+                <option value="Cartão de crédito">Cartão de crédito</option>
+                <option value="Cartão de débito">Cartão de débito</option>
+                <option value="Boleto bancario">Boleto bancario</option>
+              </datalist>
           </div>
 
           <div className="flex flex-col gap-2 flex-1 mb-4">
             <h4 className="text-lg font-semibold border-b-2 border-wise-dark_green py-3">Produtos</h4>
-            {/* <QRCodeScanner />  */}
+            <QRCodeScanner /> 
 
             <div className="flex gap-3">
-              <Input placeholder='Digite o código do protudo...' value={currentAddProduct} onChange={(ev) => {setCurrentAddProduct(ev.target.value)}} />
+              <Input placeholder='Digite o código do protudo. Ex: #...' value={currentAddProduct} onChange={(ev) => {setCurrentAddProduct(ev.target.value.trim())}} />
               <Button type="button" onClick={handleSearchProduct}>
                 <Search size={20} />
                 Pesquisar
@@ -104,7 +291,7 @@ function CreateSale() {
                       <h4>{prod.name}</h4>
 
                       <div>
-                        <Input type="number" min={1} defaultValue={1} max={prod.quantityInStock} required />
+                        <Input type="number" min={1} defaultValue={1} max={prod.quantityInStock} required onChange={(ev) => handleProductsOrderList(Number.parseInt(ev.target.value), prod)} />
                       </div>
                     </li>
                   )) : <i>Nenhum produto adicionado ainda...</i>
@@ -113,12 +300,10 @@ function CreateSale() {
             </div>
           </div>
 
-          <div className="flex flex-col gap-2 flex-1">
-            <label htmlFor="total">
-              Total (R$)
-            </label>
+          <div className="flex flex-col gap-2 flex-1 justify-between mb-4">
+            <h4 className="text-lg font-semibold border-b-2 border-wise-dark_green py-1">Total da compra</h4>
 
-            <Input id="total" type="number" disabled />
+            <h2 className="text-wise-dark_green">R$ {total.toFixed(2)} reais</h2>
           </div>
 
           <div className="flex-1 flex gap-2 flex-wrap">

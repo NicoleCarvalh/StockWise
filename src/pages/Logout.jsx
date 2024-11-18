@@ -1,11 +1,15 @@
+import { AuthContext } from "@/auth/AuthProvider";
 import { Button } from "@/components/ui/button";
 import { Wisebox } from "@/components/Wisebox";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
 // import img from "./../../public/"
 
 export function Logout() {
-  return (
+    const { logOut } = useContext(AuthContext);
+
+    return (
     <section className="min-h-screen h-screen montserrat">
         <div id="banner" className="bg-wise-light_white h-full relative flex justify-center items-center overflow-hidden md:overflow-hidden text-wise-hyper_black">
             <div className=" md:block absolute top-[-100px] right-[-1%] w-[180px] animate-[derive_10s_linear_infinite]"><Wisebox className="rotate-[-35deg]" /></div>
@@ -57,6 +61,7 @@ export function Logout() {
                                     className="border border-wise-hyper_black flex-1 flex gap-3 hover:text-wise-hyper_light_green hover:gap-4 max-w-full"
                                     type="button" 
                                     variant="outiline"
+                                    onClick={logOut}
                                 >
                                     Sair do sistema
                                     <ChevronRight size={20} />
@@ -85,5 +90,5 @@ export function Logout() {
             </div>
         </div>
     </section>
-  );
+    );
 }

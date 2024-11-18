@@ -26,7 +26,6 @@ function QRCodeScanner() {
         document.body.style.overflow = 'hidden';
 
         const scanner = new QrScanner(videoElement.current, (scannResult) => {
-            console.log(scannResult)
             setResult(scannResult.data)
         },
         {
@@ -49,6 +48,7 @@ function QRCodeScanner() {
     return (
         <>
             <Button 
+                type="button"
                 onClick={() => handleScanner(true)}
                 className="flex items-center gap-2 bg-transparent text-wise-hyper_black p-0 hover:text-wise-light_white hover:p-2 transition-all"
             >

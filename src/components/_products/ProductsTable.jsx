@@ -11,11 +11,8 @@ import {
 import { Checkbox } from "@/components/ui/checkbox"
 import { Expand, QrCode } from "lucide-react"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog"
-import { Label } from "../ui/label"
-import { Input } from "../ui/input"
 import { Button } from "../ui/button"
 import { DeleteButton } from "../DeleteButton"
-import QRCode from 'qrcode';
 import { useContext, useEffect, useRef, useState } from "react"
 import { ProductsContext } from "@/context/ProductsContextProvider"
 import { useReactToPrint } from "react-to-print"
@@ -26,10 +23,15 @@ import { UpdateProduct } from "./UpdateProduct"
 function ProductsTable() {
     const [qrCodeUrl, setQrCodeUrl] = useState("#");
     const qrCodeToPrintRef = useRef(null);
-    const { products, refreshProducts } = useContext(ProductsContext)
+    const { products, setProducts, refreshProducts } = useContext(ProductsContext)
     const printQrCode = useReactToPrint({contentRef: qrCodeToPrintRef})
 
     useEffect(() => refreshProducts, [])
+    // useEffect(() => {
+    //     console.log("AQUI PRODUCTS")
+    //     console.log(products)
+    //     setProducts(products)
+    // }, [products])
 
     return (
         <Table>

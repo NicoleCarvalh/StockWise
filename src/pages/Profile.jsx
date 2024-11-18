@@ -7,12 +7,12 @@ import { useState } from "react"
 import { Link } from "react-router-dom"
 
 function Profile() {
-    const [notifications, setNotifications] = useState([
-        {name: "Nome da notificação", datetime: "16:22", description: "Descrição da notificação", visualized: true},
-        {name: "Nome da notificação", datetime: "18:50", description: "Descrição da notificação", visualized: false},
-        {name: "Nome da notificação", datetime: "13:00", description: "Descrição da notificação", visualized: false},
-        {name: "Nome da notificação", datetime: "17:50", description: "Descrição da notificação", visualized: true},
-    ])
+    // const [notifications, setNotifications] = useState([
+    //     {name: "Nome da notificação", datetime: "16:22", description: "Descrição da notificação", visualized: true},
+    //     {name: "Nome da notificação", datetime: "18:50", description: "Descrição da notificação", visualized: false},
+    //     {name: "Nome da notificação", datetime: "13:00", description: "Descrição da notificação", visualized: false},
+    //     {name: "Nome da notificação", datetime: "17:50", description: "Descrição da notificação", visualized: true},
+    // ])
     const [blockEdit, setBlockEdit] = useState(true)
     const [inputs, setInputs] = useState({email: "email.usuario@gmai.com", password: "senhadousuario"})
 
@@ -68,7 +68,7 @@ function Profile() {
                         </div>
                     </div>
                 </section>
-
+{/* 
                 <section className="flex flex-col gap-8">
                     <h1 className='text-2xl font-bold'>Últimas notificações</h1>
 
@@ -92,7 +92,7 @@ function Profile() {
                             }
                         </ul>
                     </div>
-                </section>
+                </section> */}
             </MainContainer>
         </>
     )

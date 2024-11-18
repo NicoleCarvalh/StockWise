@@ -171,7 +171,7 @@ function TopMenu() {
 
                     <CircleHelp strokeWidth={3} className="cursor-pointer" />
 
-                    <DropdownMenu>
+                    {/* <DropdownMenu>
                         <DropdownMenuTrigger>
                             <BellDot strokeWidth={3} className="cursor-pointer" />
                         </DropdownMenuTrigger>
@@ -195,7 +195,7 @@ function TopMenu() {
                                 <p>Descrição sobre a Notificação.</p>
                             </DropdownMenuItem>
                         </DropdownMenuContent>
-                    </DropdownMenu>
+                    </DropdownMenu> */}
 
                     <DropdownMenu>
                         <DropdownMenuTrigger>
@@ -231,11 +231,13 @@ function TopMenu() {
                 </div>
             </div>
 
-            <button className={`bg-transparent border-0 lg:hidden relative w-[50px] h-[30px] flex flex-col justify-between ${mobileMenuIsOpen && 'block h-full'}`} onClick={() => setMobileMenuIsOpen(!mobileMenuIsOpen)}>
-                <div className={`w-full h-[3px] bg-wise-light_white rounded-sm transition-all ${mobileMenuIsOpen && 'rotate-45 absolute top-[50%]'}`}></div>
-                <div className={`w-full h-[3px] bg-wise-light_white rounded-sm transition-all ${mobileMenuIsOpen && 'rotate-45 absolute top-[50%]'}`}></div>
-                <div className={`w-full h-[3px] bg-wise-light_white rounded-sm transition-all ${mobileMenuIsOpen && 'rotate-[-45deg] absolute top-[50%]'}`}></div>
-            </button>
+            <div onClick={() => setMobileMenuIsOpen(!mobileMenuIsOpen)} className="h-[35px] flex items-center">
+                <button className={`bg-transparent border-0 lg:hidden relative w-[50px] h-[30px] flex flex-col justify-between ${mobileMenuIsOpen && 'block h-full'}`}>
+                    <div className={`w-full h-[3px] bg-wise-light_white rounded-sm transition-all ${mobileMenuIsOpen && 'rotate-45 absolute top-[50%]'}`}></div>
+                    <div className={`w-full h-[3px] bg-wise-light_white rounded-sm transition-all ${mobileMenuIsOpen && 'rotate-45 absolute top-[50%]'}`}></div>
+                    <div className={`w-full h-[3px] bg-wise-light_white rounded-sm transition-all ${mobileMenuIsOpen && 'rotate-[-45deg] absolute top-[50%]'}`}></div>
+                </button>
+            </div>
 
             <div className={`flex items-center justify-center h-full p-4 bg-wise-hyper_black text-wise-light_white w-full ${!mobileMenuIsOpen && 'hidden'}`}>
                 <div className="flex flex-col items-center gap-5 w-full max-w-[400px]">

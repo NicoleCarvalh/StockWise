@@ -19,6 +19,7 @@ import { Toaster } from "./components/ui/toaster";
 import { AuthProvider } from "./auth/AuthProvider";
 import { ProductsContextProvider } from "./context/ProductsContextProvider";
 import { PrivateRoute } from "./auth/PrivateRoute";
+import { SalesContextProvider } from "./context/SalesContextProvider";
 // import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const router = createBrowserRouter([
@@ -110,7 +111,9 @@ createRoot(document.getElementById("root")).render(
 
     <AuthProvider>
         <ProductsContextProvider>
-            <RouterProvider router={router} />
+          <SalesContextProvider>
+              <RouterProvider router={router} />
+          </SalesContextProvider>
         </ProductsContextProvider>
     </AuthProvider>
     {/* <QueryClientProvider client={queryClient}> */}

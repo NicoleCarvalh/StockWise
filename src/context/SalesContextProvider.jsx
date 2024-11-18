@@ -1,29 +1,32 @@
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@radix-ui/react-toast";
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
-const ProductsContext = createContext()
+const SalesContext = createContext()
 
-function ProductsContextProvider({children}) {
-    const [products, setProducts] = useState([])
+function SalesContextProvider({children}) {
+    const [sales, setSales] = useState([])
     const { toast } = useToast()
 
-    function refreshProducts() {
+    // useEffect(() => {
+    //     console.log("SALES mudou")
+    //     console.log(sales)
+    // }, [sales])
+
+    function refreshSales() {
         const credentials = localStorage.getItem('credentials')
         if(!credentials) {
             return
         }
         const token = JSON.parse(credentials).token
 
-        fetch(`${import.meta.env.VITE_API_BASE_URL}/product`, {
+        fetch(`${import.meta.env.VITE_API_BASE_URL}/transaction`, {
             headers: {
               "Authorization": `Bearded ${token}`
             }
-        }).then(json => json.json()).then(data => {
-            setProducts(data)
-        }).catch(error => {
+        }).then(json => json.json()).then(data => setSales(data)).catch(error => {
             toast({
-                title: "Ocorreu um erro durante a busca por produtos!",
+                title: "Ocorreu um erro durante a busca por vendas!",
                 variant: "destructive",
                 description: <p>{error?.message} <br/> Favor, saia do sistema e faça o login novamente.</p>,
                 action: (
@@ -34,10 +37,10 @@ function ProductsContextProvider({children}) {
     }
 
     return (
-        <ProductsContext.Provider value={{products, setProducts, refreshProducts}}>
+        <SalesContext.Provider value={{sales, setSales, refreshSales}}>
             {children}
-        </ProductsContext.Provider>
+        </SalesContext.Provider>
     );
 }
 
-export { ProductsContextProvider, ProductsContext }
+export { SalesContextProvider, SalesContext }

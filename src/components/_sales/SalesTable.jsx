@@ -13,52 +13,64 @@ import { Input } from "../ui/input"
 import { Button } from "../ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Expand, FileText } from "lucide-react"
-
-const sales = [
-    {
-        products: [
-            {
-                name: 'Prod 1'
-            },
-            {
-                name: 'Prod 2'
-            }
-        ],
-        created_at: '20/04/2024',
-        total: 2000,
-        payment_method: 'PIX'
-    },
-    {
-        products: [
-            {
-                name: 'Prod 1'
-            },
-            {
-                name: 'Prod 2'
-            }
-        ],
-        created_at: '20/04/2024',
-        total: 2000,
-        payment_method: 'PIX'
-    },
-    {
-        products: [
-            {
-                name: 'Prod 1'
-            },
-            {
-                name: 'Prod 2'
-            }
-        ],
-        created_at: '20/04/2024',
-        total: 2000,
-        payment_method: 'PIX'
-    },
-]
+import { useContext, useEffect, useState } from "react"
+import { AuthContext } from "@/auth/AuthProvider"
+import { useToast } from "@/hooks/use-toast"
+import { ToastAction } from "../ui/toast"
+import { SalesContext } from "@/context/SalesContextProvider"
 
 // TODO: change to component: Data table 
 // TODO: Create an pattern component to tables
 function SalesTable() {
+    const {credentials} = useContext(AuthContext) 
+    const {sales, refreshSales} = useContext(SalesContext) 
+    const [salesList, setSalesList] = useState([])
+    const { toast } = useToast()
+
+    useEffect(() => {
+        fetch(`${import.meta.env.VITE_API_BASE_URL}/transaction`, {
+            headers: {
+              "Authorization": `Bearded ${credentials.token}`,
+            }
+          }).then(json => json.json()).then(data => {
+            if(data?.ERROR) {
+                toast({
+                    title: "Ocorreu um erro durante a busca pelas vendas.",
+                    variant: "destructive",
+                    description: <p>{data?.ERROR} <br/>Tente novamente</p>,
+                    action: (
+                      <ToastAction altText="Fechar">Fechar</ToastAction>
+                    )
+                })
+
+                return
+            }
+
+            setSalesList(data)
+          }).catch(error => {
+            toast({
+                title: "Ocorreu um erro durante a busca pelas vendas.",
+                variant: "destructive",
+                description: <p>{error?.message} <br/>Tente novamente</p>,
+                action: (
+                  <ToastAction altText="Fechar">Fechar</ToastAction>
+                )
+            })
+          })
+    }, [])
+
+    useEffect(() => {
+        // console.log("AQUI SALES")
+        // console.log(sales)
+        setSalesList(sales)
+    }, [sales])
+
+    // console.log("sales")
+    // console.log(sales)
+    // console.log("salesList")
+    // console.log(salesList)
+
+
     return (
         <Table>
             <TableCaption>Venda e entenda quais produtos mais saem e o porquê.</TableCaption>
@@ -77,17 +89,19 @@ function SalesTable() {
             </TableHeader>
             <TableBody>
                 {
-                    sales.map((sale, idx) => {
+                    salesList.length > 0 && salesList.map((sale, idx) => {
+                        // console.log("SALE AQUI")
+                        // console.log(sale)
                         return (
                             <TableRow key={idx}>
                                 <TableCell>
                                     <Checkbox />
                                 </TableCell>
 
-                                <TableCell className="font-medium">{sale.products.length}</TableCell>
-                                <TableCell className="text-center">{sale.created_at}</TableCell>
-                                <TableCell className="text-center">{sale.total}</TableCell>
-                                <TableCell className="text-center">{sale.payment_method}</TableCell>
+                                <TableCell className="font-medium">{sale?.products?.length ?? 'erro aqui'}</TableCell>
+                                <TableCell className="text-center">{new Date(sale.createdAt).toLocaleString()}</TableCell>
+                                <TableCell className="text-center">{sale.total} reais</TableCell>
+                                <TableCell className="text-center">{sale.paymentMethod}</TableCell>
                                 <TableCell className="flex items-center justify-end gap-5">
                                     <FileText className="cursor-pointer" onClick={() => alert("O recibo desta venda já esta sendo baixada, aguarde um instante.")} />
                                     

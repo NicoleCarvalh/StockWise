@@ -1,10 +1,13 @@
 import { Package2 } from "lucide-react"
 
 function ShortTable({type, list}) {
+    // console.log(type)
+    // console.log(list)
+
     return (
         <div className="bg-wise-hyper_white rounded-lg p-4 flex flex-col gap-4 montserrat flex-1 w-full min-w-[200px]">
             {
-                type == 'em falta' ? 
+                type == 'missing' ? 
                     <h1 className='font-bold text-2xl'>
                         Produtos em <span className='text-wise-dark_green'>falta</span>
                     </h1>
@@ -21,8 +24,9 @@ function ShortTable({type, list}) {
                 </ul>
 
 
-                <ul>
-                    {list.map((item, idx) => {
+                <ul className={list.length == 0 ? "flex justify-center items-center flex-1" : null}>
+                    {
+                        list.length > 0 ? list.map((item, idx) => {
                         return (
                             <li key={idx} className="flex items-center justify-between border-b-2 border-b-wise-dark_green py-4 last:border-none last:pb-0">
                                 <div className="flex gap-4 items-center">
@@ -42,12 +46,15 @@ function ShortTable({type, list}) {
 
                                 <div>
                                     <h3 className="text-wise-dark_green">
-                                        0
+                                        {
+                                            item.quantityInStock
+                                        }
                                     </h3>
                                 </div>
                             </li>
                         )
-                    })}
+                        }) : <i className="italic">Nenhum produto na nessa lista...</i>
+                    }
                 </ul>
             </div>
         </div>

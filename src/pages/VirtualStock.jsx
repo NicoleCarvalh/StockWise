@@ -7,6 +7,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { DialogDescription } from "@radix-ui/react-dialog"
 import { Info, PackagePlus, PackageSearch } from "lucide-react"
 
 function VirtualStock() {
@@ -45,6 +46,10 @@ function VirtualStock() {
                                     <DialogTitle className="text-lg font-semibold border-b-2 border-wise-dark_green py-3">
                                         Cadastro de container
                                     </DialogTitle>
+
+                                    <DialogDescription>
+                                        A digitalização perfeita dos locais onde você organiza os seus produtos!
+                                    </DialogDescription>
                                 </DialogHeader>
 
                                 <CreateContainer />

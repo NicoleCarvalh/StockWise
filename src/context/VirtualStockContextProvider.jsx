@@ -2,26 +2,26 @@ import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@radix-ui/react-toast";
 import { createContext, useState } from "react";
 
-const SalesContext = createContext()
+const VirtualStockContext = createContext()
 
-function SalesContextProvider({children}) {
-    const [sales, setSales] = useState([])
+function VirtualStockContextProvider({children}) {
+    const [stocks, setStocks] = useState([])
     const { toast } = useToast()
 
-    function refreshSales() {
+    function refreshStocks() {
         const credentials = localStorage.getItem('credentials')
         if(!credentials) {
             return
         }
         const token = JSON.parse(credentials).token
 
-        fetch(`${import.meta.env.VITE_API_BASE_URL}/transaction`, {
+        fetch(`${import.meta.env.VITE_API_BASE_URL}/virtualStock`, {
             headers: {
               "Authorization": `Bearded ${token}`
             }
-        }).then(json => json.json()).then(data => setSales(data)).catch(error => {
+        }).then(json => json.json()).then(data => setStocks(data)).catch(error => {
             toast({
-                title: "Ocorreu um erro durante a busca por vendas!",
+                title: "Ocorreu um erro durante a busca por estoques!",
                 variant: "destructive",
                 description: <p>{error?.message} <br/> Favor, saia do sistema e faça o login novamente.</p>,
                 action: (
@@ -32,10 +32,10 @@ function SalesContextProvider({children}) {
     }
 
     return (
-        <SalesContext.Provider value={{sales, setSales, refreshSales}}>
+        <VirtualStockContext.Provider value={{stocks, setStocks, refreshStocks}}>
             {children}
-        </SalesContext.Provider>
+        </VirtualStockContext.Provider>
     );
 }
 
-export { SalesContextProvider, SalesContext }
+export { VirtualStockContextProvider, VirtualStockContext }

@@ -3,7 +3,7 @@ import { useRef, useState } from "react"
 import { Button } from "./ui/button"
 import { ScanQrCode, X } from "lucide-react"
 
-function QRCodeScanner() {
+function QRCodeScanner({buttonClassName = ""}) {
     const videoElement = useRef(null)
     const [result, setResult] = useState(null)
     const [isScanning, setIsScanning] = useState(false)

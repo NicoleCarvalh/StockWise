@@ -23,7 +23,7 @@ import { SalesContext } from "@/context/SalesContextProvider"
 // TODO: Create an pattern component to tables
 function SalesTable() {
     const {credentials} = useContext(AuthContext) 
-    const {sales, refreshSales} = useContext(SalesContext) 
+    const {sales} = useContext(SalesContext) 
     const [salesList, setSalesList] = useState([])
     const { toast } = useToast()
 
@@ -60,15 +60,8 @@ function SalesTable() {
     }, [])
 
     useEffect(() => {
-        // console.log("AQUI SALES")
-        // console.log(sales)
         setSalesList(sales)
     }, [sales])
-
-    // console.log("sales")
-    // console.log(sales)
-    // console.log("salesList")
-    // console.log(salesList)
 
 
     return (

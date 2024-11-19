@@ -11,7 +11,7 @@ import { SalesContext } from "@/context/SalesContextProvider";
 
 function CreateSale() {
     const {credentials} = useContext(AuthContext) 
-    const { sales, setSales, refreshSales } = useContext(SalesContext)
+    const { refreshSales } = useContext(SalesContext)
     const { refreshProducts } = useContext(ProductsContext)
     const [currentAddProduct, setCurrentAddProduct] = useState('')
     const [productsList, setProductsList] = useState([])
@@ -43,7 +43,7 @@ function CreateSale() {
 
       if(productsOrders.length < 1){
         toast({
-          title: "Você esqueceu de adcionar os produtos!",
+          title: "Você esqueceu de adicinonar os produtos!",
           variant: "destructive",
           description: "É necessário ter ao menos um produto cadastrado na compra.",
           action: (
@@ -199,7 +199,7 @@ function CreateSale() {
     }
 
     return (
-        <form action="" className="flex flex-col gap-2" onSubmit={handleSubmitForm}>
+        <form action="" method="POST" className="flex flex-col gap-2" onSubmit={handleSubmitForm}>
           {/* <div className="flex flex-col gap-2">
             <label htmlFor="supplier">
               Fornecedor
@@ -257,8 +257,10 @@ function CreateSale() {
 
             <div className="flex gap-3">
               <Input placeholder='Digite o código do protudo. Ex: #...' value={currentAddProduct} onChange={(ev) => {setCurrentAddProduct(ev.target.value.trim())}} />
+              
               <Button type="button" onClick={handleSearchProduct}>
                 <Search size={20} />
+
                 Pesquisar
               </Button>
             </div>

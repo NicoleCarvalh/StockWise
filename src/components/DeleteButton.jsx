@@ -4,10 +4,15 @@ import { Trash2 } from "lucide-react"
 import { useContext } from "react"
 import { AuthContext } from "@/auth/AuthProvider"
 import { ProductsContext } from "@/context/ProductsContextProvider"
+import clsx from "clsx"
+import { Button } from "./ui/button"
+import { VirtualStockContext } from "@/context/VirtualStockContextProvider"
 
-export function DeleteButton({entityDeleted, databaseEntity}) {
+export function DeleteButton({entityDeleted, databaseEntity, variant, callBackAfterDelete, buttonClassName="", children}) {
     const {credentials} = useContext(AuthContext) 
     const { refreshProducts } = useContext(ProductsContext)
+    const { refreshStocks } = useContext(VirtualStockContext)
+
     const { toast } = useToast()
 
     function deleteEntity() {
@@ -18,12 +23,15 @@ export function DeleteButton({entityDeleted, databaseEntity}) {
             }
         }).then(json => json.json()).then((excludedEntity) => {
             refreshProducts()
+            refreshStocks()
             toast({
                 title: `${excludedEntity?.name ?? 'Registro'} excluído com sucesso!`,
                 action: (
                   <ToastAction altText="Fechar">Fechar</ToastAction>
                 )
             })
+
+            callBackAfterDelete()
         }).catch((error) => {
             toast({
                 title: "Ocorreu um erro durante a exclusão!",
@@ -47,8 +55,11 @@ export function DeleteButton({entityDeleted, databaseEntity}) {
     }
 
     return (
-        <button type="button" className="cursor-pointer" onClick={handleDeleteEntity}>
-            <Trash2 className="cursor-pointer" />
+        variant ? <Button type="button" variant={variant} className={clsx("cursor-pointer", buttonClassName)} onClick={handleDeleteEntity}>
+            {children ?? <Trash2 className="cursor-pointer" />}
+        </Button> :
+        <button type="button" className={clsx("cursor-pointer", buttonClassName)} onClick={handleDeleteEntity}>
+            {children ?? <Trash2 className="cursor-pointer" />}
         </button>
     )
 }

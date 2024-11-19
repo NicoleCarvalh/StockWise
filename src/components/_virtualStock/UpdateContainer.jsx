@@ -8,37 +8,23 @@ import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "../ui/toast";
 import { QRCodeScanner } from "../QRCodeScanner";
 import { AuthContext } from "@/auth/AuthProvider";
+import { DeleteButton } from "../DeleteButton";
 
-function CreateContainer() {
-    const {credentials} = useContext(AuthContext)
+function UpdateContainer({container, closeCurrentModal}) {
+    const { credentials } = useContext(AuthContext)
     const { refreshStocks } = useContext(VirtualStockContext)
     const { toast } = useToast()
 
     const [currentAddProduct, setCurrentAddProduct] = useState('')
-    const [productsList, setProductsList] = useState([])
+    const [productsList, setProductsList] = useState(container?.products ?? [])
     const [currentFoundProduct, setCurrentFoundProduct] = useState(false)
 
     const [currentAddCategory, setCurrentAddCategory] = useState('')
-    const [categoriesList, setCategoriesList] = useState([])
+    const [categoriesList, setCategoriesList] = useState(container?.categories ?? [])
 
-    const [name, setName] = useState("")
-    const [description, setDescription] = useState("")
-    const [place, setPlace] = useState("")
-
-
-    // useEffect(() => {
-    //     if(productsList < 1) {
-    //       return
-    //     }
-  
-    //     let totalCalc = 0
-  
-    //     productsList.forEach(order => {
-    //       totalCalc += order.quantity * order.product.salePrice
-    //     })
-  
-    //     setTotal(totalCalc)
-    //   }, [productsList])
+    const [name, setName] = useState(container?.name ?? "")
+    const [description, setDescription] = useState(container?.description ?? "")
+    const [place, setPlace] = useState(container?.place ?? "")
 
     function removeCategoryFromList(categoryToRemove) {
         const cleanCategoriesList = categoriesList.filter(category => category !== categoryToRemove)
@@ -48,13 +34,11 @@ function CreateContainer() {
 
     function removeProductFromList(productToRemove) {
         const cleanProductsList = productsList.filter(product => product?.code !== productToRemove?.code)
-
         console.log("Removido")
         console.log(cleanProductsList)
 
         setProductsList(cleanProductsList)
     }
-  
 
     function handleSubmitForm(formEvent) {
         formEvent.preventDefault()
@@ -83,15 +67,18 @@ function CreateContainer() {
             })
     
             return
-          }
-  
+        }
+
+        console.log("productsList LIST")
+        console.log(productsList)
         fetch(`${import.meta.env.VITE_API_BASE_URL}/virtualStock`, {
-          method: "POST",
+          method: "PUT",
           headers: {
             "Authorization": `Bearded ${credentials.token}`,
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
+            id: container?.id,
             products: productsList,
             name,
             description,
@@ -123,6 +110,7 @@ function CreateContainer() {
           // atualizar a lista
           refreshStocks()
           // setSales([...sales, data])
+          closeCurrentModal()
         }).catch(error => {
           toast({
             title: "Ocorreu um erro durante a criação do container!",
@@ -184,7 +172,7 @@ function CreateContainer() {
             })
         })
     }
-  
+
     function handleAddNewProduct() {
         const productExistsOnList = productsList.find(prod => prod.code === currentFoundProduct.code)
   
@@ -277,7 +265,7 @@ function CreateContainer() {
                     <ul className="flex justify-between gap-y-4 gap-x-2 flex-wrap">
                         {
                         (categoriesList && categoriesList.length > 0) ? categoriesList.map((categ, idx) => (
-                            <li key={categ+idx} className="relative flex items-center pr-2 justify-between gap-3 rounded-sm border border-wise-hyper_black">
+                            <li key={categ+idx} className="relative flex items-center justify-between pr-2 gap-3 rounded-sm border border-wise-hyper_black">
                                 <h4 className="px-2 py-1">
                                     {categ}
                                 </h4>
@@ -328,13 +316,17 @@ function CreateContainer() {
                 </div>
 
                 <div className="flex flex-col gap-3">
-                    <h3 className="font-semibold">Produtos guardados no container</h3>
+                    <h3 className="font-semibold border-wise-dark_red">Produtos guardados no container</h3>
 
                     <ul>
                         {
                         (productsList && productsList.length > 0) ? productsList.map((prod, idx) => (
                             <li key={prod?.code+idx} className="flex justify-between gap-2 items-center py-2 border-b border-b-wise-hyper_black">
-                                <h4>{prod.name}</h4>
+                                {console.log(prod)}
+                                <div>
+                                    <h4 className="text-base font-semibold">{prod?.name}</h4>
+                                    <p className="text-sm">Fornecedor: {prod?.supplier}</p>
+                                </div>
 
                                 <Button 
                                     variant="destructive"
@@ -353,10 +345,16 @@ function CreateContainer() {
 
             <div className="flex-1 flex gap-2 flex-wrap">
                 <Button type="reset" variant="outline" className="flex-1 flex items-center justify-center">Limpar formulário</Button>
-                <Button type="submit" className="flex-1 flex items-center justify-center">Cadastrar</Button>
+                <Button type="submit" className="flex-1 flex items-center justify-center">Atualizar</Button>
+            </div>
+
+            <div className="w-full my-3">
+                <DeleteButton databaseEntity="virtualStock" entityDeleted={container?.id} callBackAfterDelete={closeCurrentModal} variant="destructive" buttonClassName="w-full flex-1 flex items-center justify-center">
+                    Excluir container {container?.code}
+                </DeleteButton>
             </div>
         </form>
-    );
+    )
 }
 
-export { CreateContainer };
+export { UpdateContainer }

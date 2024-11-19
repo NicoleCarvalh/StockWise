@@ -40,6 +40,7 @@
     --wise-hyper_light_green: #0fff93;
     --wise-dark_green: #00cc74;
     --wise-dark_red: #c23c3c;
+    --wise-dark_orange: #d28b10;
   }
 
   .dark {
@@ -74,6 +75,8 @@
     --wise-light_white: #fafaff;
     --wise-hyper_light_green: #0dff91;
     --wise-dark_green: #00cd73;
+    --wise-dark_red: #c23c3c;
+    --wise-dark_orange: #d28b10;
   }
 }
 

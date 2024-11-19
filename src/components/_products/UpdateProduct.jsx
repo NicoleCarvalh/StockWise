@@ -182,7 +182,7 @@ function UpdateProduct({product}) {
                 Qtd. em estoque
               </label>
 
-              <Input id="quantity" type="number" value={product?.quantityInStock ?? 0} min="0" step={1} required onChange={(ev) => {setQuantityInStock(ev.target.value)}} />
+              <Input id="quantity" type="number" value={quantityInStock} min="0" step={1} required onChange={(ev) => {setQuantityInStock(ev.target.value)}} />
             </div>
           </div>
 
@@ -200,7 +200,10 @@ function UpdateProduct({product}) {
                 Preço de venda
               </label>
 
-              <Input id="sale_price" type="number" value={salePrice} min="0.01" step={0.01} required onChange={(ev) => {setSalePrice(ev.target.value)}}/>
+              <Input id="sale_price" type="number" 
+              value={salePrice} min="0.01" step={0.01} required 
+              onChange={(ev) => {setSalePrice(ev.target.value)}}
+              />
             </div>
           </div>
 

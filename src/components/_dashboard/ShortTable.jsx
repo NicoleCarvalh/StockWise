@@ -9,11 +9,11 @@ function ShortTable({type, list}) {
             {
                 type == 'missing' ? 
                     <h1 className='font-bold text-2xl'>
-                        Produtos em <span className='text-wise-dark_green'>falta</span>
+                        Produtos em <span className='text-wise-dark_red'>falta</span>
                     </h1>
                     : 
                     <h1 className='font-bold text-2xl'>
-                        Produtos com <span className='text-wise-dark_green'>baixo estoque</span>
+                        Produtos com <span className='text-wise-dark_orange'>baixo estoque</span>
                     </h1>
             }
 

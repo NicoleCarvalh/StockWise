@@ -3,12 +3,15 @@ import { TopMenu } from "@/components/TopMenu"
 import { CreateSale } from "@/components/_sales/CreateSale"
 import { SalesTable } from "@/components/_sales/SalesTable"
 import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { ScanSearch, ShoppingCart } from "lucide-react"
+import { useRef } from "react"
 
 function Sales() {
+    const createSaleRef = useRef()
+
     return (
         <>
             <TopMenu />
@@ -28,7 +31,7 @@ function Sales() {
 
 
                         <Dialog>
-                            <DialogTrigger asChild>
+                            <DialogTrigger asChild ref={createSaleRef}>
                                 <Button className='flex-1 flex gap-3 items-center bg-wise-hyper_black text-wise-hyper_light_green h-[40px] hover:bg-wise-hyper_black hover:text-wise-light_white transition-all'>
                                     <ShoppingCart />
                                     Cadastrar nova venda
@@ -36,14 +39,18 @@ function Sales() {
                             </DialogTrigger>
 
 
-                            <DialogContent className="montserrat" aria-describedby={undefined}>
+                            <DialogContent className="montserrat">
                                 <DialogHeader>
                                     <DialogTitle className="text-lg font-semibold border-b-2 border-wise-dark_green py-3">
                                         Cadastro de venda
                                     </DialogTitle>
+
+                                    <DialogDescription>
+                                        Cadastre uma nova venda e acompanhe todo o fluxo do seu estoque com as melhores funcionalidades para inpulsionar as suas vendas!
+                                    </DialogDescription>
                                 </DialogHeader>
 
-                                <CreateSale />
+                                <CreateSale callAfterCreate={() => createSaleRef.current.click()}/>
                             </DialogContent>
                         </Dialog>
                     </div>

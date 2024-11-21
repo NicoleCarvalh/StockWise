@@ -336,7 +336,7 @@ function UpdateContainer({container, closeCurrentModal}) {
                 </div>
 
                 <div className="flex flex-col gap-3">
-                    <h3 className="font-semibold border-wise-dark_red">Produtos guardados no container</h3>
+                    <h3 className="font-semibold border-b-2 border-b-wise-dark_green py-3">Produtos guardados no container</h3>
 
                     <ul>
                         {

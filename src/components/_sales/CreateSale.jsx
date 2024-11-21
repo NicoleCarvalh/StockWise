@@ -9,7 +9,7 @@ import { ToastAction } from "../ui/toast";
 import { ProductsContext } from "@/context/ProductsContextProvider";
 import { SalesContext } from "@/context/SalesContextProvider";
 
-function CreateSale() {
+function CreateSale({callAfterCreate = null}) {
     const {credentials} = useContext(AuthContext) 
     const { refreshSales } = useContext(SalesContext)
     const { refreshProducts } = useContext(ProductsContext)
@@ -66,7 +66,8 @@ function CreateSale() {
           clientEmail,
           paymentMethod,
           total: Number(total.toFixed(2)),
-          type: "SALE"
+          type: "SALE",
+          orders: productsOrders
         })
 
       }).then(json => json.json()).then(data => {
@@ -90,10 +91,9 @@ function CreateSale() {
           )
         })
         
-        // atualizar a lista
         refreshProducts()
         refreshSales()
-        // setSales([...sales, data])
+        callAfterCreate && callAfterCreate()
       }).catch(error => {
         toast({
           title: "Ocorreu um erro durante o registro da nova venda!",
@@ -253,7 +253,8 @@ function CreateSale() {
 
           <div className="flex flex-col gap-2 flex-1 mb-4">
             <h4 className="text-lg font-semibold border-b-2 border-wise-dark_green py-3">Produtos</h4>
-            <QRCodeScanner /> 
+            {/* <QRCodeScanner callAfterFound={setCurrentFoundProduct} disableAbsoluteModal={true} />  */}
+            <QRCodeScanner  /> {/* TODO: integrar novo desgin e lógica  */}
 
             <div className="flex gap-3">
               <Input placeholder='Digite o código do protudo. Ex: #...' value={currentAddProduct} onChange={(ev) => {setCurrentAddProduct(ev.target.value.trim())}} />

@@ -24,7 +24,8 @@ import { VirtualStockContextProvider } from "./context/VirtualStockContextProvid
 import { QrScannerProvider } from "./context/ScannerContextProvider";
 // import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-const router = createBrowserRouter([
+const router = createBrowserRouter(
+  [
   {
     path: "/",
     element: <App />,
@@ -102,7 +103,8 @@ const router = createBrowserRouter([
       </PrivateRoute>
     )
   },
-]);
+],
+);
 
 // const queryClient = new QueryClient()
 

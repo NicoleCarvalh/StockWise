@@ -294,8 +294,8 @@ function UpdateProduct({product}) {
             </Popover>
 
             <Button type="reset" variant="outline" className="flex-1 flex items-center justify-center" onClick={() => {
-                setPhotoExists(product?.photoUrl ? true : false)
-                setPhotoUrl(product?.photoUrl ?? "")
+              setPhotoExists(product?.photoUrl ? true : false)
+              setPhotoUrl(product?.photoUrl ?? "")
             }}>Limpar formulário</Button>
             <Button type="submit" className="flex-1 flex items-center justify-center">Atualizar</Button>
           </div>

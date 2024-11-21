@@ -7,12 +7,14 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useQrScanner } from "@/context/ScannerContextProvider"
 import { DialogDescription } from "@radix-ui/react-dialog"
 import { Info, PackagePlus, PackageSearch } from "lucide-react"
 import { useRef } from "react"
 
 function VirtualStock() {
     const createContainerModalRef = useRef()
+    const { closeQrScanner } = useQrScanner();
 
     return (
         <>
@@ -36,15 +38,15 @@ function VirtualStock() {
                         </Label>
 
 
-                        <Dialog>
-                            <DialogTrigger asChild ref={createContainerModalRef}>
+                        <Dialog onOpenChange={closeQrScanner}>
+                            <DialogTrigger asChild ref={createContainerModalRef} >
                                 <Button className='flex-1 flex gap-3 items-center bg-wise-hyper_black text-wise-hyper_light_green h-[40px] hover:bg-wise-hyper_black hover:text-wise-light_white transition-all'>
                                     <PackagePlus />
                                     Cadastrar novo container
                                 </Button>
                             </DialogTrigger>
 
-                            <DialogContent className="montserrat" aria-describedby={undefined}>
+                            <DialogContent className="montserrat max-w-[90%] md:max-w-[60%]">
                                 <DialogHeader>
                                     <DialogTitle className="text-lg font-semibold border-b-2 border-wise-dark_green py-3">
                                         Cadastro de container

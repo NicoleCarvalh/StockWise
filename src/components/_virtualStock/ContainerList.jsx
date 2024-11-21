@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/use-toast"
 import { ToastAction } from "../ui/toast"
 import { DialogDescription } from "@radix-ui/react-dialog"
 import { UpdateContainer } from "./UpdateContainer"
+import { useQrScanner } from "@/context/ScannerContextProvider"
 
 export function ContainerList() {
     const {credentials} = useContext(AuthContext) 
@@ -18,6 +19,7 @@ export function ContainerList() {
     const [virtualStocks, setVirtualStocks] = useState([])
     const updateContainerModalRef = useRef()
     const { toast } = useToast()
+    const { closeQrScanner } = useQrScanner();
 
     useEffect(() => {
         fetch(`${import.meta.env.VITE_API_BASE_URL}/virtualStock`, {
@@ -59,7 +61,7 @@ export function ContainerList() {
         <>
             {
                 virtualStocks.length > 0 ? virtualStocks.map((container, containerIDX) => (
-                    <Dialog key={containerIDX}>
+                    <Dialog key={containerIDX} onOpenChange={closeQrScanner}>
                         <DialogTrigger asChild ref={updateContainerModalRef}>
                             <div className="flex flex-col gap-3 justify-between bg-wise-hyper_white rounded-lg p-5 cursor-pointer">
                                 <div>
@@ -77,7 +79,7 @@ export function ContainerList() {
                             </div> 
                         </DialogTrigger>
 
-                        <DialogContent className="max-w-[50%]">
+                        <DialogContent className="max-w-[90%] md:max-w-[60%]">
                             <DialogHeader>
                                 <DialogTitle className="flex justify-between py-5 border-b-2 border-b-wise-dark_green font-semibold text-xl">
                                     Virtual Stock

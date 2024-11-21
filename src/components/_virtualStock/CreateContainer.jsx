@@ -301,9 +301,9 @@ function CreateContainer({closeCurrentModal}) {
                 </div>
             </div>
 
-            <div className="flex flex-col gap-2 flex-1 mb-4">
+            <div className="relative flex flex-col gap-2 flex-1 mb-4">
                 <h4 className="text-base font-semibold border-b-2 border-wise-dark_green py-3">Produtos</h4>
-                <QRCodeScanner /> 
+                <QRCodeScanner buttonClassName="my-2" callAfterFound={setCurrentFoundProduct} disableAbsoluteModal={true} /> 
 
                 <div className="flex gap-3">
                     <Input placeholder='Digite o código do protudo. Ex: #...' value={currentAddProduct} onChange={(ev) => {setCurrentAddProduct(ev.target.value.trim())}} />

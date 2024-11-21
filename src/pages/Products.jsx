@@ -1,15 +1,19 @@
 import { CreateProduct } from "@/components/_products/CreateProduct"
 import { ProductsTable } from "@/components/_products/ProductsTable"
+import { UpdateProduct } from "@/components/_products/UpdateProduct"
 import { MainContainer } from "@/components/MainContainer"
 import { QRCodeScanner } from "@/components/QRCodeScanner"
 import { TopMenu } from "@/components/TopMenu"
 import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { ArrowUpNarrowWide, Filter, PackagePlus, PackageSearch, ScanBarcode, ScanQrCode } from "lucide-react"
+import { useState } from "react"
 
 function Products() {
+    const [modalIsOpen, setModalIsOpen] = useState(false)
+    const [foundProduct, setFoundProduct] = useState(null)
 
     return (
         <>
@@ -50,7 +54,20 @@ function Products() {
 
                 <section className='flex gap-x-4 items-center justify-between flex-wrap'>
                     <div className='flex gap-x-8 items-center flex-wrap'>
-                        <QRCodeScanner />                        
+                        <QRCodeScanner callAfterFound={(product) => {setFoundProduct(product); setModalIsOpen(true)}} />
+
+                        <Dialog open={modalIsOpen} onOpenChange={(open) => setModalIsOpen(open)}>
+                            <DialogContent className="max-w-[90%] md:max-w-[60%]">
+                                <DialogHeader>
+                                    <DialogTitle className="text-lg font-semibold border-b-2 border-wise-dark_green py-3">{foundProduct && foundProduct.name}</DialogTitle>
+                                    <DialogDescription>
+                                        Visualize e edite as informações do produto como desejar.
+                                    </DialogDescription>
+                                </DialogHeader>
+
+                                <UpdateProduct product={foundProduct} />
+                            </DialogContent>
+                        </Dialog>                      
                     </div>
 
                     <div className='flex gap-x-8 items-center flex-wrap'>

@@ -9,6 +9,8 @@ import { ToastAction } from "../ui/toast";
 import { QRCodeScanner } from "../QRCodeScanner";
 import { AuthContext } from "@/auth/AuthProvider";
 import { DeleteButton } from "../DeleteButton";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
+import { UpdateProduct } from "../_products/UpdateProduct";
 
 function UpdateContainer({container, closeCurrentModal}) {
     const { credentials } = useContext(AuthContext)
@@ -304,9 +306,9 @@ function UpdateContainer({container, closeCurrentModal}) {
                 </div>
             </div>
 
-            <div className="flex flex-col gap-2 flex-1 mb-4">
+            <div className="relative flex flex-col gap-2 flex-1 mb-4">
                 <h4 className="text-base font-semibold border-b-2 border-wise-dark_green py-3">Produtos</h4>
-                <QRCodeScanner /> 
+                <QRCodeScanner buttonClassName="my-2" callAfterFound={setCurrentFoundProduct} disableAbsoluteModal={true} /> 
 
                 <div className="flex gap-3">
                     <Input placeholder='Digite o código do protudo. Ex: #...' value={currentAddProduct} onChange={(ev) => {setCurrentAddProduct(ev.target.value.trim())}} />
@@ -344,11 +346,23 @@ function UpdateContainer({container, closeCurrentModal}) {
                         {
                         (productsList && productsList.length > 0) ? productsList.map((prod, idx) => (
                             <li key={prod?.code+idx} className="flex justify-between gap-2 items-center py-2 border-b border-b-wise-hyper_black">
-                                {console.log(prod)}
-                                <div>
-                                    <h4 className="text-base font-semibold">{prod?.name}</h4>
-                                    <p className="text-sm">Fornecedor: {prod?.supplier}</p>
-                                </div>
+                                <Dialog>
+                                    <DialogTrigger className="flex flex-col gap-1">
+                                        <h4 className="text-base font-semibold">{prod?.name}</h4>
+                                        <p className="text-sm">Fornecedor: {prod?.supplier}</p>
+                                    </DialogTrigger>
+
+                                    <DialogContent overlayClassName="bg-transparent" className="max-w-[90%] md:max-w-[60%]">
+                                        <DialogHeader>
+                                            <DialogTitle className="text-lg font-semibold border-b-2 border-wise-dark_green py-3">{prod.name}</DialogTitle>
+                                            <DialogDescription>
+                                                Visualize e edite as informações do produto como desejar.
+                                            </DialogDescription>
+                                        </DialogHeader>
+
+                                        <UpdateProduct product={prod} />
+                                    </DialogContent>
+                                </Dialog>
 
                                 <Button 
                                     variant="destructive"

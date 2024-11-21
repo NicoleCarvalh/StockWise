@@ -9,7 +9,7 @@ import { ToastAction } from "../ui/toast";
 import { QRCodeScanner } from "../QRCodeScanner";
 import { AuthContext } from "@/auth/AuthProvider";
 
-function CreateContainer() {
+function CreateContainer({closeCurrentModal}) {
     const {credentials} = useContext(AuthContext)
     const { refreshStocks } = useContext(VirtualStockContext)
     const { toast } = useToast()
@@ -24,21 +24,6 @@ function CreateContainer() {
     const [name, setName] = useState("")
     const [description, setDescription] = useState("")
     const [place, setPlace] = useState("")
-
-
-    // useEffect(() => {
-    //     if(productsList < 1) {
-    //       return
-    //     }
-  
-    //     let totalCalc = 0
-  
-    //     productsList.forEach(order => {
-    //       totalCalc += order.quantity * order.product.salePrice
-    //     })
-  
-    //     setTotal(totalCalc)
-    //   }, [productsList])
 
     function removeCategoryFromList(categoryToRemove) {
         const cleanCategoriesList = categoriesList.filter(category => category !== categoryToRemove)
@@ -120,9 +105,10 @@ function CreateContainer() {
             )
           })
           
-          // atualizar a lista
           refreshStocks()
-          // setSales([...sales, data])
+
+          // Fechar modal 
+          closeCurrentModal && closeCurrentModal()
         }).catch(error => {
           toast({
             title: "Ocorreu um erro durante a criação do container!",
@@ -155,7 +141,6 @@ function CreateContainer() {
             }
         }).then(json => json.json())
         .then(data => {
-            
             if(data?.ERROR) {
                 toast({
                     title: "Ocorreu um erro durante a pesquisa!",
@@ -171,6 +156,15 @@ function CreateContainer() {
 
             if(data && data.length > 0) {
                 setCurrentFoundProduct(data[0])
+            } else {
+                toast({
+                    title: "Nenhum produto encontrado",
+                    variant: "destructive",
+                    description: <p>Certifique-se de que o código inserio esta no formato correto e exista. Após isso tente novamente.</p>,
+                    action: (
+                    <ToastAction altText="Fechar">Fechar</ToastAction>
+                    )
+                })
             }
         })
         .catch(error => {
@@ -196,6 +190,19 @@ function CreateContainer() {
     }
 
     function handleAddCategory() {
+        if(!currentAddCategory.trim()) {
+            toast({
+                title: "Categoria vazia!",
+                variant: "destructive",
+                description: "Favor, adcione um texto válido na criação de uma categoria.",
+                action: (
+                  <ToastAction altText="Fechar">Fechar</ToastAction>
+                )
+            })
+
+            return
+        }
+
         const categoryExists = categoriesList.find(categ => categ == currentAddCategory)
 
         if(categoryExists != undefined) {

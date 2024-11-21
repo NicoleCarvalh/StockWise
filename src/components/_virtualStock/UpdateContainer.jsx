@@ -101,16 +101,16 @@ function UpdateContainer({container, closeCurrentModal}) {
           }
   
           toast({
-            title: "Container cadastrado com sucesso!",
+            title: "Container atualizado com sucesso!",
             action: (
               <ToastAction altText="Fechar">Fechar</ToastAction>
             )
           })
           
-          // atualizar a lista
+
           refreshStocks()
-          // setSales([...sales, data])
-          closeCurrentModal()
+
+          closeCurrentModal && closeCurrentModal()
         }).catch(error => {
           toast({
             title: "Ocorreu um erro durante a criação do container!",
@@ -159,6 +159,15 @@ function UpdateContainer({container, closeCurrentModal}) {
 
             if(data && data.length > 0) {
                 setCurrentFoundProduct(data[0])
+            } else {
+                toast({
+                    title: "Nenhum produto encontrado",
+                    variant: "destructive",
+                    description: <p>Certifique-se de que o código inserio esta no formato correto e exista. Após isso tente novamente.</p>,
+                    action: (
+                    <ToastAction altText="Fechar">Fechar</ToastAction>
+                    )
+                })
             }
         })
         .catch(error => {
@@ -184,6 +193,19 @@ function UpdateContainer({container, closeCurrentModal}) {
     }
 
     function handleAddCategory() {
+        if(!currentAddCategory.trim()) {
+            toast({
+                title: "Categoria vazia!",
+                variant: "destructive",
+                description: "Favor, adcione um texto válido na criação de uma categoria.",
+                action: (
+                  <ToastAction altText="Fechar">Fechar</ToastAction>
+                )
+            })
+
+            return
+        }
+
         const categoryExists = categoriesList.find(categ => categ == currentAddCategory)
 
         if(categoryExists != undefined) {
@@ -349,7 +371,7 @@ function UpdateContainer({container, closeCurrentModal}) {
             </div>
 
             <div className="w-full my-3">
-                <DeleteButton databaseEntity="virtualStock" entityDeleted={container?.id} callBackAfterDelete={closeCurrentModal} variant="destructive" buttonClassName="w-full flex-1 flex items-center justify-center">
+                <DeleteButton databaseEntity="virtualStock" entityDeleted={container?.id} callBackAfterDelete={() => closeCurrentModal && closeCurrentModal()} variant="destructive" buttonClassName="w-full flex-1 flex items-center justify-center">
                     Excluir container {container?.code}
                 </DeleteButton>
             </div>

@@ -9,8 +9,11 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { DialogDescription } from "@radix-ui/react-dialog"
 import { Info, PackagePlus, PackageSearch } from "lucide-react"
+import { useRef } from "react"
 
 function VirtualStock() {
+    const createContainerModalRef = useRef()
+
     return (
         <>
             <TopMenu />
@@ -34,7 +37,7 @@ function VirtualStock() {
 
 
                         <Dialog>
-                            <DialogTrigger asChild>
+                            <DialogTrigger asChild ref={createContainerModalRef}>
                                 <Button className='flex-1 flex gap-3 items-center bg-wise-hyper_black text-wise-hyper_light_green h-[40px] hover:bg-wise-hyper_black hover:text-wise-light_white transition-all'>
                                     <PackagePlus />
                                     Cadastrar novo container
@@ -52,7 +55,7 @@ function VirtualStock() {
                                     </DialogDescription>
                                 </DialogHeader>
 
-                                <CreateContainer />
+                                <CreateContainer closeCurrentModal={() => createContainerModalRef?.current.click()} />
                             </DialogContent>
                         </Dialog>
                     </div>

@@ -31,7 +31,10 @@ export function DeleteButton({entityDeleted, databaseEntity, variant, callBackAf
                 )
             })
 
-            callBackAfterDelete()
+
+            if(callBackAfterDelete) {
+                callBackAfterDelete()
+            }
         }).catch((error) => {
             toast({
                 title: "Ocorreu um erro durante a exclusão!",

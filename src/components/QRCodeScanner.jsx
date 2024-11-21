@@ -105,7 +105,6 @@ function QRCodeScanner({buttonClassName = "", callAfterFound = null, disableAbso
                 Scanear QRCode
             </Button>
 
-            {isScanning && console.log(`AQUI: ${isScanning}`)}
             {!disableAbsoluteModal ?
                 <div
                     className={isScanning ? "absolute z-50 min-w-full min-h-full overflow-hidden bg-black/[.7] top-0 left-0 flex items-center justify-center" : "hidden"}

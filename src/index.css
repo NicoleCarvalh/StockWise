@@ -93,6 +93,11 @@
   }
 }
 
+@page {
+  /* size: A6; Define o tamanho como A4 */
+  margin: 20mm; /* Define margens em milímetros */
+}
+
 @layer utilities {
   .glassmorph {
     background: rgba(255, 255, 255, 0.05);

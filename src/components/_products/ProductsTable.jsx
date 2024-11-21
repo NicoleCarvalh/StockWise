@@ -82,13 +82,12 @@ function ProductsTable() {
                                             </DialogHeader>
 
                                             <div className="flex flex-col items-center gap-3">
-                                                <div className="max-w-[50%] w-full flex flex-col items-center gap-1" ref={qrCodeToPrintRef}>
+                                                <div className="max-w-[50%] print:max-w-[150px] w-full flex flex-col items-center gap-1" ref={qrCodeToPrintRef}>
                                                     <h2 className="text-xl border-2 border-wise-hyper_black rounded-md w-full p-1 text-center">{product.name} - {product.code}</h2>
                                                     <img id="qrcodeToPrint"  alt="QRCode to print" src={qrCodeUrl} className="group-hover:block w-full shadow-lg rounded-md" />  
                                                 </div>
 
                                                 <Button type="button" className="w-full" onClick={() => {
-                                                    console.log(qrCodeToPrintRef.current)
                                                     printQrCode()
                                                 }}>Imprimir QRCode</Button>
                                             </div>

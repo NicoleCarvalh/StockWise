@@ -36,8 +36,6 @@ function UpdateContainer({container, closeCurrentModal}) {
 
     function removeProductFromList(productToRemove) {
         const cleanProductsList = productsList.filter(product => product?.code !== productToRemove?.code)
-        console.log("Removido")
-        console.log(cleanProductsList)
 
         setProductsList(cleanProductsList)
     }
@@ -71,8 +69,6 @@ function UpdateContainer({container, closeCurrentModal}) {
             return
         }
 
-        console.log("productsList LIST")
-        console.log(productsList)
         fetch(`${import.meta.env.VITE_API_BASE_URL}/virtualStock`, {
           method: "PUT",
           headers: {

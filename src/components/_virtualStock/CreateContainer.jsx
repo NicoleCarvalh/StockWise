@@ -34,9 +34,6 @@ function CreateContainer({closeCurrentModal}) {
     function removeProductFromList(productToRemove) {
         const cleanProductsList = productsList.filter(product => product?.code !== productToRemove?.code)
 
-        console.log("Removido")
-        console.log(cleanProductsList)
-
         setProductsList(cleanProductsList)
     }
   

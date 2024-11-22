@@ -40,7 +40,7 @@ function Products() {
                                 </Button>
                             </DialogTrigger>
 
-                            <DialogContent className="montserrat overflow-x-hidden" aria-describedby={undefined}>
+                            <DialogContent className="montserrat overflow-x-hidden max-w-[90%] md:max-w-[60%]" aria-describedby={undefined}>
                                 <DialogHeader>
                                     <DialogTitle className="text-lg font-semibold border-b-2 border-wise-dark_green py-3">
                                         Cadastro de produto

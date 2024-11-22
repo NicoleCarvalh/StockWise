@@ -35,7 +35,7 @@ function Purchases() {
                             </DialogTrigger>
 
 
-                            <DialogContent className="montserrat" aria-describedby={undefined}>
+                            <DialogContent className="montserrat max-w-[90%] md:max-w-[60%]" aria-describedby={undefined}>
                                 <DialogHeader>
                                     <DialogTitle className="text-lg font-semibold border-b-2 border-wise-dark_green py-3">
                                         Cadastro de compra

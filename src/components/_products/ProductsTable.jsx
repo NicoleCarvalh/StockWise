@@ -42,7 +42,9 @@ function ProductsTable() {
                         <Checkbox />
                     </TableHead>
 
+                    <TableHead className="w-[80px]">Foto</TableHead>
                     <TableHead className="min-w-[150px]">Código</TableHead>
+
                     <TableHead className="max-w-[300px] overflow-x-hidden text-ellipsis">Nome</TableHead>
                     <TableHead className="text-center">Estoque</TableHead>
                     <TableHead className="text-center">Valor de venda</TableHead>
@@ -59,6 +61,9 @@ function ProductsTable() {
                                     <Checkbox />
                                 </TableCell>
 
+                                <TableCell>
+                                    <img src={product.photoUrl ?? '/default_product_image.svg'} alt={product.name} className="size-[35px] rounded-full object-cover" />
+                                </TableCell>
                                 <TableCell className="font-medium">{product.code}</TableCell>
                                 <TableCell>{product.name}</TableCell>
                                 <TableCell className="text-center">{product.quantityInStock}</TableCell>

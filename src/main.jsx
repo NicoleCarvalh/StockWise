@@ -12,7 +12,7 @@ import { VirtualStock } from "./pages/VirtualStock";
 import { Sales } from "./pages/Sales";
 import { Purchases } from "./pages/Purchases";
 import { Reports } from "./pages/Reports";
-import { Employees } from "./pages/Employees";
+import { Clients } from "./pages/Clients";
 import { Profile } from "./pages/Profile";
 import { Logout } from "./pages/Logout";
 import { Toaster } from "./components/ui/toaster";
@@ -80,10 +80,10 @@ const router = createBrowserRouter(
     )
   },
   {
-    path: '/employees',
+    path: '/clients',
     element:(
       <PrivateRoute>
-        <Employees />
+        <Clients />
       </PrivateRoute>
     )
   },

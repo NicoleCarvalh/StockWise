@@ -247,17 +247,17 @@ function CreateSale({callAfterCreate = null}) {
                 <option value="PIX">PIX</option>
                 <option value="Cartão de crédito">Cartão de crédito</option>
                 <option value="Cartão de débito">Cartão de débito</option>
-                <option value="Boleto bancario">Boleto bancario</option>
+                <option value="Boleto bancário">Boleto bancário</option>
               </datalist>
           </div>
 
-          <div className="flex flex-col gap-2 flex-1 mb-4">
+          <div className="relative flex flex-col gap-2 flex-1 mb-4">
             <h4 className="text-lg font-semibold border-b-2 border-wise-dark_green py-3">Produtos</h4>
             {/* <QRCodeScanner callAfterFound={setCurrentFoundProduct} disableAbsoluteModal={true} />  */}
-            <QRCodeScanner  /> {/* TODO: integrar novo desgin e lógica  */}
+            <QRCodeScanner  buttonClassName="my-2" callAfterFound={setCurrentFoundProduct} disableAbsoluteModal={true} />
 
             <div className="flex gap-3">
-              <Input placeholder='Digite o código do protudo. Ex: #...' value={currentAddProduct} onChange={(ev) => {setCurrentAddProduct(ev.target.value.trim())}} />
+              <Input placeholder='Digite o código do produto. Ex: #...' value={currentAddProduct} onChange={(ev) => {setCurrentAddProduct(ev.target.value.trim())}} />
               
               <Button type="button" onClick={handleSearchProduct}>
                 <Search size={20} />

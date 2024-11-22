@@ -16,7 +16,7 @@ import { Input } from "../ui/input"
 import { Button } from "../ui/button"
 import { DeleteButton } from "../DeleteButton"
 
-const employees = [
+const clients = [
     {
         photo_url: "https://bloody-disgusting.com/wp-content/uploads/2022/03/a24-men-trailer.png",
         name: 'Trevis Scooby Doo',
@@ -61,25 +61,24 @@ const employees = [
 
 // TODO: change to component: Data table 
 // TODO: Create an pattern component to tables
-function EmployeesTable() {
+function ClientsTable() {
     function handlePhotoPreview(idx, ev) {
       if(ev.target.files && ev.target.files[0]) {
         // URL.createObjectURL(ev.target.files[0])
 
-        employees[idx].photo_url = URL.createObjectURL(ev.target.files[0])
+        clients[idx].photo_url = URL.createObjectURL(ev.target.files[0])
       }
     }
 
     return (
         <Table>
-            <TableCaption>Cadastre novos funcionários dos setores de estoque e vendas e gerencie suas permissões.</TableCaption>
+            <TableCaption>Cadastre novos clientes para agilizar nas compras e enviar promoções por e-mail!</TableCaption>
             <TableHeader className="bg-wise-hyper_black text-wise-light_white">
                 <TableRow className="hover:bg-wise-hyper_black">
                     <TableHead className="w-[50px]">
                         <Checkbox />
                     </TableHead>
 
-                    <TableHead>Foto</TableHead>
                     <TableHead>Nome</TableHead>
                     <TableHead>Email</TableHead>
                     <TableHead className="text-center">Cargo</TableHead>
@@ -89,9 +88,9 @@ function EmployeesTable() {
             </TableHeader>
             <TableBody>
                 {
-                    employees.map((employee, idx) => {
-                        // employee.photo_url && setPhotoUrl(employee.photo_url)
-                        // employee.photo_url && setPhotoExists(true)
+                    clients.map((client, idx) => {
+                        // client.photo_url && setPhotoUrl(client.photo_url)
+                        // client.photo_url && setPhotoExists(true)
 
                         return (
                             <TableRow key={idx}>
@@ -99,16 +98,16 @@ function EmployeesTable() {
                                     <Checkbox />
                                 </TableCell>
 
-                                <TableCell>
-                                    <img src={employee.photo_url ?? '/default_profile_image.jpg'} alt={employee.name} className="size-[35px] rounded-full object-cover" />
-                                </TableCell>
+                                {/* <TableCell>
+                                    <img src={client.photo_url ?? '/default_profile_image.jpg'} alt={client.name} className="size-[35px] rounded-full object-cover" />
+                                </TableCell> */}
 
-                                <TableCell>{employee.name}</TableCell>
-                                <TableCell>{employee.email}</TableCell>
-                                <TableCell className="text-center">{employee.role}</TableCell>
-                                <TableCell className="text-center">{employee.created_at}</TableCell>
+                                <TableCell>{client.name}</TableCell>
+                                <TableCell>{client.email}</TableCell>
+                                <TableCell className="text-center">{client.role}</TableCell>
+                                <TableCell className="text-center">{client.created_at}</TableCell>
                                 <TableCell className="flex items-center justify-end gap-5">
-                                    <DeleteButton entityName="Funcionário(a)" entityDeleted={employee.name} />
+                                    <DeleteButton entityName="Cliente" entityDeleted={client.name} />
                                     
                                     <Dialog>
                                         <DialogTrigger asChild>
@@ -117,7 +116,7 @@ function EmployeesTable() {
 
                                         <DialogContent>
                                             <DialogHeader>
-                                                <DialogTitle className="text-lg font-semibold border-b-2 border-wise-dark_green py-3">{employee.name}</DialogTitle>
+                                                <DialogTitle className="text-lg font-semibold border-b-2 border-wise-dark_green py-3">{client.name}</DialogTitle>
                                             </DialogHeader>
 
                                             <form method="" action="" className="flex flex-col gap-2">
@@ -127,7 +126,7 @@ function EmployeesTable() {
                                                         Nome
                                                     </Label>
 
-                                                    <Input id="name" required value={employee.name} />
+                                                    <Input id="name" required value={client.name} />
                                                 </div>
 
                                                 <div className="flex gap-2">
@@ -140,9 +139,9 @@ function EmployeesTable() {
                                                     </div>
 
                                                     {
-                                                        employee.photo_url && (
+                                                        client.photo_url && (
                                                         <div className="max-h-full h-full flex-1 flex items-center justify-end">
-                                                            <img src={employee.photo_url} alt="" className="h-full max-w-[80px] object-cover rounded-sm" />
+                                                            <img src={client.photo_url} alt="" className="h-full max-w-[80px] object-cover rounded-sm" />
                                                         </div>
                                                         )
                                                     }
@@ -153,7 +152,7 @@ function EmployeesTable() {
                                                         E-mail
                                                     </Label>
 
-                                                    <Input id="email" type="email" required value={employee.email} />
+                                                    <Input id="email" type="email" required value={client.email} />
                                                 </div>
 
                                                 <div className="flex flex-col gap-2 flex-1">
@@ -161,7 +160,7 @@ function EmployeesTable() {
                                                         Senha
                                                     </Label>
 
-                                                    <Input id="password" type="password" required value={employee.password} />
+                                                    <Input id="password" type="password" required value={client.password} />
                                                 </div>
 
                                                 <div className="flex flex-col gap-2 flex-1">
@@ -169,7 +168,7 @@ function EmployeesTable() {
                                                         Cargo
                                                     </Label>
 
-                                                    <Input list="role_list" id="role" name="role" required value={employee.role} />
+                                                    <Input list="role_list" id="role" name="role" required value={client.role} />
                                                     <datalist id="role_list">
                                                         <option value="Vendedor">Vendedor</option>
                                                         <option value="Gerente de estoque">Gerente de estoque</option>
@@ -193,4 +192,4 @@ function EmployeesTable() {
     )
 }
 
-export { EmployeesTable }
+export { ClientsTable }

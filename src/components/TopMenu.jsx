@@ -27,7 +27,8 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import { useState } from "react"
+import { useContext, useState } from "react"
+import { AuthContext } from "@/auth/AuthProvider"
 
 
 function handlePageName(currentPageName){
@@ -48,8 +49,8 @@ function handlePageName(currentPageName){
             )
         case 'reports':
             return 'Relatórios'
-        case 'employees':
-            return 'Funcionários'
+        case 'clients':
+            return 'Clientes'
         case 'profile':
             return 'Perfil'
         default:
@@ -58,8 +59,22 @@ function handlePageName(currentPageName){
 }
 
 function TopMenu() {
+    const { isLogged, credentials } = useContext(AuthContext);
+    const currentUser = credentials?.companyData;
+    
     const { hash, pathname, search } = useLocation()
     const [mobileMenuIsOpen, setMobileMenuIsOpen] = useState(false)
+
+    function keyPressHandler(e) {
+        var evtobj = window.event ?? e;
+  
+        // subistituir por Ctrl + shift + p
+        if (evtobj.ctrlKey && evtobj.keyCode == 90) {
+            alert('Ctrl+z');
+        }
+    }
+  
+    window.addEventListener('keydown', keyPressHandler);
 
     return (
         <header className='flex flex-wrap justify-between items-center montserrat text-base py-4 px-8 w-[96%] text-wise-light_white bg-wise-hyper_black fixed rounded-md gap-3 mx-[2%] top-[1%] mt-[2%] lg:mt-[1%] z-10'>
@@ -139,10 +154,10 @@ function TopMenu() {
 
                         <NavigationMenuItem>
                             <NavLink 
-                                to='/employees'
-                                className={`p-2 ${pathname == '/employees' && 'text-wise-dark_green border-b-2 border-wise-dark_green'}`}
+                                to='/clients'
+                                className={`p-2 ${pathname == '/clients' && 'text-wise-dark_green border-b-2 border-wise-dark_green'}`}
                             >
-                                Funcionários
+                                Clientes
                             </NavLink>
                         </NavigationMenuItem>
 
@@ -171,41 +186,15 @@ function TopMenu() {
 
                     <CircleHelp strokeWidth={3} className="cursor-pointer" />
 
-                    {/* <DropdownMenu>
-                        <DropdownMenuTrigger>
-                            <BellDot strokeWidth={3} className="cursor-pointer" />
-                        </DropdownMenuTrigger>
-
-                        <DropdownMenuContent className="mx-[1.5rem] my-[1rem]">
-                            <DropdownMenuLabel>
-                                <h2>Suas notificações</h2>
-                            </DropdownMenuLabel>
-
-                            <DropdownMenuSeparator />
-
-                            <DropdownMenuItem>
-                                <h3>Notificação 1 - horário</h3>
-                                <p>Descrição sobre a Notificação.</p>
-                            </DropdownMenuItem>
-
-                            <DropdownMenuSeparator />
-
-                            <DropdownMenuItem>
-                                <h3>Notificação 2 - horário</h3>
-                                <p>Descrição sobre a Notificação.</p>
-                            </DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu> */}
-
                     <DropdownMenu>
                         <DropdownMenuTrigger>
-                            <img src="/default_profile_image.jpg" alt="" className="size-[50px] max-w-[50px] rounded-full object-cover" />
+                            <img src={currentUser ? currentUser?.photoUrl : "/default_profile_image.jpg"} alt="" className="size-[50px] max-w-[50px] rounded-full object-cover" />
                         </DropdownMenuTrigger>
 
                         <DropdownMenuContent className="mx-[1.5rem] my-[.5rem]">
                             <DropdownMenuLabel>
-                                <h1 className="text-base">Nome do usuário</h1>
-                                <p className="text-gray-500 text-xs">email.usuario@gmail.com</p>
+                                <h1 className="text-base">{currentUser?.name ?? "Nome da empresa"}</h1>
+                                <p className="text-gray-500 text-xs">{currentUser?.email ?? "email.empresa@gmail.com"}</p>
                             </DropdownMenuLabel>
 
                             <DropdownMenuSeparator />
@@ -266,9 +255,9 @@ function TopMenu() {
                         className={`${pathname == '/reports' && 'text-wise-dark_green border-b-2 border-wise-dark_green'}`}
                     >Relatórios</NavLink>
                     <NavLink 
-                        to='/employees'
-                        className={`${pathname == '/employees' && 'text-wise-dark_green border-b-2 border-wise-dark_green'}`}
-                    >Funcionários</NavLink>
+                        to='/clients'
+                        className={`${pathname == '/clients' && 'text-wise-dark_green border-b-2 border-wise-dark_green'}`}
+                    >Clientes</NavLink>
                     <NavLink 
                         to='/profile'
                         className={`${pathname == '/profile' && 'text-wise-dark_green border-b-2 border-wise-dark_green'}`}

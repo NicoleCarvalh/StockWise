@@ -6,11 +6,13 @@ import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { useQrScanner } from "@/context/ScannerContextProvider"
 import { ScanSearch, ShoppingCart } from "lucide-react"
 import { useRef } from "react"
 
 function Sales() {
     const createSaleRef = useRef()
+    const { closeQrScanner } = useQrScanner();
 
     return (
         <>
@@ -30,7 +32,7 @@ function Sales() {
                         </Label>
 
 
-                        <Dialog>
+                        <Dialog onOpenChange={closeQrScanner}>
                             <DialogTrigger asChild ref={createSaleRef}>
                                 <Button className='flex-1 flex gap-3 items-center bg-wise-hyper_black text-wise-hyper_light_green h-[40px] hover:bg-wise-hyper_black hover:text-wise-light_white transition-all'>
                                     <ShoppingCart />
@@ -39,14 +41,14 @@ function Sales() {
                             </DialogTrigger>
 
 
-                            <DialogContent className="montserrat">
+                            <DialogContent className="montserrat max-w-[90%] md:max-w-[60%]">
                                 <DialogHeader>
                                     <DialogTitle className="text-lg font-semibold border-b-2 border-wise-dark_green py-3">
                                         Cadastro de venda
                                     </DialogTitle>
 
                                     <DialogDescription>
-                                        Cadastre uma nova venda e acompanhe todo o fluxo do seu estoque com as melhores funcionalidades para inpulsionar as suas vendas!
+                                        Cadastre uma nova venda e acompanhe todo o fluxo do seu estoque com as melhores funcionalidades para impulsionar as suas vendas!
                                     </DialogDescription>
                                 </DialogHeader>
 

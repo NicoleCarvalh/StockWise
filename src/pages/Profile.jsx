@@ -1,18 +1,15 @@
+import { AuthContext } from "@/auth/AuthProvider"
 import { MainContainer } from "@/components/MainContainer"
 import { TopMenu } from "@/components/TopMenu"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { Link } from "react-router-dom"
 
 function Profile() {
-    // const [notifications, setNotifications] = useState([
-    //     {name: "Nome da notificação", datetime: "16:22", description: "Descrição da notificação", visualized: true},
-    //     {name: "Nome da notificação", datetime: "18:50", description: "Descrição da notificação", visualized: false},
-    //     {name: "Nome da notificação", datetime: "13:00", description: "Descrição da notificação", visualized: false},
-    //     {name: "Nome da notificação", datetime: "17:50", description: "Descrição da notificação", visualized: true},
-    // ])
+    const { isLogged, credentials } = useContext(AuthContext);
+    const currentUser = credentials?.companyData;
     const [blockEdit, setBlockEdit] = useState(true)
     const [inputs, setInputs] = useState({email: "email.usuario@gmai.com", password: "senhadousuario"})
 
@@ -33,12 +30,12 @@ function Profile() {
                     <h1 className='text-2xl font-bold'>Perfil</h1>
 
                     <div className='flex gap-4 flex-wrap justify-center w-full min-h-300px bg-wise-hyper_black rounded-lg p-4'>
-                        <img src='/default_profile_image.jpg' alt="Foto de perfil" className="max-w-[150px] flex-1 rounded-md object-cover border-none" />
+                        <img src={currentUser && currentUser?.photoUrl ? currentUser?.photoUrl : '/default_profile_image.jpg'} alt="Foto de perfil" className="max-w-[150px] min-h-[250px] flex-1 rounded-md object-cover border-none" />
 
                         <div className="flex-1 flex justify-between gap-5 flex-wrap montserrat">
                             <div className='text-wise-light_white'>
-                                <h2 className="font-semibold text-4xl">Nome do usuário</h2>
-                                <p><span className="text-base text-wise-hyper_light_green">Cargo</span> | Empresa do usuário</p>
+                                <h2 className="font-semibold text-4xl">{currentUser?.name}</h2>
+                                <p><span className="text-base text-wise-hyper_light_green">Alguma</span> | coisa</p>
                             </div>
 
                             <div className='flex gap-4 flex-wrap justify-center'>
@@ -56,7 +53,7 @@ function Profile() {
                             </div>
 
                             <div className="w-full flex flex-wrap justify-between items-end text-wise-light_white gap-3">
-                                <h4 className="text-xl">No sistema desde: <span className="text-wise-hyper_light_green">12/05/2024</span></h4>
+                                <h4 className="text-xl">No sistema desde: <span className="text-wise-hyper_light_green">{currentUser?.createdAt}</span></h4>
 
                                 <div className="flex gap-2 items-center">
                                     <Link to='/logout'><Button variant='outline' className="text-wise-hyper_black">Sair do sistema</Button></Link>

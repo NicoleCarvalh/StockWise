@@ -3,7 +3,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Label } from "../ui/label";
 
-function CreateEmployee() {
+function CreateClient() {
     const [photoExists, setPhotoExists] = useState(false)
     const [photoUrl, setPhotoUrl] = useState("")
 
@@ -23,25 +23,6 @@ function CreateEmployee() {
                 </Label>
 
                 <Input id="name" required />
-            </div>
-
-            <div className="flex gap-2">
-                <div className="flex flex-col gap-2 w-full">
-                    <Label htmlFor="photo">
-                        Foto do funcionário
-                    </Label>
-
-                    <Input id="photo" type="file" onChange={handlePhotoPreview} />
-                </div>
-
-                {
-                    photoExists && (
-                    <div className="max-h-full h-full flex-1 flex items-center justify-end">
-                        <img src={photoUrl} alt="" className="h-full max-w-[80px] object-cover rounded-sm" />
-                    </div>
-                    )
-                }
-            
             </div>
           
             <div className="flex flex-col gap-2">
@@ -80,4 +61,4 @@ function CreateEmployee() {
     );
 }
 
-export { CreateEmployee };
+export { CreateClient };

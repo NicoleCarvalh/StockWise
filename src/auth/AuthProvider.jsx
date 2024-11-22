@@ -51,7 +51,11 @@ function AuthProvider({children}) {
               password: credentials.password
             })
         }).then(json => json.json()).then(data =>{
-            handleCredentials(data.company, data.token)
+            if(data?.error) return
+            
+            if(data?.company) handleCredentials(data.company, data.token)
+        }).catch(error => {
+            console.log(error)
         })
     }
 

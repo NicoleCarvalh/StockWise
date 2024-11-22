@@ -105,7 +105,7 @@ function SalesTable() {
                                             <Expand className="cursor-pointer" />
                                         </DialogTrigger>
 
-                                        <DialogContent>
+                                        <DialogContent className="max-w-[90%] md:max-w-[60%]">
                                             <DialogHeader>
                                                 <DialogTitle className="text-lg font-semibold border-b-2 border-wise-dark_green py-3">Venda efetuada em <span className="text-wise-dark_green">{new Date(sale?.createdAt)?.toLocaleString()}</span></DialogTitle>
 

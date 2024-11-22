@@ -76,9 +76,6 @@ function SignupForm() {
         )
       })
     })
-
-    // TODO: call the api and create company -> receive token -> save token on localStorage -> redirect to login
-    // TODO: add supabase image store
   }
 
   const uploadImage = (file) => {
@@ -116,7 +113,7 @@ function SignupForm() {
         ref={dropAreaRef}
         onDragOver={handleDragOver}
         onDrop={handleDrop}
-        className="h-[18rem] md:h-[10rem] border-4 border-dashed border-wise-dark_green text-center rounded-lg"
+        className="h-[18rem] md:h-[10rem] border-4 border-dashed border-wise-dark_green text-center rounded-lg overflow-hidden"
       >
         <Label className="h-full flex items-center justify-center cursor-pointer">
           <input

@@ -307,7 +307,7 @@ function UpdateContainer({container, closeCurrentModal}) {
                 <QRCodeScanner buttonClassName="my-2" callAfterFound={setCurrentFoundProduct} disableAbsoluteModal={true} /> 
 
                 <div className="flex gap-3">
-                    <Input placeholder='Digite o código do protudo. Ex: #...' value={currentAddProduct} onChange={(ev) => {setCurrentAddProduct(ev.target.value.trim())}} />
+                    <Input placeholder='Digite o código do produto. Ex: #...' value={currentAddProduct} onChange={(ev) => {setCurrentAddProduct(ev.target.value.trim())}} />
 
                     <Button type="button" variant="outline" onClick={handleSearchProduct}>
                         <Search size={20} />

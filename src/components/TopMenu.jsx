@@ -1,4 +1,4 @@
-import { NavLink, useLocation } from "react-router-dom"
+import { NavLink, useLocation, useNavigate } from "react-router-dom"
 import {
     NavigationMenu,
     NavigationMenuContent,
@@ -27,7 +27,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { AuthContext } from "@/auth/AuthProvider"
 
 
@@ -61,20 +61,51 @@ function handlePageName(currentPageName){
 function TopMenu() {
     const { isLogged, credentials } = useContext(AuthContext);
     const currentUser = credentials?.companyData;
+    const navigate = useNavigate()
     
     const { hash, pathname, search } = useLocation()
     const [mobileMenuIsOpen, setMobileMenuIsOpen] = useState(false)
 
-    function keyPressHandler(e) {
-        var evtobj = window.event ?? e;
-  
-        // subistituir por Ctrl + shift + p
-        if (evtobj.ctrlKey && evtobj.keyCode == 90) {
-            alert('Ctrl+z');
+    function keyPressHandler(windowEvent) {
+        const firstKeyPressedIsAlt = windowEvent.altKey
+
+        if(!firstKeyPressedIsAlt) return
+
+        switch (windowEvent.key) {
+            case "a": // account -> p = products
+                navigate('/profile')
+                break;
+            case "h": // home -> d (navegador já tem pra poder focar na url)
+                navigate('/dashboard')
+                break;
+            case "v":
+                navigate('/virtualStock')
+                break;
+            case "s":
+                navigate('/sales')
+                break;
+            case "c":
+                navigate('/clients')
+                break;
+            case "p":
+                navigate('/products')
+                break;
+            case "r":
+                navigate('/reports')
+                break;
+
+            case "l":
+                navigate('/logout')
+                break;
+        
+            default:
+                break;
         }
     }
   
-    window.addEventListener('keydown', keyPressHandler);
+    useEffect(() => {
+        window.addEventListener('keydown', keyPressHandler);
+    }, [])
 
     return (
         <header className='flex flex-wrap justify-between items-center montserrat text-base py-4 px-8 w-[96%] text-wise-light_white bg-wise-hyper_black fixed rounded-md gap-3 mx-[2%] top-[1%] mt-[2%] lg:mt-[1%] z-10'>
@@ -184,14 +215,67 @@ function TopMenu() {
                         </DialogContent>
                     </Dialog>
 
-                    <CircleHelp strokeWidth={3} className="cursor-pointer" />
+                    <DropdownMenu>
+                        <DropdownMenuTrigger>
+                            <CircleHelp strokeWidth={3} className="cursor-pointer" />
+                        </DropdownMenuTrigger>
+
+                        <DropdownMenuContent  className="my-[1rem] min-w-[200px]">
+
+                            <DropdownMenuLabel>
+                                <div>
+                                    Conheça os atalhos (arrumar texto)
+                                </div>
+
+                                <div>
+                                    Outro texto legal
+                                </div>
+                            </DropdownMenuLabel>
+
+                            <DropdownMenuSeparator />
+
+                            <div>
+                                <ul>
+                                    <li>
+                                        Ação 
+                                    </li>
+
+                                    <li>
+                                        Atalho 
+                                    </li>
+                                </ul>
+
+                                <ul>
+                                    <li>
+                                        <div>
+                                            Ir para a dashboard
+                                        </div>
+
+                                        <div>
+                                            Alt + h
+                                        </div>
+                                    </li>
+
+                                    <li>
+                                        <div>
+                                            Ir para relatórios
+                                        </div>
+
+                                        <div>
+                                            Alt + r
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
 
                     <DropdownMenu>
                         <DropdownMenuTrigger>
                             <img src={currentUser ? currentUser?.photoUrl : "/default_profile_image.jpg"} alt="" className="size-[50px] max-w-[50px] rounded-full object-cover" />
                         </DropdownMenuTrigger>
 
-                        <DropdownMenuContent className="mx-[1.5rem] my-[.5rem]">
+                        <DropdownMenuContent className="mx-[1.5rem] my-[.5rem] min-w-[200px]">
                             <DropdownMenuLabel>
                                 <h1 className="text-base">{currentUser?.name ?? "Nome da empresa"}</h1>
                                 <p className="text-gray-500 text-xs">{currentUser?.email ?? "email.empresa@gmail.com"}</p>
@@ -202,7 +286,7 @@ function TopMenu() {
                             <NavLink to='/profile'>
                                 <DropdownMenuItem className="w-full flex justify-between cursor-pointer">
                                     <h3>Perfil</h3>
-                                    <small className="text-gray-500">ctrl + shift + P</small>
+                                    <small className="text-gray-500">Alt + p</small>
                                 </DropdownMenuItem>
                             </NavLink>
 

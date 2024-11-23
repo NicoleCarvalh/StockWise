@@ -56,7 +56,7 @@ const SheetContent = React.forwardRef(
       >
         {children}
         <SheetPrimitive.Close className="absolute top-10 left-7 rounded-sm ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary">
-          <ChevronsLeft color="white" className="h-10 w-10 md:h-12 md:w-12" />
+          <ChevronsLeft color="white" className="h-10 w-10 md:h-12 md:w-12 lg:hidden" />
           <span className="sr-only">Close</span>
         </SheetPrimitive.Close>
       </SheetPrimitive.Content>

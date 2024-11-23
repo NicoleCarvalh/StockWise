@@ -5,7 +5,7 @@ const ReportTemplate = forwardRef(
     return (
       <main>
         <div ref={ref} style={{ padding: '20px', background: '#fff' }}>
-          <h1>Relatório</h1>
+          <h1>{title ?? "Relatório Mensal"}</h1>
           <p>### {title}</p>
         </div>
       </main>

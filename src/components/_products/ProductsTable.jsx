@@ -62,7 +62,7 @@ function ProductsTable() {
                                 </TableCell>
 
                                 <TableCell>
-                                    <img src={product.photoUrl ?? '/default_product_image.svg'} alt={product.name} className="size-[35px] rounded-full object-cover" />
+                                    <img src={product && product?.photoUrl ? product?.photoUrl : '/default_product_image.jpg'} alt={product.name} className="size-[35px] rounded-full object-cover" />
                                 </TableCell>
                                 <TableCell className="font-medium">{product.code}</TableCell>
                                 <TableCell>{product.name}</TableCell>

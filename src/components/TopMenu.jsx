@@ -272,7 +272,7 @@ function TopMenu() {
 
                     <DropdownMenu>
                         <DropdownMenuTrigger>
-                            <img src={currentUser ? currentUser?.photoUrl : "/default_profile_image.jpg"} alt="" className="size-[50px] max-w-[50px] rounded-full object-cover" />
+                            <img src={currentUser && currentUser?.photoUrl ? currentUser?.photoUrl : '/default_profile_image.jpg'} alt="" className="size-[50px] max-w-[50px] rounded-full object-cover" />
                         </DropdownMenuTrigger>
 
                         <DropdownMenuContent className="mx-[1.5rem] my-[.5rem] min-w-[200px]">

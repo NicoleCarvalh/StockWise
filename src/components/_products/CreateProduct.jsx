@@ -17,7 +17,7 @@ function CreateProduct() {
     const { products, setProducts } = useContext(ProductsContext)
 
     const nameRef = useRef(null)
-    const imageRef = useRef(null)
+    let imageRef = useRef(null)
     const descriptionRef = useRef(null)
     const categoryRef = useRef(null)
     const quantityInStockRef = useRef(null)
@@ -41,7 +41,7 @@ function CreateProduct() {
       formDataToSend.append("salePrice", salePriceRef.current.value)
       formDataToSend.append("supplier", supplierRef.current.value)
       
-      imageRef?.current && formDataToSend.append("image", imageRef?.current ? imageRef?.current[0] ?? null : null)
+      formDataToSend.append("image", (imageRef?.current && photoExists) ? imageRef?.current[0] ?? null : null)
       descriptionRef && formDataToSend.append("description", typeof descriptionRef.current?.value == 'object' ? null : descriptionRef.current.value)
 
       const technicalDetails = {
@@ -68,6 +68,7 @@ function CreateProduct() {
       weightRef.current ? weightRef.current.value = "" : null
 
       setPhotoExists(false)
+      imageRef = null
       setPhotoUrl("")
 
       nameRef.current.focus()

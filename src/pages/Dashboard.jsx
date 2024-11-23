@@ -5,6 +5,7 @@ import { InfoCard } from "@/components/_dashboard/InfoCard"
 import { ShortTable } from "@/components/_dashboard/ShortTable"
 import { ToastAction } from "@/components/ui/toast"
 import { ProductsContext } from "@/context/ProductsContextProvider"
+import { ChatTab } from "@/components/_stockwizard/ChatTab"
 import { useToast } from "@/hooks/use-toast"
 import { Package2 } from "lucide-react"
 import { useContext, useEffect, useState } from "react"
@@ -214,7 +215,9 @@ function Dashboard() {
                         
 
                     </section>
+                    
                 </section>
+                <ChatTab/>
             </MainContainer>
         </>
     )

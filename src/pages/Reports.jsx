@@ -76,7 +76,7 @@ function Reports() {
           <h1 className="text-xl font-semibold">Recentes</h1>
 
           <div className="flex gap-4 flex-wrap items-center">
-          {reports.map((item, index) => (
+          {reports && reports.map((item, index) => (
               <Dialog key={index}>
                 <DialogTrigger className="flex-1 min-w-[250px] p-2 pr-8 bg-wise-hyper_white flex gap-3 rounded-md min-h-[80px] cursor-pointer">
                     <div className="min-h-full  flex items-center p-4 rounded-sm text-wise-dark_green">

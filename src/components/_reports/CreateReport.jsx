@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { ReportTemplate } from "@/components/_reports/Template";
 import jsPDF from "jspdf";
 import { Button } from "@/components/ui/button";
@@ -6,9 +6,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast";
-import { Buffer } from "@react-frontend-developer/buffers";
-
+import { AuthContext } from "@/auth/AuthProvider";
 function CreateReport({ closeCurrentModal }) {
+  const { credentials } = useContext(AuthContext)
+
   const containerToPrintRef = useRef(null);
   const [title, setTitle] = useState("");
   const [initialDate, setInitialDate] = useState("");
@@ -22,39 +23,24 @@ function CreateReport({ closeCurrentModal }) {
       format: "a4",
       putOnlyUsedFonts: true,
     });
+
+    let file
   
     // Utilizamos uma promessa para lidar com a callback
-    const blob = await new Promise((resolve) => {
-      doc.html(containerToPrintRef.current, {
-        callback: (doc) => {
-          const file = `${fileName}.pdf`;
-  
-          doc.save(file); // Baixa o arquivo no dispositivo do usuário
-          resolve(doc.output("blob")); // Retorna o blob
-        },
-      });
-    });
-  
-    // Converte o Blob para um File
-    const file = new File([blob], `${fileName}.pdf`, { type: "application/pdf" });
-  
-    // Extrai o buffer do arquivo
-    const arrayBuffer = await blob.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
-    console.log("arrayBuffer");
+    await doc.html(containerToPrintRef.current, {
+      callback: (doc) => {
+        const fileNameWithExtension = `${fileName.replace(' ', '_') ?? 'relatório'}.pdf`;
 
-    console.log(Buffer.from(arrayBuffer));
-    console.log("buffer");
-    console.log(Buffer.from(buffer));
-  
-    // Adiciona o buffer como um atributo personalizado ao objeto File
-    file.buffer = buffer;
-  
-    console.log("fileData 1", file);
+        doc.save(fileNameWithExtension)
+        
+        const blob = doc.output("blob")
+
+        file = new File([blob], `${fileName}.pdf`, { type: "application/pdf" });
+      },
+    });
   
     return file;
   }
-  
 
   const handleSubmit = async (ev) => {
     ev.preventDefault();
@@ -73,9 +59,7 @@ function CreateReport({ closeCurrentModal }) {
     const initialDataFormatted = new Date(initialDate);
     const finalDataFormatted = new Date(finalDate);
 
-    if (
-      initialDataFormatted >= finalDataFormatted
-    ) {
+    if (initialDataFormatted >= finalDataFormatted) {
       toast({
         title: "Atenção às datas do período selecionado!",
         variant: "destructive",
@@ -91,31 +75,51 @@ function CreateReport({ closeCurrentModal }) {
       return;
     }
 
-    const file = await handleDownloadPDF();
-
-    console.log("file 3 ")
-    console.log(file)
-
     const LocaleDateOfInitialDate = initialDataFormatted.toLocaleDateString()
     const LocaleDateOfFinalDate = finalDataFormatted.toLocaleDateString()
+    const period = `De: ${LocaleDateOfInitialDate} até ${LocaleDateOfFinalDate}`
+
+    const file = await handleDownloadPDF(period);
 
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("period", `De: ${LocaleDateOfInitialDate} até ${LocaleDateOfFinalDate}`);
+    formData.append("period", period);
 
-    console.log(formData)
-    console.log(file)
-    console.log(`De: ${LocaleDateOfInitialDate} até ${LocaleDateOfFinalDate}`)
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/report`, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearded ${credentials.token}`
+      },
+      body: formData,
+    })
+    .then((response) => response.json())
+    .then(data => {
 
-    // fetch("/api/upload", {
-    //   method: "POST",
-    //   body: formData,
-    // })
-    //   .then((response) => {
-    //     if (!response.ok) throw new Error("Erro ao enviar o arquivo");
-    //     console.log("Arquivo enviado com sucesso!");
-    //   })
-    //   .catch((error) => console.error(error));
+      if(data?.ERROR) {
+        toast({
+            title: "Ocorreu um erro durante a operação!",
+            variant: "destructive",
+            description: <p>{data?.ERROR} <br/>Tente novamente</p>,
+            action: (
+              <ToastAction altText="Fechar">Fechar</ToastAction>
+            )
+        })
+
+        return
+      }
+
+
+      toast({
+        title: "Cópia do relatório salvo!",
+        description: (
+          <p>
+            Acesse a cópia do relatório salva no sistema a qualquer momento.
+          </p>
+        ),
+        action: <ToastAction altText="Fechar">Fechar</ToastAction>,
+      });
+    })
+    .catch((error) => console.error(error));
 
     // closeCurrentModal && closeCurrentModal();
 

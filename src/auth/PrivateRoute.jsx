@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { AuthContext } from "./AuthProvider";
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast";
@@ -8,6 +8,7 @@ function PrivateRoute({ children }) {
   const { toast } = useToast();
   const { isLogged, credentials } = useContext(AuthContext);
   const token = credentials?.token;
+  const navigate = useNavigate()
 
   if(!token || token == null || token == undefined) return <Navigate to="/" replace />;
 
@@ -21,6 +22,7 @@ function PrivateRoute({ children }) {
   const currentDate = new Date();
   const tokenExpired = currentDate >= expirationDate;
 
+
   useEffect(() => {
     if (tokenExpired) {
       toast({
@@ -33,6 +35,8 @@ function PrivateRoute({ children }) {
         ),
         action: <ToastAction altText="Fechar">Fechar</ToastAction>,
       });
+
+      navigate('/')
     }
   }, [tokenExpired]); // Chama apenas quando `tokenExpired` mudar para `true`
 

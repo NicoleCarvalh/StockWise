@@ -7,7 +7,6 @@ import {
   FilePlus2,
   Filter,
 } from "lucide-react";
-import { ReportTemplate } from "@/components/_reports/Template";
 import {
   Dialog,
   DialogContent,
@@ -17,10 +16,16 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { CreateReport } from "@/components/_reports/CreateReport";
-import { useRef } from "react"
+import { ChatTab } from "@/components/_stockwizard/ChatTab"
+import { useContext, useEffect, useRef } from "react"
+import { ReportsContext } from "@/context/ReportsContextProvider";
+import { PdfViewer } from "@/components/_reports/PdfViewer";
 
 function Reports() {
   const createReportModalRef = useRef()
+  const { reports, setReports, refreshReports } = useContext(ReportsContext)
+
+  useEffect(() => refreshReports, [])
 
   return (
     <>
@@ -71,25 +76,39 @@ function Reports() {
           <h1 className="text-xl font-semibold">Recentes</h1>
 
           <div className="flex gap-4 flex-wrap items-center">
-            {[1, 2, 3, 4].map((item) => (
-              <div
-                key={item}
-                className="flex-1 min-w-[250px] p-2 pr-8 bg-wise-hyper_white flex gap-3 flex-wrap rounded-md min-h-[80px] cursor-pointer"
-              >
-                <div className="min-h-full flex items-center p-4 rounded-sm text-wise-dark_green">
-                  <FileChartColumn size={30} />
-                </div>
+          {reports.map((item, index) => (
+              <Dialog key={index}>
+                <DialogTrigger className="flex-1 min-w-[250px] p-2 pr-8 bg-wise-hyper_white flex gap-3 rounded-md min-h-[80px] cursor-pointer">
+                    <div className="min-h-full  flex items-center p-4 rounded-sm text-wise-dark_green">
+                      <FileChartColumn size={30} />
+                    </div>
 
-                <div className="flex flex-col justify-between gap-3 min-h-full">
-                  <h3 className="text-lg">08/02/2024</h3>
+                    <div className="flex flex-col justify-between gap-3 min-h-full overflow-hidden ">
+                      <h3 className="text-lg overflow-hidden flex-1 text-ellipsis text-nowrap">{item?.period ?? 'Relatório'}</h3>
 
-                  <div className="w-full flex gap-4 justify-between font-light">
-                    <p>7 páginas</p>
+                      <div className="w-full flex gap-4 justify-between font-light">
+                        <p>7 páginas</p>
 
-                    <p>8 MG</p>
-                  </div>
-                </div>
-              </div>
+                        <p>8 MG</p>
+                      </div>
+                    </div>
+                </DialogTrigger>
+
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>
+                      Relatório
+                    </DialogTitle>
+
+                    <DialogDescription>
+                      Analise tudo
+                    </DialogDescription>
+                  </DialogHeader>
+
+
+                  {item?.fileUrl && <PdfViewer url={item.fileUrl} />}
+                </DialogContent>
+              </Dialog>
             ))}
           </div>
         </section>
@@ -98,28 +117,43 @@ function Reports() {
           <h1 className="text-xl font-semibold">Todos</h1>
 
           <div className="flex gap-4 flex-wrap items-center">
-            {[1, 2, 3, 4, 5, 6].map((item) => (
-              <div
-                key={item}
-                className="flex-1 min-w-[250px] p-2 pr-8 bg-wise-hyper_white flex gap-3 flex-wrap rounded-md min-h-[80px] cursor-pointer"
-              >
-                <div className="min-h-full flex items-center p-4 rounded-sm text-wise-dark_green">
-                  <FileChartColumn size={30} />
-                </div>
+            {reports.map((item, index) => (
+              <Dialog key={index}>
+                <DialogTrigger className="flex-1 min-w-[250px] p-2 pr-8 bg-wise-hyper_white flex gap-3 rounded-md min-h-[80px] cursor-pointer">
+                    <div className="min-h-full  flex items-center p-4 rounded-sm text-wise-dark_green">
+                      <FileChartColumn size={30} />
+                    </div>
 
-                <div className="flex flex-col justify-between gap-3 min-h-full">
-                  <h3 className="text-lg">08/02/2024</h3>
+                    <div className="flex flex-col justify-between gap-3 min-h-full overflow-hidden ">
+                      <h3 className="text-lg overflow-hidden flex-1 text-ellipsis text-nowrap">{item?.period ?? 'Relatório'}</h3>
 
-                  <div className="w-full flex gap-4 justify-between font-light">
-                    <p>7 páginas</p>
+                      <div className="w-full flex gap-4 justify-between font-light">
+                        <p>7 páginas</p>
 
-                    <p>8 MG</p>
-                  </div>
-                </div>
-              </div>
+                        <p>8 MG</p>
+                      </div>
+                    </div>
+                </DialogTrigger>
+
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>
+                      Relatório
+                    </DialogTitle>
+
+                    <DialogDescription>
+                      Analise tudo
+                    </DialogDescription>
+                  </DialogHeader>
+
+
+                  {item?.fileUrl && <PdfViewer url={item.fileUrl} />}
+                </DialogContent>
+              </Dialog>
             ))}
           </div>
         </section>
+        <ChatTab/>
       </MainContainer>
     </>
   );

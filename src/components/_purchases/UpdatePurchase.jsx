@@ -3,16 +3,13 @@ import { Input } from "../ui/input"
 import { Label } from "../ui/label"
 
 
-function UpdateSale({sale}) {
+function UpdatePurchase({purchase}) {
 
-    const [clientName, setClientName] = useState(sale?.clientName ?? "")
-    const [clientEmail, setClientEmail] = useState(sale?.clientEmail ?? "")
-    const [paymentMethod, setPaymentMethod] = useState(sale?.paymentMethod ?? "")
-    const [total, setTotal] = useState(sale?.total ?? "")
-    const [productsList, setProductsList] = useState(sale?.products ?? [])
-
-    console.log(sale)
-    console.log(productsList)
+    const [clientName, setClientName] = useState(purchase?.clientName ?? "")
+    const [clientEmail, setClientEmail] = useState(purchase?.clientEmail ?? "")
+    const [paymentMethod, setPaymentMethod] = useState(purchase?.paymentMethod ?? "")
+    const [total, setTotal] = useState(purchase?.total ?? "")
+    const [productsList, setProductsList] = useState(purchase?.products ?? [])
 
     return (
         <form method="POST" action="" className="flex flex-col gap-2">
@@ -63,7 +60,7 @@ function UpdateSale({sale}) {
 
                             <div className="flex flex-col items-end gap-1">
                                 <h4>Quantidade</h4>
-                                <p>{console.log(prod)}</p>
+                                <p>XX</p>
                             </div>
                         </li>
                     )) : <i>Nenhum produto adicionado ainda...</i>
@@ -74,4 +71,4 @@ function UpdateSale({sale}) {
     )
 }
 
-export { UpdateSale }
+export { UpdatePurchase }

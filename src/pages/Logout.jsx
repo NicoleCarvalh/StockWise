@@ -11,12 +11,12 @@ export function Logout() {
 
     return (
     <section className="min-h-screen h-screen montserrat">
-        <div id="banner" className="bg-wise-light_white h-full relative flex justify-center items-center overflow-hidden md:overflow-hidden text-wise-hyper_black">
-            <div className=" md:block absolute top-[-100px] right-[-1%] w-[180px] animate-[derive_10s_linear_infinite]"><Wisebox className="rotate-[-35deg]" /></div>
+        <div id="banner" className="bg-wise-hyper_black h-full relative flex justify-center items-center overflow-hidden md:overflow-hidden text-wise-light_white">
+            <div className=" md:block absolute top-[-50px] right-[-1%] w-[180px] animate-[derive_10s_linear_infinite]"><Wisebox className="rotate-[-35deg]" /></div>
             <div className="hidden md:block absolute top-[20%] right-[20%] w-[200px] animate-[derive_10s_linear_infinite]"><Wisebox className="rotate-[-8deg]" /></div>
-            <div className="hidden md:block absolute top-[60%] right-[30%] w-[154px] animate-[derive_15s_linear_infinite]"><Wisebox className="rotate-[8deg]" /> </div>
-            <div className=" md:block absolute top-[70%] right-[5%] w-[100px] animate-[derive_20s_linear_infinite]"><Wisebox className="rotate-[25deg]" /></div>
-            <div className="hidden md:block absolute top-[30%] right-[60%] w-[250px] animate-[derive_8s_linear_infinite]"><Wisebox className="rotate-[42deg]" /></div>
+            <div className="hidden md:block absolute top-[60%] right-[5%] w-[75px] animate-[derive_15s_linear_infinite]"><Wisebox className="rotate-[8deg]" /> </div>
+            <div className=" md:block absolute top-[80%] right-[5%] w-[100px] animate-[derive_20s_linear_infinite]"><Wisebox className="rotate-[25deg]" /></div>
+            <div className="hidden md:block absolute top-[32%] right-[60%] w-[70px] animate-[derive_8s_linear_infinite]"><Wisebox className="rotate-[42deg]" /></div>
             <div className=" md:block absolute top-[-1%] right-[80%] w-[120px] animate-[derive_11s_linear_infinite]"><Wisebox className="rotate-[-15deg]" /></div>
             <div className="hidden md:block absolute top-[40%] right-[9%] w-[50px] animate-[derive_20s_linear_infinite]"><Wisebox className="rotate-[32deg]" /></div>
             <div className=" md:block absolute top-[90%] right-[25%] w-[80px] animate-[derive_8s_linear_infinite]"><Wisebox className="rotate-[-5deg]" /></div>
@@ -39,18 +39,18 @@ export function Logout() {
                     <h3 className="text-xl">Você tem certeza que deseja sair do sistema?</h3>
                 </div>
 
-                <div className="flex gap-8 justify-center lg:justify-between flex-wrap min-w-full">
+                <div className="flex gap-8 justify-center flex-col-reverse lg:flex-row lg:justify-between flex-wrap min-w-full">
                     <div className="flex flex-col justify-between gap-4 max-w-full flex-1">
                         <div className="flex flex-col gap-4">
                             <h3 className="text-xl">Deixe seu feedback sobre o projeto antes de ir</h3>
                             
                             <Link to="https://google.com" className="flex" target="_blank">
                                 <Button 
-                                    className="whitespace-normal border border-wise-hyper_black flex-1 hover:bg-wise-hyper_black hover:text-wise-light_white max-w-full min-h-fit"
+                                    className="whitespace-normal border bg-wise-dark_green border-wise-hyper_black flex-1 hover:text-wise-hyper_black max-w-full min-h-fit"
                                     type="button" 
-                                    variant="outiline"
+                                    variant="outline"
                                 >
-                                    Responder 5 perguntinhas rapidas
+                                    Responder 5 perguntinhas rápidas
                                 </Button>
                             </Link>
                         </div>
@@ -58,9 +58,9 @@ export function Logout() {
                         <div className="flex flex-col gap-3">
                             <Link to="/" className="flex">
                                 <Button 
-                                    className="border border-wise-hyper_black flex-1 flex gap-3 hover:text-wise-hyper_light_green hover:gap-4 max-w-full"
+                                    className="border bg-wise-dark_green border-wise-hyper_black flex-1 flex gap-3 hover:text-wise-hyper_black hover:gap-4 max-w-full"
                                     type="button" 
-                                    variant="outiline"
+                                    variant="outline"
                                     onClick={logOut}
                                 >
                                     Sair do sistema
@@ -70,9 +70,9 @@ export function Logout() {
 
                             <Link to="/dashboard" className="flex">
                                 <Button 
-                                    className="border border-wise-hyper_black bg-wise-hyper_black text-wise-light_white flex-1 flex gap-3 hover:text-wise-hyper_light_green hover:gap-4 max-w-full"
+                                    className="border border-wise-hyper_black bg-wise-hyper_black text-wise-light_white flex-1 flex gap-3 hover:text-wise-hyper_black hover:gap-4 max-w-full"
                                     type="button" 
-                                    variant="outiline"
+                                    variant="outline"
                                 >
                                     <ChevronLeft size={20} />
                                     Voltar para o sistema
@@ -82,7 +82,7 @@ export function Logout() {
                     </div>
 
                     <img 
-                        className="max-w-[500px] w-full hidden lg:block"
+                        className="max-w-[500px] w-full hidden md:block "
                         src="/undraw_reviews.svg" 
                         alt="Ilustração com uma mulher colocando um comentário avaliativo em uma parede." 
                     />

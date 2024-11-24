@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useContext, useState } from "react"
 import { Link } from "react-router-dom"
+import { ChatTab } from "@/components/_stockwizard/ChatTab"
 
 function Profile() {
     const { isLogged, credentials } = useContext(AuthContext);
@@ -90,6 +91,7 @@ function Profile() {
                         </ul>
                     </div>
                 </section> */}
+                <ChatTab/>
             </MainContainer>
         </>
     )

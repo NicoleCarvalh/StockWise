@@ -17,15 +17,15 @@ import { useContext, useEffect, useState } from "react"
 import { AuthContext } from "@/auth/AuthProvider"
 import { useToast } from "@/hooks/use-toast"
 import { ToastAction } from "../ui/toast"
-import { SalesContext } from "@/context/SalesContextProvider"
-import { UpdateSale } from "./UpdateSale"
+import { PurchasesContext } from "@/context/PurchasesContextProvider"
+import { UpdatePurchase } from "./UpdatePurchase"
 
 // TODO: change to component: Data table 
 // TODO: Create an pattern component to tables
-function SalesTable() {
+function PurchasesTable() {
     const {credentials} = useContext(AuthContext) 
-    const {sales} = useContext(SalesContext) 
-    const [salesList, setSalesList] = useState([])
+    const {purchases} = useContext(PurchasesContext) 
+    const [purchasesList, setPurchasesList] = useState([])
     const { toast } = useToast()
 
     useEffect(() => {
@@ -34,9 +34,10 @@ function SalesTable() {
               "Authorization": `Bearded ${credentials.token}`,
             }
           }).then(json => json.json()).then(data => {
+            console.log(data)
             if(data?.ERROR) {
                 toast({
-                    title: "Ocorreu um erro durante a busca pelas vendas.",
+                    title: "Ocorreu um erro durante a busca pelas compras.",
                     variant: "destructive",
                     description: <p>{data?.ERROR} <br/>Tente novamente</p>,
                     action: (
@@ -47,30 +48,28 @@ function SalesTable() {
                 return
             }
 
-            const filteredTransactions = data.filter(transaction => transaction?.type == "SALE")
+            const filteredTransactions = data.filter(transaction => transaction?.type == "PURCHASE")
             let newTransactionsData = []
 
             filteredTransactions.forEach((transaction) => {
                 const orders = JSON.parse(transaction.orders)
   
                 let sum = 0
-                orders.forEach((order) => {
-
-                    sum += order.quantity
-                })
+                orders.forEach((order) => sum += order.quantity)
 
                 const newTransaction = {
                     ...transaction,
-                    quantityOfProducts: sum,
+                    quantityOfProducts: sum
                 }
 
                 newTransactionsData.push(newTransaction)
             })
 
-            setSalesList(newTransactionsData)
+
+            setPurchasesList(newTransactionsData)
           }).catch(error => {
             toast({
-                title: "Ocorreu um erro durante a busca pelas vendas.",
+                title: "Ocorreu um erro durante a busca pelas compras.",
                 variant: "destructive",
                 description: <p>{error?.message} <br/>Tente novamente</p>,
                 action: (
@@ -81,8 +80,8 @@ function SalesTable() {
     }, [])
 
     useEffect(() => {
-        setSalesList(sales)
-    }, [sales])
+        setPurchasesList(purchases)
+    }, [purchases])
 
 
     return (
@@ -95,29 +94,29 @@ function SalesTable() {
                     </TableHead>
 
                     <TableHead>Qtd. de produtos</TableHead>
-                    <TableHead className="text-center">Data da venda</TableHead>
-                    <TableHead className="text-center">Total (R$)</TableHead>
+                    <TableHead className="text-center">Data da compra</TableHead>
+                    <TableHead className="text-center">Total pago (R$)</TableHead>
                     <TableHead className="text-center">Forma de pagamento</TableHead>
                     <TableHead className="text-right">Ações</TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
                 {
-                    salesList.length > 0 && [...salesList].reverse().map((sale, idx) => {
+                    purchasesList && purchasesList.length > 0 && [...purchasesList].reverse().map((purchase, idx) => {
+                        // console.log("SALE AQUI")
+                        // console.log(purchase)
                         return (
                             <TableRow key={idx}>
                                 <TableCell>
                                     <Checkbox />
                                 </TableCell>
 
-                                <TableCell >
-                                    <span className="font-medium">{sale?.quantityOfProducts ?? '--'}</span> produtos vendidos
-                                </TableCell>
-                                <TableCell className="text-center">{new Date(sale.createdAt).toLocaleString()}</TableCell>
-                                <TableCell className="text-center">{sale.total} reais</TableCell>
-                                <TableCell className="text-center">{sale.paymentMethod}</TableCell>
+                                <TableCell className="font-medium">{purchase?.quantityOfProducts ?? '--'}</TableCell>
+                                <TableCell className="text-center">{new Date(purchase.createdAt).toLocaleString()}</TableCell>
+                                <TableCell className="text-center">{purchase.total} reais</TableCell>
+                                <TableCell className="text-center">{purchase.paymentMethod}</TableCell>
                                 <TableCell className="flex items-center justify-end gap-5">
-                                    <FileText className="cursor-pointer" onClick={() => alert("O recibo desta venda já esta sendo baixada, aguarde um instante.")} />
+                                    <FileText className="cursor-pointer" onClick={() => alert("O recibo desta compra já esta sendo baixada, aguarde um instante.")} />
                                     
                                     <Dialog>
                                         <DialogTrigger asChild>
@@ -126,14 +125,14 @@ function SalesTable() {
 
                                         <DialogContent className="max-w-[90%] md:max-w-[60%]">
                                             <DialogHeader>
-                                                <DialogTitle className="text-lg font-semibold border-b-2 border-wise-dark_green py-3">Venda efetuada em <span className="text-wise-dark_green">{new Date(sale?.createdAt)?.toLocaleString()}</span></DialogTitle>
+                                                <DialogTitle className="text-lg font-semibold border-b-2 border-wise-dark_green py-3">Compra realizada em <span className="text-wise-dark_green">{new Date(purchase?.createdAt)?.toLocaleString()}</span></DialogTitle>
 
                                                 <DialogDescription>
-                                                    Visualize e analise todas as informações das suas vendas.
+                                                    Visualize e analise todas as informações das suas compras.
                                                 </DialogDescription>
                                             </DialogHeader>
 
-                                           <UpdateSale sale={sale} />
+                                           <UpdatePurchase purchase={purchase} />
                                         </DialogContent>
                                     </Dialog>
                                 </TableCell>
@@ -146,4 +145,4 @@ function SalesTable() {
     )
 }
 
-export { SalesTable }
+export { PurchasesTable }

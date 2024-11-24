@@ -30,6 +30,45 @@ import {
 import { useContext, useEffect, useState } from "react"
 import { AuthContext } from "@/auth/AuthProvider"
 
+const commands = [
+    {
+        "action": "Ir para Perfil",
+        "command": "Alt + A"
+    },
+    {
+        "action": "Ir para Home",
+        "command": "Alt + H"
+    },  
+    {
+        "action": "Ir para VStock",
+        "command": "Alt + V"
+    }, 
+    {
+        "action": "Ir para Vendas",
+        "command": "Alt + S"
+    }, 
+    {
+        "action": "Ir para Clientes",
+        "command": "Alt + C"
+    },   
+    {
+        "action": "Ir para Produtos",
+        "command": "Alt + P"
+    },
+    {
+        "action": "Ir para Relatórios",
+        "command": "Alt + R"
+    },
+    {
+        "action": "Ir para Chatbot",
+        "command": "Alt + W"
+    },
+    {
+        "action": "Sair",
+        "command": "Alt + L"
+    },
+]
+
 
 function handlePageName(currentPageName){
     switch (currentPageName) {
@@ -202,11 +241,11 @@ function TopMenu() {
                         </DialogTrigger>
 
                         <DialogContent>
-                        <DialogHeader>
-                            <DialogTitle>Pesquisar</DialogTitle>
-                            <DialogDescription>
-                                Pesquise por páginas, produtos, containers...
-                            </DialogDescription>
+                        <   DialogHeader>
+                                <DialogTitle>Pesquisar</DialogTitle>
+                                <DialogDescription>
+                                    Pesquise por páginas, produtos, containers...
+                                </DialogDescription>
                             </DialogHeader>
 
                             <div className="w-full">
@@ -224,48 +263,31 @@ function TopMenu() {
 
                             <DropdownMenuLabel>
                                 <div>
-                                    Conheça os atalhos (arrumar texto)
+                                    Conheça os atalhos do sistema
                                 </div>
 
-                                <div>
-                                    Outro texto legal
-                                </div>
                             </DropdownMenuLabel>
 
                             <DropdownMenuSeparator />
 
-                            <div>
-                                <ul>
-                                    <li>
-                                        Ação 
-                                    </li>
-
-                                    <li>
-                                        Atalho 
-                                    </li>
-                                </ul>
-
-                                <ul>
-                                    <li>
-                                        <div>
-                                            Ir para a dashboard
-                                        </div>
-
-                                        <div>
-                                            Alt + h
-                                        </div>
-                                    </li>
-
-                                    <li>
-                                        <div>
-                                            Ir para relatórios
-                                        </div>
-
-                                        <div>
-                                            Alt + r
-                                        </div>
-                                    </li>
-                                </ul>
+                            <div className="p-2">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Ação</th>
+                                            <th>Atalho</th>
+                                        </tr>
+                                    </thead>
+                                    
+                                    <tbody>
+                                        {
+                                            commands.map((item, index) => <tr key={index}>
+                                                <td className="px-3 py-2 whitespace-nowrap">{item.action}</td>
+                                                <td  className="px-3 py-2 whitespace-nowrap">{item.command}</td>
+                                            </tr>)
+                                        }
+                                    </tbody>
+                                </table>
                             </div>
                         </DropdownMenuContent>
                     </DropdownMenu>

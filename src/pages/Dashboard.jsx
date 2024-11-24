@@ -6,6 +6,10 @@ import { ShortTable } from "@/components/_dashboard/ShortTable"
 import { ToastAction } from "@/components/ui/toast"
 import { ProductsContext } from "@/context/ProductsContextProvider"
 import { ChatTab } from "@/components/_stockwizard/ChatTab"
+import { BarChartCard } from "@/components/ui/horizontal-bar-chart"
+import { PieChartCard } from "@/components/ui/pie-chart"
+import { RadarChartCard } from "@/components/ui/radar-chart"
+import { LineChartCard } from "@/components/ui/line-chart"
 import { useToast } from "@/hooks/use-toast"
 import { Package2 } from "lucide-react"
 import { useContext, useEffect, useState } from "react"
@@ -208,10 +212,14 @@ function Dashboard() {
 
                     <section className='flex gap-2 flex-wrap'>
 
-                        {/* Grafico 1 */}
-                        
+                        <BarChartCard/>
 
-                        {/* Grafico 2 */}
+                        <PieChartCard/>
+                        
+                        <RadarChartCard/>
+
+                        <LineChartCard/>
+
                         
 
                     </section>

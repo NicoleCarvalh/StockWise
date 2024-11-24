@@ -22,6 +22,8 @@ import { PrivateRoute } from "./auth/PrivateRoute";
 import { SalesContextProvider } from "./context/SalesContextProvider";
 import { VirtualStockContextProvider } from "./context/VirtualStockContextProvider";
 import { QrScannerProvider } from "./context/ScannerContextProvider";
+import { ReportsContextProvider } from "./context/ReportsContextProvider";
+import { PurchasesContextProvider } from "./context/PurchasesContextProvider";
 // import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const router = createBrowserRouter(
@@ -116,15 +118,20 @@ createRoot(document.getElementById("root")).render(
     <AuthProvider>
         <ProductsContextProvider>
           <SalesContextProvider>
+            <PurchasesContextProvider>
 
-            <VirtualStockContextProvider>
+              <VirtualStockContextProvider>
 
-              <QrScannerProvider>
-                <RouterProvider router={router} />
-              </QrScannerProvider>
+                <QrScannerProvider>
+                  <ReportsContextProvider>
+                    <RouterProvider router={router} />
+                  </ReportsContextProvider>
 
-            </VirtualStockContextProvider>
+                </QrScannerProvider>
 
+              </VirtualStockContextProvider>
+
+            </PurchasesContextProvider>
           </SalesContextProvider>
         </ProductsContextProvider>
     </AuthProvider>

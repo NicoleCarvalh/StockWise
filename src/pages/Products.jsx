@@ -5,6 +5,7 @@ import { MainContainer } from "@/components/MainContainer"
 import { QRCodeScanner } from "@/components/QRCodeScanner"
 import { TopMenu } from "@/components/TopMenu"
 import { Button } from "@/components/ui/button"
+import { ChatTab } from "@/components/_stockwizard/ChatTab"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -92,6 +93,7 @@ function Products() {
                     {/* Create an pattern component to tables */}
                     <ProductsTable />
                 </section>
+                <ChatTab/>
             </MainContainer>
         </>
     )

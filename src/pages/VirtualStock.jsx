@@ -3,6 +3,7 @@ import { CreateContainer } from "@/components/_virtualStock/CreateContainer"
 import { MainContainer } from "@/components/MainContainer"
 import { TopMenu } from "@/components/TopMenu"
 import { Button } from "@/components/ui/button"
+import { ChatTab } from "@/components/_stockwizard/ChatTab"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -101,6 +102,7 @@ function VirtualStock() {
                 <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-3">
                     <ContainerList />
                 </section>
+                <ChatTab/>
             </MainContainer>
         </>
     )

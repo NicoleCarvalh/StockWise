@@ -3,6 +3,7 @@ import { TopMenu } from "@/components/TopMenu"
 import { CreateClient } from "@/components/_clients/CreateClient"
 import { ClientsTable } from "@/components/_clients/ClientsTable"
 import { Button } from "@/components/ui/button"
+import { ChatTab } from "@/components/_stockwizard/ChatTab"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -51,6 +52,7 @@ function Clients() {
                 <section>
                     <ClientsTable />
                 </section>
+                <ChatTab/>
             </MainContainer>
         </>
     )

@@ -43,7 +43,7 @@ function CreateSale({callAfterCreate = null}) {
 
       if(productsOrders.length < 1){
         toast({
-          title: "Você esqueceu de adicinonar os produtos!",
+          title: "Você esqueceu de adicionar os produtos!",
           variant: "destructive",
           description: "É necessário ter ao menos um produto cadastrado na compra.",
           action: (

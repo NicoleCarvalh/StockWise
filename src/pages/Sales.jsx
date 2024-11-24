@@ -3,6 +3,7 @@ import { TopMenu } from "@/components/TopMenu"
 import { CreateSale } from "@/components/_sales/CreateSale"
 import { SalesTable } from "@/components/_sales/SalesTable"
 import { Button } from "@/components/ui/button"
+import { ChatTab } from "@/components/_stockwizard/ChatTab"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -62,6 +63,7 @@ function Sales() {
                     {/* Create an pattern component to tables */}
                     <SalesTable />
                 </section>
+                <ChatTab/>
             </MainContainer>
         </>
     )

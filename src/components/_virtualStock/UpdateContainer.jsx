@@ -45,7 +45,7 @@ function UpdateContainer({container, closeCurrentModal}) {
   
         if(productsList.length < 1){
           toast({
-            title: "Você esqueceu de adicinonar os produtos!",
+            title: "Você esqueceu de adicionar os produtos!",
             variant: "destructive",
             description: "É necessário ter ao menos um produto cadastrado na compra.",
             action: (
@@ -58,7 +58,7 @@ function UpdateContainer({container, closeCurrentModal}) {
 
         if(categoriesList.length < 1){
             toast({
-              title: "Você esqueceu de adicinonar uma categoria!",
+              title: "Você esqueceu de adicionar uma categoria!",
               variant: "destructive",
               description: "Adicione ao menos uma categoria para o container.",
               action: (

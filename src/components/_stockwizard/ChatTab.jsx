@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import { SendHorizontal } from "lucide-react";
 import {
   Sheet,
@@ -6,14 +6,43 @@ import {
   SheetHeader,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { AuthContext } from "@/auth/AuthProvider";
 
 function ChatTab() {
-  const [message, setMessage] = useState(""); // Para armazenar a pergunta do usuário
-  const [chatMessages, setChatMessages] = useState([]); // Para armazenar as mensagens no chat
-  const [loading, setLoading] = useState(false); // Para controlar o carregamento da resposta
-  const companyId = "123"; // Substitua com o ID da sua empresa ou obtenha dinamicamente
+  const { credentials } = useContext(AuthContext)
 
-  // Função para carregar as mensagens anteriores (GET)
+  const [message, setMessage] = useState(""); // Armazenar pergunta 
+  const [chatMessages, setChatMessages] = useState([]); // Armazenar mensagens 
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [loading, setLoading] = useState(false); 
+  const companyId = credentials?.companyData?.id; 
+
+  // Atalho
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.altKey && event.key === "w") {
+        setIsChatOpen((prevState) => !prevState);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
+  
+  const chatContainerRef = useRef(null); 
+
+  const scrollToBottom = () => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  };
+
+
+
+  // Carregar mensagens anteriores (GET)
   const loadMessages = async () => {
     try {
       const response = await fetch(
@@ -21,66 +50,73 @@ function ChatTab() {
       );
       const data = await response.json();
 
-      // Armazenar as mensagens recebidas
-      setChatMessages(
-        data.responses
-          .map((response) => ({
-            text: response.question, // Pergunta
-            isUser: true, // Mensagem do usuário
-          }))
-          .concat(
-            data.responses.map((response) => ({
-              text: response.answer, // Resposta
-              isUser: false, // Resposta da API
-            }))
-          )
+      // Ordenar
+      const sortedMessages = data.responses.sort(
+        (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
       );
+
+      // Formatar 
+      const formattedMessages = sortedMessages.flatMap((response) => [
+        { text: response.question, isUser: true },
+        { text: response.answer, isUser: false },
+      ]);
+
+      setChatMessages(formattedMessages);
     } catch (error) {
       console.error("Erro ao carregar mensagens:", error);
     }
   };
 
-  // Função para lidar com o envio da pergunta (POST)
+  // Envio da pergunta (POST)
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Adicionar a pergunta do usuário ao chat (do lado do usuário)
-    setChatMessages([...chatMessages, { text: message, isUser: true }]);
+    const currentMessage = message;
+
+    // Add pergunta localmente
+    setChatMessages((prevMessages) => [
+      ...prevMessages,
+      { text: currentMessage, isUser: true },
+    ]);
+    setMessage("");
+
     setLoading(true);
 
     try {
-      // Enviar a pergunta para a API (substitua pela sua URL de API real)
       const response = await fetch("http://127.0.0.1:8000/chat", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ question: message, company_id: companyId }),
+        body: JSON.stringify({ question: currentMessage, company_id: companyId }),
       });
 
       const data = await response.json();
 
-      // Adicionar a resposta da API ao chat
-      setChatMessages([
-        ...chatMessages,
-        { text: message, isUser: true }, // Mensagem do usuário
-        { text: data.responses[0].answer, isUser: false }, // Resposta da API
+      // Add resposta localmente
+      setChatMessages((prevMessages) => [
+        ...prevMessages,
+        { text: data.response, isUser: false },
       ]);
     } catch (error) {
       console.error("Erro ao enviar a pergunta:", error);
     } finally {
-      setLoading(false); // Parar de carregar
-      setMessage(""); // Limpar o campo de input
+      setLoading(false);
     }
   };
 
-  // Carregar as mensagens ao montar o componente
+  // Carregar  mensagens 
   useEffect(() => {
-    loadMessages(); // Chama a função para carregar mensagens anteriores
-  }, []); // Executa uma vez ao carregar o componente
+    loadMessages();
+  }, []); 
+
+  // Scroll automático
+  useEffect(() => {
+    scrollToBottom();
+  }, [chatMessages, loading]);
 
   return (
-    <Sheet>
+    <Sheet open={isChatOpen} onOpenChange={setIsChatOpen}>
       <SheetTrigger
         className="fixed flex items-center gap-2 bottom-4 right-[2rem] text-[1rem] font-bold p-1 bg-black rounded-[5px] overflow-hidden transition-all duration-300 ease-in-out"
         style={{
@@ -111,7 +147,10 @@ function ChatTab() {
         </SheetHeader>
 
         {/* Chat Messages */}
-        <div className="flex-1 p-4 overflow-y-auto space-y-4 bg-gray-50">
+        <div
+          ref={chatContainerRef}
+          className="flex-1 p-4 overflow-y-auto space-y-4 bg-gray-50"
+        >
           {chatMessages.map((msg, index) => (
             <div
               key={index}
@@ -135,7 +174,7 @@ function ChatTab() {
             <input
               type="text"
               value={message}
-              onChange={(e) => setMessage(e.target.value)} // Atualiza o estado com o valor do input
+              onChange={(e) => setMessage(e.target.value)}
               placeholder="Dica: use 'pesquise...' para resultados da web"
               className="flex-1 p-2 text-sm border font-medium rounded-lg outline-none focus:ring-2 focus:ring-wise-hyper_light_green"
             />

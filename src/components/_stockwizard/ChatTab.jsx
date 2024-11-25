@@ -240,7 +240,7 @@ function ChatTab() {
                   ? "bg-green-200 text-gray-800 w-[92%] justify-self-end"
                   : "bg-gray-200 text-gray-800 max-w-[92%] text-pretty"
               }`}
-            > {console.log(msg.text)}
+            >
               {renderFormattedMessage(msg.text)}
             </div>
           ))}

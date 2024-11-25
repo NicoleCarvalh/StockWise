@@ -19,9 +19,8 @@ function ChatTab() {
 
   const renderFormattedMessage = (text) => {
     if (typeof text !== "string") {
-      // Se for um objeto, processe as propriedades
       if (typeof text === "object" && text !== null) {
-        // Aqui você pode tratar a renderização de objetos com as propriedades title, link, snippet
+        // Renderização de objetos 
         return (
           <>
             {text.title && <h3>{text.title}</h3>}
@@ -40,11 +39,10 @@ function ChatTab() {
         );
       }
   
-      // Se o tipo for outro objeto que você não espera, pode renderizar um erro ou nada
       return <p>Formato de mensagem desconhecido</p>;
     }
   
-    // Caso seja uma string, trate como antes
+    // Renderizar string
     const urlRegex = /(https?:\/\/[^\s:]+[^\s.])/;
     const parts = text.split(urlRegex);
   
@@ -87,10 +85,12 @@ function ChatTab() {
 
   const scrollToBottom = () => {
     if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTo({
-        top: chatContainerRef.current.scrollHeight,
-        behavior: "smooth",
-      });
+      setTimeout(() => {
+        chatContainerRef.current.scrollTo({
+          top: chatContainerRef.current.scrollHeight,
+          behavior: "smooth",
+        });
+      }, 50);
     }
   };
 
@@ -125,7 +125,7 @@ function ChatTab() {
   
     const currentMessage = message;
   
-    // Adicionar pergunta do usuário localmente
+    // Add pergunta do usuário local
     setChatMessages((prevMessages) => [
       ...prevMessages,
       { text: currentMessage, isUser: true },
@@ -148,7 +148,7 @@ function ChatTab() {
   
       const data = await response.json();
   
-      // Lógica para mensagens de "pesquise"
+      // Lógica para "pesquise"
       const isSearchRequest = currentMessage.toLowerCase().includes("pesquise");
       let formattedResponse;
   
@@ -164,7 +164,7 @@ function ChatTab() {
         formattedResponse = data.response;
       }
   
-      // Adicionar resposta localmente
+      // Add resposta localmente
       setChatMessages((prevMessages) => [
         ...prevMessages,
         { text: formattedResponse, isUser: false },
@@ -177,10 +177,11 @@ function ChatTab() {
       ]);
     } finally {
       setLoading(false);
+      loadMessages();
     }
   };
 
-  // Carregar  mensagens
+  // Carregar mensagens
   useEffect(() => {
     loadMessages();
   }, []);
@@ -221,11 +222,13 @@ function ChatTab() {
           </p>
         </SheetHeader>
 
-        {/* {chatMessages.length === 0 && !loading && (
+
+        {chatMessages.length === 0 && !loading && (
           <div className="text-center text-gray-400">
             Nenhuma conversa ainda. Comece enviando uma pergunta!
           </div>
-        )} */}
+        )}
+
 
         {/* Chat Messages */}
         <div

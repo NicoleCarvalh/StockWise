@@ -8,8 +8,15 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { UserPlus2, UserRoundSearch } from "lucide-react"
+import { useContext, useEffect, useRef } from "react"
+import { ClientContext } from "@/context/ClientsContextProvider"
 
 function Clients() {
+    const modalRef = useRef()
+    const { clients, setClients, refreshClients } = useContext(ClientContext)
+
+    useEffect(() => {refreshClients()}, [])
+
     return (
         <>
             <TopMenu />
@@ -27,7 +34,7 @@ function Clients() {
                         </Label>
 
                         <Dialog>
-                            <DialogTrigger asChild>
+                            <DialogTrigger asChild ref={modalRef}>
                                 <Button className='flex-1 flex gap-3 items-center bg-wise-hyper_black text-wise-hyper_light_green h-[40px] hover:bg-wise-hyper_black hover:text-wise-light_white transition-all'>
                                     <UserPlus2 />
                                     Cadastrar novo cliente
@@ -42,7 +49,7 @@ function Clients() {
                                     </DialogTitle>
                                 </DialogHeader>
 
-                                <CreateClient />
+                                <CreateClient callAfterCreate={() => modalRef.current.click()} />
                             </DialogContent>
                         </Dialog>
                         

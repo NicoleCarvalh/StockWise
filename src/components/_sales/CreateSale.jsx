@@ -10,11 +10,14 @@ import { ProductsContext } from "@/context/ProductsContextProvider";
 import { SalesContext } from "@/context/SalesContextProvider";
 import jsPDF from "jspdf";
 import { ReportTemplate } from "../_reports/Template";
+import { ClientContext } from "@/context/ClientsContextProvider";
 
 function CreateSale({callAfterCreate = null}) {
     const {credentials} = useContext(AuthContext) 
     const { refreshSales } = useContext(SalesContext)
     const { refreshProducts } = useContext(ProductsContext)
+    const { clients, setClients, refreshClients } = useContext(ClientContext)
+
     const [currentAddProduct, setCurrentAddProduct] = useState('')
     const [productsList, setProductsList] = useState([])
     const [productsOrders, setProductsOrders] = useState([])
@@ -259,14 +262,18 @@ function CreateSale({callAfterCreate = null}) {
               Nome do cliente
             </label>
 
-            <Input id="client" name="client" required value={client} onChange={(ev) => setClient(ev.target.value)} />
+            <Input id="client_list" name="client" required value={client} onChange={(ev) => setClient(ev.target.value)} />
             {/* <Input list="client_list" id="client" name="client" required /> */}
-            {/* <datalist id="supplier_list">
-              <option value="Casas Bahia">Casas Bahia</option>
+            <datalist id="client_list">
+              {
+                clients.map(client => <option key={client.id} value={client.name}>{client.name}</option>)
+              }
+
+              {/* <option value="Casas Bahia">Casas Bahia</option>
               <option value="JBL">JBL - Tecnologia de ponta</option>
               <option value="Dell">Dell - Inovação tecnologica</option>
-              <option value="Zara">Zara - Varejo mundial</option>
-            </datalist> */}
+              <option value="Zara">Zara - Varejo mundial</option> */}
+            </datalist>
           </div>
         
           <div className="flex flex-col gap-2 flex-1">

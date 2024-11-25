@@ -7,11 +7,13 @@ import { ProductsContext } from "@/context/ProductsContextProvider"
 import clsx from "clsx"
 import { Button } from "./ui/button"
 import { VirtualStockContext } from "@/context/VirtualStockContextProvider"
+import { ClientContext } from "@/context/ClientsContextProvider"
 
 export function DeleteButton({entityDeleted, databaseEntity, variant, callBackAfterDelete, buttonClassName="", children}) {
     const {credentials} = useContext(AuthContext) 
     const { refreshProducts } = useContext(ProductsContext)
     const { refreshStocks } = useContext(VirtualStockContext)
+    const { refreshClients } = useContext(ClientContext)
 
     const { toast } = useToast()
 
@@ -24,6 +26,7 @@ export function DeleteButton({entityDeleted, databaseEntity, variant, callBackAf
         }).then(json => json.json()).then((excludedEntity) => {
             refreshProducts()
             refreshStocks()
+            refreshClients()
             toast({
                 title: `${excludedEntity?.name ?? 'Registro'} excluído com sucesso!`,
                 action: (

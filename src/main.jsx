@@ -24,6 +24,7 @@ import { VirtualStockContextProvider } from "./context/VirtualStockContextProvid
 import { QrScannerProvider } from "./context/ScannerContextProvider";
 import { ReportsContextProvider } from "./context/ReportsContextProvider";
 import { PurchasesContextProvider } from "./context/PurchasesContextProvider";
+import { ClientContextProvider } from "./context/ClientsContextProvider";
 // import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const router = createBrowserRouter(
@@ -124,9 +125,14 @@ createRoot(document.getElementById("root")).render(
 
                 <QrScannerProvider>
                   <ReportsContextProvider>
-                    <RouterProvider router={router} />
-                  </ReportsContextProvider>
 
+
+                    <ClientContextProvider>
+                      <RouterProvider router={router} />
+                    </ClientContextProvider>
+                  
+
+                  </ReportsContextProvider>
                 </QrScannerProvider>
 
               </VirtualStockContextProvider>

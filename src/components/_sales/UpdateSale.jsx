@@ -60,7 +60,7 @@ function UpdateSale({sale}) {
 
                             <div className="flex flex-col items-end gap-1">
                                 <h4>Quantidade</h4>
-                                <p>{Math.round(Math.random() * 10)}</p>
+                                <p>{Math.round(Math.random() * 1)}</p>
                             </div>
                         </li>
                     )) : <i>Nenhum produto adicionado ainda...</i>

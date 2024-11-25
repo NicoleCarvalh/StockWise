@@ -8,17 +8,19 @@ import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "../ui/toast";
 import { ProductsContext } from "@/context/ProductsContextProvider";
 import { SalesContext } from "@/context/SalesContextProvider";
-import jsPDF from "jspdf";
+// import jsPDF from "jspdf";
 import { ReportTemplate } from "../_reports/Template";
 import { ClientContext } from "@/context/ClientsContextProvider";
+import { CreateSalePDFCompany } from "./pdfMakeSaleCompany";
 
 function CreateSale({callAfterCreate = null}) {
     const {credentials} = useContext(AuthContext) 
     const { refreshSales } = useContext(SalesContext)
     const { refreshProducts } = useContext(ProductsContext)
     const { clients, setClients, refreshClients } = useContext(ClientContext)
-
     const [currentAddProduct, setCurrentAddProduct] = useState('')
+    const [clientWasFound, setClientWasFound] = useState(false)
+
     const [productsList, setProductsList] = useState([])
     const [productsOrders, setProductsOrders] = useState([])
     const [client, setClient] = useState('')
@@ -44,33 +46,52 @@ function CreateSale({callAfterCreate = null}) {
       setTotal(totalCalc)
     }, [productsOrders])
 
-    async function handleDownloadPDF(fileName) {
-      const doc = new jsPDF({
-        orientation: "p",
-        unit: "mm",
-        format: "a4",
-        putOnlyUsedFonts: true,
-      });
-  
-      doc.setFontSize(12)
-  
-      let file
+    useEffect(() => refreshClients(), [])
+
+    function handleClientName(onputEvent) {
+      setClient(onputEvent.target.value)
+
+      const foundClient = clients.filter(foundClient => foundClient.name.includes(client))
     
-      // Utilizamos uma promessa para lidar com a callback
-      await doc.html(containerToPrintRef.current, {
-        callback: (doc) => {
-          const fileNameWithExtension = `${fileName.replace(' ', '_') ?? 'relatório'}.pdf`;
-  
-          doc.save(fileNameWithExtension)
-          
-          const blob = doc.output("blob")
-  
-          file = new File([blob], `${fileName}.pdf`, { type: "application/pdf" });
-        },
-      });
-    
-      return file;
+      if(foundClient.length == 1 && !clientWasFound) {
+        setClient(foundClient[0]?.name ?? '')
+        setClientEmail(foundClient[0]?.email ?? '')
+
+        setClientWasFound(foundClient)
+
+        return
+      }
+
+      setClientWasFound(false)
     }
+
+    // async function handleDownloadPDF(fileName) {
+    //   const doc = new jsPDF({
+    //     orientation: "p",
+    //     unit: "mm",
+    //     format: "a4",
+    //     putOnlyUsedFonts: true,
+    //   });
+  
+    //   doc.setFontSize(12)
+  
+    //   let file
+    
+    //   // Utilizamos uma promessa para lidar com a callback
+    //   await doc.html(containerToPrintRef.current, {
+    //     callback: (doc) => {
+    //       const fileNameWithExtension = `${fileName.replace(' ', '_') ?? 'relatório'}.pdf`;
+  
+    //       doc.save(fileNameWithExtension)
+          
+    //       const blob = doc.output("blob")
+  
+    //       file = new File([blob], `${fileName}.pdf`, { type: "application/pdf" });
+    //     },
+    //   });
+    
+    //   return file;
+    // }
 
     async function handleSubmitForm(formEvent) {
       formEvent.preventDefault()
@@ -88,8 +109,18 @@ function CreateSale({callAfterCreate = null}) {
         return
       }
 
-      const currentDate = new Date().toLocaleString()
-      const file = await handleDownloadPDF(currentDate);
+      // const file = await handleDownloadPDF(currentDate);
+      const file = await CreateSalePDFCompany(
+        {
+          title: `Comprovante de compra - ${new Date().getFullYear()}`, 
+          generatedAt: new Date().toLocaleString(),
+          client,
+          clientEmail,
+          paymentMethod,
+          total: Number(total.toFixed(2)),
+          orders: productsOrders
+        }
+      )
   
       const formData = new FormData()
       formData.append("file", file);
@@ -262,11 +293,13 @@ function CreateSale({callAfterCreate = null}) {
               Nome do cliente
             </label>
 
-            <Input id="client_list" name="client" required value={client} onChange={(ev) => setClient(ev.target.value)} />
+            <Input id="client_list" name="client" required value={client} onChange={handleClientName} />
             {/* <Input list="client_list" id="client" name="client" required /> */}
             <datalist id="client_list">
+              {/* {console.log("CLIENTES")}
+              {console.log(clients)} */}
               {
-                clients.map(client => <option key={client.id} value={client.name}>{client.name}</option>)
+                clients.map(foundClient => <option key={foundClient.id} value={foundClient.name}>{foundClient.name}</option>)
               }
 
               {/* <option value="Casas Bahia">Casas Bahia</option>

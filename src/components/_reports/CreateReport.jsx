@@ -7,43 +7,53 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { AuthContext } from "@/auth/AuthProvider";
+import { CreateReportPDFMake } from "./pdfMakeReport";
+import { ProductsContext } from "@/context/ProductsContextProvider";
+import { SalesContext } from "@/context/SalesContextProvider";
+import { PurchasesContext } from "@/context/PurchasesContextProvider";
 
 function CreateReport({ closeCurrentModal }) {
   const { credentials } = useContext(AuthContext)
+  const { products } = useContext(ProductsContext)
+  const { sales } = useContext(SalesContext)
+  const { purchase } = useContext(PurchasesContext)
+
 
   const containerToPrintRef = useRef(null);
   const [title, setTitle] = useState("");
   const [initialDate, setInitialDate] = useState("");
   const [finalDate, setFinalDate] = useState("");
+  const [period, setPeriod] = useState("");
+
   const { toast } = useToast();
 
-  async function handleDownloadPDF(fileName) {
-    const doc = new jsPDF({
-      orientation: "p",
-      unit: "mm",
-      format: "a4",
-      putOnlyUsedFonts: true,
-    });
+  // async function handleDownloadPDF(fileName) {
+  //   const doc = new jsPDF({
+  //     orientation: "p",
+  //     unit: "mm",
+  //     format: "a4",
+  //     putOnlyUsedFonts: true,
+  //   });
 
-    doc.setFontSize(12)
+  //   doc.setFontSize(12)
 
-    let file
+  //   let file
   
-    // Utilizamos uma promessa para lidar com a callback
-    await doc.html(containerToPrintRef.current, {
-      callback: (doc) => {
-        const fileNameWithExtension = `${fileName.replace(' ', '_') ?? 'relatório'}.pdf`;
+  //   // Utilizamos uma promessa para lidar com a callback
+  //   await doc.html(containerToPrintRef.current, {
+  //     callback: (doc) => {
+  //       const fileNameWithExtension = `${fileName.replace(' ', '_') ?? 'relatório'}.pdf`;
 
-        doc.save(fileNameWithExtension)
+  //       doc.save(fileNameWithExtension)
         
-        const blob = doc.output("blob")
+  //       const blob = doc.output("blob")
 
-        file = new File([blob], `${fileName}.pdf`, { type: "application/pdf" });
-      },
-    });
+  //       file = new File([blob], `${fileName}.pdf`, { type: "application/pdf" });
+  //     },
+  //   });
   
-    return file;
-  }
+  //   return file;
+  // }
 
   const handleSubmit = async (ev) => {
     ev.preventDefault();
@@ -80,9 +90,21 @@ function CreateReport({ closeCurrentModal }) {
 
     const LocaleDateOfInitialDate = initialDataFormatted.toLocaleDateString()
     const LocaleDateOfFinalDate = finalDataFormatted.toLocaleDateString()
-    const period = `De: ${LocaleDateOfInitialDate} até ${LocaleDateOfFinalDate}`
+    const period = `De ${LocaleDateOfInitialDate} até ${LocaleDateOfFinalDate}`
 
-    const file = await handleDownloadPDF(period);
+    setPeriod(period)
+
+    const file = await CreateReportPDFMake(
+      {
+        title: `Relatório de vedas do StockWise - ${new Date().getFullYear()}`, 
+        formattedPeriod: period, 
+        purchases: purchase,
+        period: period.replace(" ", "_"), 
+        generatedAt: new Date().toLocaleString(),
+        products,
+        sales
+      }
+    )
 
     const formData = new FormData();
     formData.append("file", file);
@@ -95,9 +117,10 @@ function CreateReport({ closeCurrentModal }) {
       },
       body: formData,
     })
-    .then((response) => response.json())
+    .then((response) => {
+      return response.json()
+    })
     .then(data => {
-
       if(data?.ERROR) {
         toast({
             title: "Ocorreu um erro durante a operação!",

@@ -135,6 +135,10 @@
   }
 }
 
+.rpv-core__inner-pages {
+  overflow: hidden !important; /* Remove o scroll */
+}
+
 
 /* Firefox (uncomment to work in Firefox, although other properties will not work!)  */
 /** {

@@ -11,7 +11,7 @@ import { ChatTab } from "@/components/_stockwizard/ChatTab";
 function Profile() {
   const { isLogged, credentials } = useContext(AuthContext);
   const currentUser = credentials?.companyData;
-  console.log(currentUser);
+
   const [blockEdit, setBlockEdit] = useState(true);
   const [inputs, setInputs] = useState({
     email: "email.usuario@gmai.com",

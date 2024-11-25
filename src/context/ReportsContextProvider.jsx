@@ -19,9 +19,25 @@ function ReportsContextProvider({children}) {
             headers: {
               "Authorization": `Bearded ${token}`
             }
-        }).then(json => json.json()).then(data => setReports(data)).catch(error => {
+        }).then(json => json.json()).then(data => {
+            if(data?.ERROR) {
+
+                toast({
+                    title: "Ocorreu um erro durante a busca por relatórios!",
+                    variant: "destructive",
+                    description: <p>{error?.message} <br/> Favor, saia do sistema e faça o login novamente.</p>,
+                    action: (
+                      <ToastAction altText="Fechar" onClick={() => window.location.href = "/"}>Ir para o login</ToastAction>
+                    )
+                })
+
+                return
+            }
+            
+            setReports(data)
+        }).catch(error => {
             toast({
-                title: "Ocorreu um erro durante a busca por vendas!",
+                title: "Ocorreu um erro durante a busca por relatórios!",
                 variant: "destructive",
                 description: <p>{error?.message} <br/> Favor, saia do sistema e faça o login novamente.</p>,
                 action: (

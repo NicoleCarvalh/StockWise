@@ -10,6 +10,7 @@ import { ProductsContext } from "@/context/ProductsContextProvider";
 import { PurchasesContext } from "@/context/PurchasesContextProvider";
 import jsPDF from "jspdf";
 import { ReportTemplate } from "../_reports/Template";
+import { CreatePurchasePDF } from "./pdfMakePurchase";
 
 function CreatePurchase({callAfterCreate = null}) {
     const {credentials} = useContext(AuthContext) 
@@ -42,33 +43,33 @@ function CreatePurchase({callAfterCreate = null}) {
       setTotal(totalCalc)
     }, [productsOrders])
 
-    async function handleDownloadPDF(fileName) {
-      const doc = new jsPDF({
-        orientation: "p",
-        unit: "mm",
-        format: "a4",
-        putOnlyUsedFonts: true,
-      });
+    // async function handleDownloadPDF(fileName) {
+    //   const doc = new jsPDF({
+    //     orientation: "p",
+    //     unit: "mm",
+    //     format: "a4",
+    //     putOnlyUsedFonts: true,
+    //   });
   
-      doc.setFontSize(12)
+    //   doc.setFontSize(12)
   
-      let file
+    //   let file
     
-      // Utilizamos uma promessa para lidar com a callback
-      await doc.html(containerToPrintRef.current, {
-        callback: (doc) => {
-          const fileNameWithExtension = `${fileName.replace(' ', '_') ?? 'relatório'}.pdf`;
+    //   // Utilizamos uma promessa para lidar com a callback
+    //   await doc.html(containerToPrintRef.current, {
+    //     callback: (doc) => {
+    //       const fileNameWithExtension = `${fileName.replace(' ', '_') ?? 'relatório'}.pdf`;
   
-          doc.save(fileNameWithExtension)
+    //       doc.save(fileNameWithExtension)
           
-          const blob = doc.output("blob")
+    //       const blob = doc.output("blob")
   
-          file = new File([blob], `${fileName}.pdf`, { type: "application/pdf" });
-        },
-      });
+    //       file = new File([blob], `${fileName}.pdf`, { type: "application/pdf" });
+    //     },
+    //   });
     
-      return file;
-    }
+    //   return file;
+    // }
 
     async function handleSubmitForm(formEvent) {
       formEvent.preventDefault()
@@ -87,8 +88,21 @@ function CreatePurchase({callAfterCreate = null}) {
       }
 
       const currentDate = new Date().toLocaleString()
-      const file = await handleDownloadPDF(currentDate);
+
+      // const file = await handleDownloadPDF(currentDate);
   
+      const file = await CreatePurchasePDF(
+        {
+          title: `Comprovante de venda - ${new Date().getFullYear()}`, 
+          generatedAt: new Date().toLocaleString(),
+          client,
+          clientEmail,
+          paymentMethod,
+          total: Number(total.toFixed(2)),
+          orders: productsOrders
+        }
+      )
+
       const formData = new FormData()
       formData.append("file", file);
 

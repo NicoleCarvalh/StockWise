@@ -76,9 +76,9 @@ function Reports() {
           <h1 className="text-xl font-semibold">Recentes</h1>
 
           <div className="flex gap-4 flex-wrap items-center">
-          {!reports || reports.length < 1 ? <i>Ainda não existem relatórios por aqui...</i> : reports && reports.map((item, index) => (
+          {(!reports || reports.length < 1) ? <i>Ainda não existem relatórios por aqui...</i> : reports.map((item, index) => (
               <Dialog key={index}>
-                <DialogTrigger className="flex-1 min-w-[250px] p-2 pr-8 bg-wise-hyper_white flex gap-3 rounded-md min-h-[80px] cursor-pointer">
+                <DialogTrigger className="flex-1 min-w-[250px] max-w-[30%] p-2 pr-8 bg-wise-hyper_white flex gap-3 rounded-md min-h-[80px] cursor-pointer">
                     <div className="min-h-full  flex items-center p-4 rounded-sm text-wise-dark_green">
                       <FileChartColumn size={30} />
                     </div>
@@ -94,7 +94,7 @@ function Reports() {
                     </div>
                 </DialogTrigger>
 
-                <DialogContent>
+                <DialogContent className="montserrat overflow-x-hidden max-w-[90%] md:max-w-[60%]">
                   <DialogHeader>
                     <DialogTitle>
                       Relatório
@@ -117,9 +117,9 @@ function Reports() {
           <h1 className="text-xl font-semibold">Todos</h1>
 
           <div className="flex gap-4 flex-wrap items-center">
-            {!reports || reports.length < 1 ? <i>Ainda não existem relatórios por aqui...</i>: reports.map((item, index) => (
+            {(!reports || reports.length < 1) ? <i>Ainda não existem relatórios por aqui...</i> : reports.map((item, index) => (
               <Dialog key={index}>
-                <DialogTrigger className="flex-1 min-w-[250px] p-2 pr-8 bg-wise-hyper_white flex gap-3 rounded-md min-h-[80px] cursor-pointer">
+                <DialogTrigger className="flex-1 min-w-[250px] max-w-[30%] p-2 pr-8 bg-wise-hyper_white flex gap-3 rounded-md min-h-[80px] cursor-pointer">
                     <div className="min-h-full  flex items-center p-4 rounded-sm text-wise-dark_green">
                       <FileChartColumn size={30} />
                     </div>
@@ -135,7 +135,7 @@ function Reports() {
                     </div>
                 </DialogTrigger>
 
-                <DialogContent>
+                <DialogContent className="montserrat overflow-x-hidden max-w-[90%] md:max-w-[60%]">
                   <DialogHeader>
                     <DialogTitle>
                       Relatório

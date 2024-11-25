@@ -111,7 +111,6 @@ function CreateReport({ closeCurrentModal }) {
         return
       }
 
-
       toast({
         title: "Cópia do relatório salvo!",
         description: (
@@ -124,7 +123,7 @@ function CreateReport({ closeCurrentModal }) {
     })
     .catch((error) => console.error(error));
 
-    // closeCurrentModal && closeCurrentModal();
+    closeCurrentModal && closeCurrentModal();
 
     toast({
       title: "O relatório em processamento.",

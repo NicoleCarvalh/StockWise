@@ -60,7 +60,7 @@ function UpdatePurchase({purchase}) {
 
                             <div className="flex flex-col items-end gap-1">
                                 <h4>Quantidade</h4>
-                                <p>XX</p>
+                                <p>{Math.floor(Math.random() * 1)}</p>
                             </div>
                         </li>
                     )) : <i>Nenhum produto adicionado ainda...</i>

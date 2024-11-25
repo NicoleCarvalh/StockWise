@@ -25,7 +25,7 @@ function Reports() {
   const createReportModalRef = useRef()
   const { reports, setReports, refreshReports } = useContext(ReportsContext)
 
-  useEffect(() => refreshReports, [])
+  useEffect(() => refreshReports(), [])
 
   return (
     <>

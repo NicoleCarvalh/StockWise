@@ -26,7 +26,7 @@ function ProductsTable() {
     const { products, setProducts, refreshProducts } = useContext(ProductsContext)
     const printQrCode = useReactToPrint({contentRef: qrCodeToPrintRef})
 
-    useEffect(() => refreshProducts, [])
+    useEffect(() => refreshProducts(), [])
     // useEffect(() => {
     //     console.log("AQUI PRODUCTS")
     //     console.log(products)

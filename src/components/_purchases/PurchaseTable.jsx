@@ -19,12 +19,13 @@ import { useToast } from "@/hooks/use-toast"
 import { ToastAction } from "../ui/toast"
 import { PurchasesContext } from "@/context/PurchasesContextProvider"
 import { UpdatePurchase } from "./UpdatePurchase"
+import { PdfViewer } from "../_reports/PdfViewer"
 
 // TODO: change to component: Data table 
 // TODO: Create an pattern component to tables
 function PurchasesTable() {
     const {credentials} = useContext(AuthContext) 
-    const {purchases} = useContext(PurchasesContext) 
+    const {purchases, refreshPurchases} = useContext(PurchasesContext) 
     const [purchasesList, setPurchasesList] = useState([])
     const { toast } = useToast()
 
@@ -34,7 +35,6 @@ function PurchasesTable() {
               "Authorization": `Bearded ${credentials.token}`,
             }
           }).then(json => json.json()).then(data => {
-            console.log(data)
             if(data?.ERROR) {
                 toast({
                     title: "Ocorreu um erro durante a busca pelas compras.",
@@ -65,7 +65,7 @@ function PurchasesTable() {
                 newTransactionsData.push(newTransaction)
             })
 
-
+            // refreshPurchases()
             setPurchasesList(newTransactionsData)
           }).catch(error => {
             toast({
@@ -79,9 +79,9 @@ function PurchasesTable() {
           })
     }, [])
 
-    useEffect(() => {
-        setPurchasesList(purchases)
-    }, [purchases])
+    // useEffect(() => {
+    //     setPurchasesList(purchases)
+    // }, [purchases])
 
 
     return (
@@ -111,12 +111,33 @@ function PurchasesTable() {
                                     <Checkbox />
                                 </TableCell>
 
-                                <TableCell className="font-medium">{purchase?.quantityOfProducts ?? '--'}</TableCell>
+                                <TableCell>
+                                    <span className="font-medium">{purchase?.quantityOfProducts ?? '--'}</span> produtos vendidos
+                                </TableCell>
                                 <TableCell className="text-center">{new Date(purchase.createdAt).toLocaleString()}</TableCell>
                                 <TableCell className="text-center">{purchase.total} reais</TableCell>
                                 <TableCell className="text-center">{purchase.paymentMethod}</TableCell>
                                 <TableCell className="flex items-center justify-end gap-5">
-                                    <FileText className="cursor-pointer" onClick={() => alert("O recibo desta compra já esta sendo baixada, aguarde um instante.")} />
+                                    <Dialog>
+                                        <DialogTrigger asChild>
+                                            <FileText className="cursor-pointer"/>
+                                        </DialogTrigger>
+
+                                        <DialogContent className="max-w-[90%] md:max-w-[60%]">
+                                            <DialogHeader>
+                                                <DialogTitle>
+                                                    Compra realizada em {new Date(purchase.createdAt).toLocaleString()}
+                                                </DialogTitle>
+
+                                                <DialogDescription>
+                                                    Analise tudo
+                                                </DialogDescription>
+                                            </DialogHeader>
+
+
+                                            {purchase?.fileUrl && <PdfViewer url={purchase.fileUrl} />}
+                                        </DialogContent>
+                                    </Dialog>
                                     
                                     <Dialog>
                                         <DialogTrigger asChild>

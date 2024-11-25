@@ -8,7 +8,7 @@ const ReportTemplate = forwardRef(
     const { products, refreshProducts } = useContext(ProductsContext)
 
     useEffect(() => {
-      console.log("Template de relatórios foi carrego.")
+      console.log("Template de relatórios foi carregado.")
 
       refreshProducts()
       refreshSales()

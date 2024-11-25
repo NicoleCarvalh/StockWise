@@ -1,13 +1,15 @@
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Plus, Search } from "lucide-react";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { QRCodeScanner } from "../QRCodeScanner";
 import { AuthContext } from "@/auth/AuthProvider";
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "../ui/toast";
 import { ProductsContext } from "@/context/ProductsContextProvider";
 import { PurchasesContext } from "@/context/PurchasesContextProvider";
+import jsPDF from "jspdf";
+import { ReportTemplate } from "../_reports/Template";
 
 function CreatePurchase({callAfterCreate = null}) {
     const {credentials} = useContext(AuthContext) 
@@ -16,6 +18,7 @@ function CreatePurchase({callAfterCreate = null}) {
     const [currentAddProduct, setCurrentAddProduct] = useState('')
     const [productsList, setProductsList] = useState([])
     const [productsOrders, setProductsOrders] = useState([])
+    const containerToPrintRef = useRef(null);
 
     const [client, setClient] = useState(credentials?.companyData?.name ?? '')
     const [clientEmail, setClientEmail] = useState(credentials?.companyData?.email ?? '')
@@ -39,7 +42,35 @@ function CreatePurchase({callAfterCreate = null}) {
       setTotal(totalCalc)
     }, [productsOrders])
 
-    function handleSubmitForm(formEvent) {
+    async function handleDownloadPDF(fileName) {
+      const doc = new jsPDF({
+        orientation: "p",
+        unit: "mm",
+        format: "a4",
+        putOnlyUsedFonts: true,
+      });
+  
+      doc.setFontSize(12)
+  
+      let file
+    
+      // Utilizamos uma promessa para lidar com a callback
+      await doc.html(containerToPrintRef.current, {
+        callback: (doc) => {
+          const fileNameWithExtension = `${fileName.replace(' ', '_') ?? 'relatório'}.pdf`;
+  
+          doc.save(fileNameWithExtension)
+          
+          const blob = doc.output("blob")
+  
+          file = new File([blob], `${fileName}.pdf`, { type: "application/pdf" });
+        },
+      });
+    
+      return file;
+    }
+
+    async function handleSubmitForm(formEvent) {
       formEvent.preventDefault()
 
       if(productsOrders.length < 1){
@@ -55,22 +86,26 @@ function CreatePurchase({callAfterCreate = null}) {
         return
       }
 
+      const currentDate = new Date().toLocaleString()
+      const file = await handleDownloadPDF(currentDate);
+  
+      const formData = new FormData()
+      formData.append("file", file);
+
+      formData.append("products", JSON.stringify(productsList));
+      formData.append("clientName", client);
+      formData.append("clientEmail", clientEmail);
+      formData.append("paymentMethod", paymentMethod);
+      formData.append("total", Number(total.toFixed(2)));
+      formData.append("type",  "PURCHASE");
+      formData.append("orders", JSON.stringify(productsOrders));
+
       fetch(`${import.meta.env.VITE_API_BASE_URL}/transaction`, {
         method: "POST",
         headers: {
-          "Authorization": `Bearded ${credentials.token}`,
-          "Content-Type": "application/json"
+          "Authorization": `Bearded ${credentials.token}`
         },
-        body: JSON.stringify({
-          products: productsOrders,
-          clientName: client,
-          clientEmail,
-          paymentMethod,
-          total: Number(total.toFixed(2)),
-          type: "PURCHASE",
-          orders: productsOrders
-        })
-
+        body: formData
       }).then(json => json.json()).then(data => {
         if(data?.ERROR) {
           toast({
@@ -201,6 +236,10 @@ function CreatePurchase({callAfterCreate = null}) {
               <option value="Zara">Zara - Varejo mundial</option>
             </datalist>
           </div> */}
+
+          <div className="hidden">
+            <ReportTemplate ref={containerToPrintRef} title={clientEmail} />
+          </div>
 
           <div className="flex flex-col gap-2">
             <label htmlFor="client">

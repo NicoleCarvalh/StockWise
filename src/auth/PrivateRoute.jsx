@@ -22,7 +22,6 @@ function PrivateRoute({ children }) {
   const currentDate = new Date();
   const tokenExpired = currentDate >= expirationDate;
 
-
   useEffect(() => {
     if (tokenExpired) {
       toast({
@@ -35,8 +34,6 @@ function PrivateRoute({ children }) {
         ),
         action: <ToastAction altText="Fechar">Fechar</ToastAction>,
       });
-
-      navigate('/')
     }
   }, [tokenExpired]); // Chama apenas quando `tokenExpired` mudar para `true`
 

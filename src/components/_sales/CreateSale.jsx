@@ -1,13 +1,15 @@
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Plus, Search } from "lucide-react";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { QRCodeScanner } from "../QRCodeScanner";
 import { AuthContext } from "@/auth/AuthProvider";
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "../ui/toast";
 import { ProductsContext } from "@/context/ProductsContextProvider";
 import { SalesContext } from "@/context/SalesContextProvider";
+import jsPDF from "jspdf";
+import { ReportTemplate } from "../_reports/Template";
 
 function CreateSale({callAfterCreate = null}) {
     const {credentials} = useContext(AuthContext) 
@@ -19,6 +21,7 @@ function CreateSale({callAfterCreate = null}) {
     const [client, setClient] = useState('')
     const [clientEmail, setClientEmail] = useState('')
     const [paymentMethod, setPaymentMethod] = useState('') 
+    const containerToPrintRef = useRef(null);
 
     const [total, setTotal] = useState(0)
     const [currentFoundProduct, setCurrentFoundProduct] = useState(false)
@@ -38,7 +41,35 @@ function CreateSale({callAfterCreate = null}) {
       setTotal(totalCalc)
     }, [productsOrders])
 
-    function handleSubmitForm(formEvent) {
+    async function handleDownloadPDF(fileName) {
+      const doc = new jsPDF({
+        orientation: "p",
+        unit: "mm",
+        format: "a4",
+        putOnlyUsedFonts: true,
+      });
+  
+      doc.setFontSize(12)
+  
+      let file
+    
+      // Utilizamos uma promessa para lidar com a callback
+      await doc.html(containerToPrintRef.current, {
+        callback: (doc) => {
+          const fileNameWithExtension = `${fileName.replace(' ', '_') ?? 'relatório'}.pdf`;
+  
+          doc.save(fileNameWithExtension)
+          
+          const blob = doc.output("blob")
+  
+          file = new File([blob], `${fileName}.pdf`, { type: "application/pdf" });
+        },
+      });
+    
+      return file;
+    }
+
+    async function handleSubmitForm(formEvent) {
       formEvent.preventDefault()
 
       if(productsOrders.length < 1){
@@ -54,22 +85,26 @@ function CreateSale({callAfterCreate = null}) {
         return
       }
 
+      const currentDate = new Date().toLocaleString()
+      const file = await handleDownloadPDF(currentDate);
+  
+      const formData = new FormData()
+      formData.append("file", file);
+
+      formData.append("products", JSON.stringify(productsList));
+      formData.append("clientName", client);
+      formData.append("clientEmail", clientEmail);
+      formData.append("paymentMethod", paymentMethod);
+      formData.append("total", Number(total.toFixed(2)));
+      formData.append("type",  "SALE");
+      formData.append("orders", JSON.stringify(productsOrders));
+
       fetch(`${import.meta.env.VITE_API_BASE_URL}/transaction`, {
         method: "POST",
         headers: {
-          "Authorization": `Bearded ${credentials.token}`,
-          "Content-Type": "application/json"
+          "Authorization": `Bearded ${credentials.token}`
         },
-        body: JSON.stringify({
-          products: productsOrders,
-          clientName: client,
-          clientEmail,
-          paymentMethod,
-          total: Number(total.toFixed(2)),
-          type: "SALE",
-          orders: productsOrders
-        })
-
+        body: formData
       }).then(json => json.json()).then(data => {
         if(data?.ERROR) {
           toast({
@@ -93,6 +128,7 @@ function CreateSale({callAfterCreate = null}) {
         
         refreshProducts()
         refreshSales()
+
         callAfterCreate && callAfterCreate()
       }).catch(error => {
         toast({
@@ -213,6 +249,10 @@ function CreateSale({callAfterCreate = null}) {
               <option value="Zara">Zara - Varejo mundial</option>
             </datalist>
           </div> */}
+
+          <div className="hidden">
+            <ReportTemplate ref={containerToPrintRef} title={clientEmail} />
+          </div>
 
           <div className="flex flex-col gap-2">
             <label htmlFor="client">

@@ -19,6 +19,7 @@ import { useToast } from "@/hooks/use-toast"
 import { ToastAction } from "../ui/toast"
 import { SalesContext } from "@/context/SalesContextProvider"
 import { UpdateSale } from "./UpdateSale"
+import { PdfViewer } from "../_reports/PdfViewer"
 
 // TODO: change to component: Data table 
 // TODO: Create an pattern component to tables
@@ -80,9 +81,9 @@ function SalesTable() {
           })
     }, [])
 
-    useEffect(() => {
-        setSalesList(sales)
-    }, [sales])
+    // useEffect(() => {
+    //     setSalesList(sales)
+    // }, [sales])
 
 
     return (
@@ -116,9 +117,29 @@ function SalesTable() {
                                 <TableCell className="text-center">{new Date(sale.createdAt).toLocaleString()}</TableCell>
                                 <TableCell className="text-center">{sale.total} reais</TableCell>
                                 <TableCell className="text-center">{sale.paymentMethod}</TableCell>
-                                <TableCell className="flex items-center justify-end gap-5">
-                                    <FileText className="cursor-pointer" onClick={() => alert("O recibo desta venda já esta sendo baixada, aguarde um instante.")} />
-                                    
+                                <TableCell className="flex items-center justify-end gap-5">                                    
+                                    <Dialog>
+                                        <DialogTrigger>
+                                            <FileText className="cursor-pointer"/>
+                                        </DialogTrigger>
+
+                                        <DialogContent className="max-w-[90%] md:max-w-[60%]">
+                                            <DialogHeader>
+                                                <DialogTitle>
+                                                    Venda realizada em {new Date(sale.createdAt).toLocaleString()}
+                                                </DialogTitle>
+
+                                                <DialogDescription>
+                                                    Analise tudo
+                                                </DialogDescription>
+                                            </DialogHeader>
+
+
+                                            {sale?.fileUrl && <PdfViewer url={sale.fileUrl} />}
+                                        </DialogContent>
+                                    </Dialog>
+
+
                                     <Dialog>
                                         <DialogTrigger asChild>
                                             <Expand className="cursor-pointer" />

@@ -10,10 +10,7 @@ function UpdateSale({sale}) {
     const [paymentMethod, setPaymentMethod] = useState(sale?.paymentMethod ?? "")
     const [total, setTotal] = useState(sale?.total ?? "")
     const [productsList, setProductsList] = useState(sale?.products ?? [])
-
-    console.log(sale)
-    console.log(productsList)
-
+    
     return (
         <form method="POST" action="" className="flex flex-col gap-2">
 
@@ -63,7 +60,7 @@ function UpdateSale({sale}) {
 
                             <div className="flex flex-col items-end gap-1">
                                 <h4>Quantidade</h4>
-                                <p>{console.log(prod)}</p>
+                                <p>{Math.round(Math.random() * 10)}</p>
                             </div>
                         </li>
                     )) : <i>Nenhum produto adicionado ainda...</i>

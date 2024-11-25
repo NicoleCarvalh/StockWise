@@ -40,7 +40,7 @@ function Profile() {
         <section className="flex flex-col gap-8">
           <h1 className="text-2xl font-bold">Perfil</h1>
 
-          <div className="flex gap-4 flex-wrap justify-center items-center w-full min-h-300px bg-wise-hyper_black rounded-lg p-4 mb-1">
+          <div className="flex gap-4 flex-wrap justify-center items-center w-full min-h-300px bg-wise-hyper_black rounded-lg p-4 mb-1 md:mb-0">
             <img
               src={
                 currentUser && currentUser?.photoUrl

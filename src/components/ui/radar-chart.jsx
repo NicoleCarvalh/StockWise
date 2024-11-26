@@ -96,7 +96,11 @@ const chartConfig = {
 }
 
 function RadarChartCard() {
-  const [chartData, setChartData] = useState([])
+  const [chartData, setChartData] = useState([
+    { category: "Nenhuma", count: 0 },
+    { category: "Nenhuma", count: 0 },
+    { category: "Nenhuma", count: 0 },
+  ])
   const { sales } = useContext(SalesContext)
 
   function countSalesByCategory(receivedSales) {
@@ -128,7 +132,8 @@ function RadarChartCard() {
     })
 
     const salesByCategory = countSalesByCategory(cleanSales)
-    setChartData(salesByCategory)
+
+    salesByCategory.length > 0 && setChartData(salesByCategory)
   }, [sales])
 
   return (
@@ -137,6 +142,7 @@ function RadarChartCard() {
         <CardTitle>Produtos vendidos por categoria</CardTitle>
         <CardDescription>Total de vendas por categoria hoje</CardDescription>
       </CardHeader>
+
       <CardContent className="pb-0">
         <ChartContainer
           config={chartConfig}

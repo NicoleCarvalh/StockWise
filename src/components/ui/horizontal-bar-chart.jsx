@@ -175,16 +175,16 @@ import { SalesContext } from "@/context/SalesContextProvider"
 
 // Configuração inicial do gráfico
 const initialChartData = [
-  { month: "Janeiro", count: 1024 },
-  { month: "Fevereiro", count: 1280 },
-  { month: "Março", count: 1790 },
-  { month: "Abril", count: 1144 },
-  { month: "Maio", count: 1164 },
-  { month: "Junho", count: 924 },
-  { month: "Julho", count: 874 },
-  { month: "Agosto", count: 1143 },
-  { month: "Setembro", count: 1134 },
-  { month: "Outubro", count: 1074 },
+  { month: "Janeiro", count: Math.round(Math.random() * 1000) },
+  { month: "Fevereiro", count: Math.round(Math.random() * 1000) },
+  { month: "Março", count: Math.round(Math.random() * 1000) },
+  { month: "Abril", count: Math.round(Math.random() * 1000) },
+  { month: "Maio", count: Math.round(Math.random() * 1000) },
+  { month: "Junho", count: Math.round(Math.random() * 1000) },
+  { month: "Julho", count: Math.round(Math.random() * 1000) },
+  { month: "Agosto", count: Math.round(Math.random() * 1000) },
+  { month: "Setembro", count: Math.round(Math.random() * 1000) },
+  { month: "Outubro", count: Math.round(Math.random() * 1000) },
   { month: "Novembro", count: 0 },
   // { month: "Dezembro", count: 15 },
 ]

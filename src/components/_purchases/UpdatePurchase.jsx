@@ -9,7 +9,8 @@ function UpdatePurchase({purchase}) {
     const [clientEmail, setClientEmail] = useState(purchase?.clientEmail ?? "")
     const [paymentMethod, setPaymentMethod] = useState(purchase?.paymentMethod ?? "")
     const [total, setTotal] = useState(purchase?.total ?? "")
-    const [productsList, setProductsList] = useState(purchase?.products ?? [])
+    // const [orderList, setOrderList] = useState(purchase?.products ?? [])
+    const [orderList, setOrderList] = useState(JSON.parse(purchase?.orders) ?? [])
 
     return (
         <form method="POST" action="" className="flex flex-col gap-2">
@@ -51,16 +52,16 @@ function UpdatePurchase({purchase}) {
 
                 <ul>
                     {
-                    (productsList && productsList.length > 0) ? productsList.map((prod, idx) => (
-                        <li key={prod?.code+idx} className="flex justify-between gap-2 items-center py-2 border-b border-b-wise-hyper_black">
+                    (orderList && orderList.length > 0) ? orderList.map((order, idx) => (
+                        <li key={order?.product?.code+idx} className="flex justify-between gap-2 items-center py-2 border-b border-b-wise-hyper_black">
                             <div className="flex flex-col gap-1">
-                                <h4 className="text-base font-semibold">{prod?.name}</h4>
-                                <p className="text-sm">Código do produto: {prod?.code}</p>
+                                <h4 className="text-base font-semibold">{order?.product?.name}</h4>
+                                <p className="text-sm">Código do produto: {order?.product?.code}</p>
                             </div>
 
                             <div className="flex flex-col items-end gap-1">
                                 <h4>Quantidade</h4>
-                                <p>{Math.round(Math.random() * 10)}</p>
+                                <p>{order?.quantity}</p>
                             </div>
                         </li>
                     )) : <i>Nenhum produto adicionado ainda...</i>

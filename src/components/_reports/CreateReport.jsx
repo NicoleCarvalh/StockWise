@@ -11,12 +11,16 @@ import { CreateReportPDFMake } from "./pdfMakeReport";
 import { ProductsContext } from "@/context/ProductsContextProvider";
 import { SalesContext } from "@/context/SalesContextProvider";
 import { PurchasesContext } from "@/context/PurchasesContextProvider";
+import { ClientContext } from "@/context/ClientsContextProvider";
+import { VirtualStockContext } from "@/context/VirtualStockContextProvider";
 
 function CreateReport({ closeCurrentModal }) {
   const { credentials } = useContext(AuthContext)
   const { products } = useContext(ProductsContext)
   const { sales } = useContext(SalesContext)
   const { purchase } = useContext(PurchasesContext)
+  const { clients } = useContext(ClientContext)
+  const { virtualStocks } = useContext(VirtualStockContext)
 
 
   const containerToPrintRef = useRef(null);
@@ -26,34 +30,6 @@ function CreateReport({ closeCurrentModal }) {
   const [period, setPeriod] = useState("");
 
   const { toast } = useToast();
-
-  // async function handleDownloadPDF(fileName) {
-  //   const doc = new jsPDF({
-  //     orientation: "p",
-  //     unit: "mm",
-  //     format: "a4",
-  //     putOnlyUsedFonts: true,
-  //   });
-
-  //   doc.setFontSize(12)
-
-  //   let file
-  
-  //   // Utilizamos uma promessa para lidar com a callback
-  //   await doc.html(containerToPrintRef.current, {
-  //     callback: (doc) => {
-  //       const fileNameWithExtension = `${fileName.replace(' ', '_') ?? 'relatório'}.pdf`;
-
-  //       doc.save(fileNameWithExtension)
-        
-  //       const blob = doc.output("blob")
-
-  //       file = new File([blob], `${fileName}.pdf`, { type: "application/pdf" });
-  //     },
-  //   });
-  
-  //   return file;
-  // }
 
   const handleSubmit = async (ev) => {
     ev.preventDefault();
@@ -96,13 +72,17 @@ function CreateReport({ closeCurrentModal }) {
 
     const file = await CreateReportPDFMake(
       {
-        title: `Relatório de vedas do StockWise - ${new Date().getFullYear()}`, 
-        formattedPeriod: period, 
-        purchases: purchase,
-        period: period.replace(" ", "_"), 
+        title: `Relatório geral do StockWise - ${new Date().getFullYear()}`, 
+        subTitle: title,
+        company: credentials?.companyData,
+        fileName: `relatorio_${LocaleDateOfInitialDate}_${LocaleDateOfFinalDate}`, 
+        period: period.toLowerCase(), 
         generatedAt: new Date().toLocaleString(),
+        purchases: purchase,
         products,
-        sales
+        sales,
+        clients,
+        virtualStocks
       }
     )
 
@@ -110,55 +90,55 @@ function CreateReport({ closeCurrentModal }) {
     formData.append("file", file);
     formData.append("period", period);
 
-    fetch(`${import.meta.env.VITE_API_BASE_URL}/report`, {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearded ${credentials.token}`
-      },
-      body: formData,
-    })
-    .then((response) => {
-      return response.json()
-    })
-    .then(data => {
-      if(data?.ERROR) {
-        toast({
-            title: "Ocorreu um erro durante a operação!",
-            variant: "destructive",
-            description: <p>{data?.ERROR} <br/>Tente novamente</p>,
-            action: (
-              <ToastAction altText="Fechar">Fechar</ToastAction>
-            )
-        })
+    // fetch(`${import.meta.env.VITE_API_BASE_URL}/report`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Authorization": `Bearded ${credentials.token}`
+    //   },
+    //   body: formData,
+    // })
+    // .then((response) => {
+    //   return response.json()
+    // })
+    // .then(data => {
+    //   if(data?.ERROR) {
+    //     toast({
+    //         title: "Ocorreu um erro durante a operação!",
+    //         variant: "destructive",
+    //         description: <p>{data?.ERROR} <br/>Tente novamente</p>,
+    //         action: (
+    //           <ToastAction altText="Fechar">Fechar</ToastAction>
+    //         )
+    //     })
 
-        return
-      }
+    //     return
+    //   }
 
-      toast({
-        title: "Cópia do relatório salvo!",
-        description: (
-          <p>
-            Acesse a cópia do relatório salva no sistema a qualquer momento.
-          </p>
-        ),
-        action: <ToastAction altText="Fechar">Fechar</ToastAction>,
-      });
-    })
-    .catch((error) => console.error(error));
+    //   toast({
+    //     title: "Cópia do relatório salvo!",
+    //     description: (
+    //       <p>
+    //         Acesse a cópia do relatório salva no sistema a qualquer momento.
+    //       </p>
+    //     ),
+    //     action: <ToastAction altText="Fechar">Fechar</ToastAction>,
+    //   });
+    // })
+    // .catch((error) => console.error(error));
 
-    closeCurrentModal && closeCurrentModal();
+    // closeCurrentModal && closeCurrentModal();
 
-    toast({
-      title: "O relatório em processamento.",
-      description: (
-        <p>
-          O seu relatório já foi gerado e salvo na pasta downloads do seu
-          dispositivo. Estamos salvando uma cópia e logo deixaremos disponível
-          aqui no sistema!
-        </p>
-      ),
-      action: <ToastAction altText="Fechar">Fechar</ToastAction>,
-    });
+    // toast({
+    //   title: "O relatório em processamento.",
+    //   description: (
+    //     <p>
+    //       O seu relatório já foi gerado e salvo na pasta downloads do seu
+    //       dispositivo. Estamos salvando uma cópia e logo deixaremos disponível
+    //       aqui no sistema!
+    //     </p>
+    //   ),
+    //   action: <ToastAction altText="Fechar">Fechar</ToastAction>,
+    // });
   };
 
   return (

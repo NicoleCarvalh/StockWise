@@ -19,7 +19,13 @@ function PurchasesContextProvider({children}) {
             headers: {
               "Authorization": `Bearded ${token}`
             }
-        }).then(json => json.json()).then(data => setPurchases(data)).catch(error => {
+        }).then(json => json.json()).then(data => {
+            if(data?.ERROR) {
+
+            }
+
+            setPurchases(data.length > 0 ? data.filter(info => info?.type == "PURCHASE") : [])
+        }).catch(error => {
             toast({
                 title: "Ocorreu um erro durante a busca por compras!",
                 variant: "destructive",

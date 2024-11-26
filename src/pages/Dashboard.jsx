@@ -14,54 +14,6 @@ import { useToast } from "@/hooks/use-toast"
 import { Package2 } from "lucide-react"
 import { useContext, useEffect, useState } from "react"
 
-// const missingList = [
-//     {
-//         name: 'Teclado mecânico Logitech',
-//         company: {
-//             name: 'Logitech',
-//             category: 'Tecnologia e inovação'
-//         }
-//     },
-//     {
-//         name: 'Teclado mecânico Logitech',
-//         company: {
-//             name: 'Logitech',
-//             category: 'Tecnologia e inovação'
-//         }
-//     },
-//     {
-//         name: 'Teclado mecânico Logitech',
-//         company: {
-//             name: 'Logitech',
-//             category: 'Tecnologia e inovação'
-//         }
-//     }
-// ]
-
-// const endingList = [
-//     {
-//         name: 'Teclado mecânico Logitech',
-//         company: {
-//             name: 'Logitech',
-//             category: 'Tecnologia e inovação'
-//         }
-//     },
-//     {
-//         name: 'Teclado mecânico Logitech',
-//         company: {
-//             name: 'Logitech',
-//             category: 'Tecnologia e inovação'
-//         }
-//     },
-//     {
-//         name: 'Teclado mecânico Logitech',
-//         company: {
-//             name: 'Logitech',
-//             category: 'Tecnologia e inovação'
-//         }
-//     }
-// ]
-
 function Dashboard() {
     const { products, setProducts } = useContext(ProductsContext)
     const {credentials} = useContext(AuthContext) 
@@ -159,16 +111,7 @@ function Dashboard() {
             })
             setSalesDay(salesOfDay)
 
-
             setSales(data)
-            // console.log(data)
-
-            // const missingProducts = data.filter(product => product.quantityInStock == 0)
-            // const endingProducts = data.filter(product => product.quantityInStock <= 8 && product.quantityInStock > 0)
-    
-        
-            // setMissingList(missingProducts)
-            // setEndingList(endingProducts)
         }).catch(error => {
             toast({
                 title: "Ocorreu um erro durante a busca pelas vendas.",
@@ -219,8 +162,6 @@ function Dashboard() {
                         <RadarChartCard/>
 
                         <LineChartCard/>
-
-                        
 
                     </section>
                     

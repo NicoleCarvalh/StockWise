@@ -11,11 +11,25 @@ function LoginForm() {
   const navigate = useNavigate()
   const emailRef = useRef(null)
   const passwordRef = useRef(null)
+  const loginButtonRef = useRef(null)
+
   const { toast } = useToast()
   const {handleCredentials} = useContext(AuthContext)
 
   const handleSubmit = (formEvent) => {
     formEvent.preventDefault()
+
+    toast({
+      title: "Buscando pelo seu acesso...",
+      description: <p>Favor, aguarde alguns instantes.</p>,
+      action: (
+        <ToastAction altText="Fechar">Fechar</ToastAction>
+      )
+    })
+
+    emailRef.current.disabled = true
+    passwordRef.current.disabled = true
+    loginButtonRef.current.disabled = true
 
     fetch(`${import.meta.env.VITE_API_BASE_URL}/company/validate`, {
       method: "POST",
@@ -23,38 +37,51 @@ function LoginForm() {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        email: emailRef.current,
-        password: passwordRef.current
+        email: emailRef.current.value,
+        password: passwordRef.current.value
       })
     }).then(json => json.json()).then(data => {
-      if(data?.companyExists) {
-        handleCredentials(data.company, data.token).then(() => {
-          navigate("/dashboard")
-        })
-        return
-      } else if(data?.companyExists == false) {
+        if(data?.companyExists) {
+          handleCredentials(data.company, data.token).then(() => {
+            toast({
+              title: "Bem vindo(a) ao sistema!",
+              action: (
+                <ToastAction altText="Fechar">Obrigado(a)!</ToastAction>
+              )
+            })
+
+            navigate("/dashboard")
+          })
+          return
+        } else if(data?.companyExists == false) {
+          toast({
+            title: "Credenciais incorretas!",
+            variant: "destructive",
+            description: "Verifique se o email e senha estão corretos e tente novamente!",
+            action: (
+              <ToastAction altText="Fechar">Fechar</ToastAction>
+            )
+          })
+
+          emailRef.current.disabled = false
+          passwordRef.current.disabled = false
+          loginButtonRef.current.disabled = false
+
+          return
+        }
+
         toast({
-          title: "Credenciais incorretas!",
+          title: "Ocorreu um erro durante o login!",
           variant: "destructive",
-          description: "Verifique se o email e senha estão corretos e tente novamente!",
+          description: <p>{data?.message} <br/> Tente novamente.</p>,
           action: (
             <ToastAction altText="Fechar">Fechar</ToastAction>
           )
         })
 
-        return
-      }
-
-      toast({
-        title: "Ocorreu um erro durante o login!",
-        variant: "destructive",
-        description: <p>{data?.message} <br/> Tente novamente.</p>,
-        action: (
-          <ToastAction altText="Fechar">Fechar</ToastAction>
-        )
-      })
-
-
+        emailRef.current.disabled = false
+        passwordRef.current.disabled = false
+        loginButtonRef.current.disabled = false
     }).catch(error => {
       toast({
         title: "Ocorreu um erro durante o login!",
@@ -64,6 +91,10 @@ function LoginForm() {
           <ToastAction altText="Fechar">Fechar</ToastAction>
         )
       })
+
+      emailRef.current.disabled = false
+      passwordRef.current.disabled = false
+      loginButtonRef.current.disabled = false
     })
   }
 
@@ -71,10 +102,10 @@ function LoginForm() {
     <form className="grid gap-y-[24px] md:w-full md:max-w-[400px]" onSubmit={handleSubmit}>
       <Label className="md:text-lg lg:text-xl">E-mail</Label>
       <Input type="email" placeholder="E-mail" required className="md:text-lg" ref={emailRef}
-        onChange={(ev) => emailRef.current = ev.target.value} />
+        onChange={(ev) => emailRef.current.value = ev.target.value} />
       <Label className="md:text-lg lg:text-xl">Senha</Label>
       <Input type="password" placeholder="Senha" required className="md:text-lg" minLength={8} ref={passwordRef}
-        onChange={(ev) => passwordRef.current = ev.target.value}/>
+        onChange={(ev) => passwordRef.current.value = ev.target.value}/>
       <a
         className="block underline underline-offset-1 font-semibold w-full text-right hover:text-wise-dark_green transition-all md:text-lg lg:text-xl"
         href="#"
@@ -85,6 +116,7 @@ function LoginForm() {
         <Button 
           className="bg-wise-hyper_black w-full transition-all md:text-lg lg:text-xl"
           type="submit"
+          ref={loginButtonRef}
         >
           Login
         </Button>

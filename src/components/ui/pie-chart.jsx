@@ -1,6 +1,5 @@
 "use client"
 
-import * as React from "react"
 import { Label, Pie, PieChart } from "recharts"
 
 import {
@@ -16,13 +15,17 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-const chartData = [
-  { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-  { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-  { browser: "firefox", visitors: 287, fill: "var(--color-firefox)" },
-  { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-  { browser: "other", visitors: 190, fill: "var(--color-other)" },
-]
+import { SalesContext } from "@/context/SalesContextProvider"
+import { useContext, useEffect, useMemo, useState } from "react"
+// const chartData = [
+//   { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
+//   { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
+//   { browser: "firefox", visitors: 287, fill: "var(--color-firefox)" },
+//   { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
+//   { browser: "other", visitors: 190, fill: "var(--color-other)" },
+// ]
+
+// const colors = ["var(--color-chrome)", "var(--color-safari)", "var(--color-firefox)", "var(--color-edge)", "var(--color-other)"]
 
 const chartConfig = {
   visitors: {
@@ -51,9 +54,59 @@ const chartConfig = {
 } 
 
 function PieChartCard() {
-  const totalVisitors = React.useMemo(() => {
-    return chartData.reduce((acc, curr) => acc + curr.visitors, 0)
-  }, [])
+  const [totalSold, setTotalSold] = useState(0)
+  const { sales, refreshSales } = useContext(SalesContext)
+  const [chartData, setChartData] = useState([])
+
+  // const totalVisitors = useMemo(() => {
+  //   return chartData.reduce((acc, curr) => acc + curr.visitors, 0)
+  // }, [])
+
+  function countSalesByCategory(receivedSales) {
+    const categoryCount = {};
+  
+    receivedSales.forEach((sale) => {
+      // Extraímos as categorias de cada venda
+      const categories = sale.products.map((product) => product.category);
+  
+      // Garantimos que cada categoria única dentro dessa venda seja contada uma vez
+      const uniqueCategories = new Set(categories);
+  
+      uniqueCategories.forEach((category) => {
+        if (!categoryCount[category]) {
+          categoryCount[category] = 0;
+        }
+        categoryCount[category]++;
+      });
+    });
+  
+    // Transformamos o objeto em um array no formato solicitado
+    const result = Object.entries(categoryCount).map(([category, count]) => ({
+      browser: category.toLowerCase(),
+      visitors: count,
+      fill: ["var(--color-chrome)", "var(--color-safari)", "var(--color-firefox)", "var(--color-edge)", "var(--color-other)"][Math.floor(Math.random() * 5)]
+    }));
+  
+    return result;
+  }
+  
+  useEffect(() => {
+    const cleanSales = sales.filter((sale) => {
+      const currentDay = new Date().getDate()
+      const saleDay = new Date(sale?.createdAt).getDate()
+      return currentDay == saleDay
+    })
+
+    const salesByCategory = countSalesByCategory(cleanSales)
+
+    let sum = 0;
+    salesByCategory.forEach(cleanSale => {
+      sum += cleanSale.visitors
+    })
+    setTotalSold(sum)
+
+    setChartData(salesByCategory)
+  }, [sales])
 
   return (
     <Card className="flex flex-col flex-1">
@@ -93,14 +146,14 @@ function PieChartCard() {
                           y={viewBox.cy}
                           className="fill-foreground text-3xl font-bold"
                         >
-                          {totalVisitors.toLocaleString()}
+                          {totalSold ?? "--"}
                         </tspan>
                         <tspan
                           x={viewBox.cx}
                           y={(viewBox.cy || 0) + 24}
                           className="fill-muted-foreground"
                         >
-                          Visitors
+                          Vendas
                         </tspan>
                       </text>
                     )

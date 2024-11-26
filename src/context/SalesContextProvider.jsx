@@ -19,7 +19,22 @@ function SalesContextProvider({children}) {
             headers: {
               "Authorization": `Bearded ${token}`
             }
-        }).then(json => json.json()).then(data => setSales(data)).catch(error => {
+        }).then(json => json.json()).then(data => {
+            if(data?.ERROR) {
+                toast({
+                    title: "Ocorreu um erro durante a busca por vendas!",
+                    variant: "destructive",
+                    description: <p>{error?.message} <br/> Favor, saia do sistema e faça o login novamente.</p>,
+                    action: (
+                      <ToastAction altText="Fechar" onClick={() => window.location.href = "/"}>Ir para o login</ToastAction>
+                    )
+                })
+
+                return
+            }
+
+            setSales(data.length > 0 ? data.filter(info => info?.type == "SALE") : [])
+        }).catch(error => {
             toast({
                 title: "Ocorreu um erro durante a busca por vendas!",
                 variant: "destructive",

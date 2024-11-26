@@ -119,7 +119,7 @@ function ChatTab() {
     }
   };
 
-  // Envio da pergunta (POST)
+  // Envio da pergunta  (POST)
   const handleSubmit = async (e) => {
     e.preventDefault();
   

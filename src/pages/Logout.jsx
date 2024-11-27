@@ -44,7 +44,7 @@ export function Logout() {
                         <div className="flex flex-col gap-4">
                             <h3 className="text-xl">Deixe seu feedback sobre o projeto antes de ir</h3>
                             
-                            <Link to="https://google.com" className="flex" target="_blank">
+                            <Link to="https://forms.office.com/r/XxXE4RGptp" className="flex" target="_blank">
                                 <Button 
                                     className="whitespace-normal border bg-wise-dark_green border-wise-hyper_black flex-1 hover:text-wise-hyper_black max-w-full min-h-fit"
                                     type="button" 

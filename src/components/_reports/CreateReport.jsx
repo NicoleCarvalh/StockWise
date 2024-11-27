@@ -90,55 +90,55 @@ function CreateReport({ closeCurrentModal }) {
     formData.append("file", file);
     formData.append("period", period);
 
-    // fetch(`${import.meta.env.VITE_API_BASE_URL}/report`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Authorization": `Bearded ${credentials.token}`
-    //   },
-    //   body: formData,
-    // })
-    // .then((response) => {
-    //   return response.json()
-    // })
-    // .then(data => {
-    //   if(data?.ERROR) {
-    //     toast({
-    //         title: "Ocorreu um erro durante a operação!",
-    //         variant: "destructive",
-    //         description: <p>{data?.ERROR} <br/>Tente novamente</p>,
-    //         action: (
-    //           <ToastAction altText="Fechar">Fechar</ToastAction>
-    //         )
-    //     })
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/report`, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearded ${credentials.token}`
+      },
+      body: formData,
+    })
+    .then((response) => {
+      return response.json()
+    })
+    .then(data => {
+      if(data?.ERROR) {
+        toast({
+            title: "Ocorreu um erro durante a operação!",
+            variant: "destructive",
+            description: <p>{data?.ERROR} <br/>Tente novamente</p>,
+            action: (
+              <ToastAction altText="Fechar">Fechar</ToastAction>
+            )
+        })
 
-    //     return
-    //   }
+        return
+      }
 
-    //   toast({
-    //     title: "Cópia do relatório salvo!",
-    //     description: (
-    //       <p>
-    //         Acesse a cópia do relatório salva no sistema a qualquer momento.
-    //       </p>
-    //     ),
-    //     action: <ToastAction altText="Fechar">Fechar</ToastAction>,
-    //   });
-    // })
-    // .catch((error) => console.error(error));
+      toast({
+        title: "Cópia do relatório salvo!",
+        description: (
+          <p>
+            Acesse a cópia do relatório salva no sistema a qualquer momento.
+          </p>
+        ),
+        action: <ToastAction altText="Fechar">Fechar</ToastAction>,
+      });
+    })
+    .catch((error) => console.error(error));
 
-    // closeCurrentModal && closeCurrentModal();
+    closeCurrentModal && closeCurrentModal();
 
-    // toast({
-    //   title: "O relatório em processamento.",
-    //   description: (
-    //     <p>
-    //       O seu relatório já foi gerado e salvo na pasta downloads do seu
-    //       dispositivo. Estamos salvando uma cópia e logo deixaremos disponível
-    //       aqui no sistema!
-    //     </p>
-    //   ),
-    //   action: <ToastAction altText="Fechar">Fechar</ToastAction>,
-    // });
+    toast({
+      title: "O relatório em processamento.",
+      description: (
+        <p>
+          O seu relatório já foi gerado e salvo na pasta downloads do seu
+          dispositivo. Estamos salvando uma cópia e logo deixaremos disponível
+          aqui no sistema!
+        </p>
+      ),
+      action: <ToastAction altText="Fechar">Fechar</ToastAction>,
+    });
   };
 
   return (

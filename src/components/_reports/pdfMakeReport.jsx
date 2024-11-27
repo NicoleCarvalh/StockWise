@@ -224,6 +224,9 @@ async function CreateReportPDFMake({title, generatedAt, products, sales, purchas
             margin: [0, 25, 0, 15]
         },
         {
+            text: "Top 5 produtos mais vendidos",
+        },
+        {
             image: bestProductCategoriesGraph, // Insere o gráfico no PDF
             width: 500,
             alignment: "center",
@@ -242,35 +245,35 @@ async function CreateReportPDFMake({title, generatedAt, products, sales, purchas
 			ul: mostSoldProductSortedNamesList
 		},
 
-        // Sales
-        {
-            text: "Vendas",
-            fontSize: 25,
-            margin: [0, 25, 0, 15]
-        },
+        // // Sales
+        // {
+        //     text: "Vendas",
+        //     fontSize: 25,
+        //     margin: [0, 25, 0, 15]
+        // },
 
-        // Clients
-        {
-            text: "Clientes cadastrados no sistema",
-            fontSize: 20,
-            margin: [15, 25, 0, 15]
-        },
-
-
-        // Sales
-        {
-            text: "Reposições de estoque (compras)",
-            fontSize: 25,
-            margin: [0, 25, 0, 15]
-        },
+        // // Clients
+        // {
+        //     text: "Clientes cadastrados no sistema",
+        //     fontSize: 20,
+        //     margin: [15, 25, 0, 15]
+        // },
 
 
-        // VirtualStock
-        {
-            text: "Estoque virtual",
-            fontSize: 25,
-            margin: [0, 25, 0, 15]
-        },
+        // // Sales
+        // {
+        //     text: "Reposições de estoque (compras)",
+        //     fontSize: 25,
+        //     margin: [0, 25, 0, 15]
+        // },
+
+
+        // // VirtualStock
+        // {
+        //     text: "Estoque virtual",
+        //     fontSize: 25,
+        //     margin: [0, 25, 0, 15]
+        // },
     ]
 
     const footer = []

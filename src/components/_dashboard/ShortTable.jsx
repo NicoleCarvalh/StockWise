@@ -53,7 +53,7 @@ function ShortTable({type, list}) {
                                 </div>
                             </li>
                         )
-                        }) : <i className="italic">Nenhum produto na nessa lista...</i>
+                        }) : <i className="italic">Nenhum produto nessa lista...</i>
                     }
                 </ul>
             </div>

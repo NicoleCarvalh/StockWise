@@ -29,8 +29,6 @@ function ClientContextProvider({children}) {
                 )
             })
         })
-
-        console.log(clients)
     }
 
     return (

@@ -4,7 +4,7 @@ import { CreateClient } from "@/components/_clients/CreateClient"
 import { ClientsTable } from "@/components/_clients/ClientsTable"
 import { Button } from "@/components/ui/button"
 import { ChatTab } from "@/components/_stockwizard/ChatTab"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { UserPlus2, UserRoundSearch } from "lucide-react"
@@ -47,6 +47,10 @@ function Clients() {
                                     <DialogTitle className="text-lg font-semibold border-b-2 border-wise-dark_green py-3">
                                         Cadastro de cliente
                                     </DialogTitle>
+
+                                    <DialogDescription>
+                                        Cadastre os clientes que estão sempre com você para agilizar o cadastro de novas vendas que eles façam.
+                                    </DialogDescription>
                                 </DialogHeader>
 
                                 <CreateClient callAfterCreate={() => modalRef.current.click()} />

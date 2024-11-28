@@ -94,6 +94,8 @@ function CreateContainer({closeCurrentModal}) {
   
             return
           }
+
+          console.log(data)
   
           toast({
             title: "Container cadastrado com sucesso!",

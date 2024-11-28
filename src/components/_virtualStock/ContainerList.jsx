@@ -82,8 +82,10 @@ export function ContainerList() {
                                     <span className="text-wise-dark_green text-base">{container.code}</span>
                                 </DialogTitle>  
 
-                                <DialogDescription className="font-normal text-base flex flex-col gap-2">
+                                <DialogDescription className="font-normal text-base flex gap-2">
                                     Organize seus produtos fisicamente e replique aqui, assim você pode otimizar a logística, economizar tempo e melhorar a organização dos seus produtos!
+                                
+                                    <img src={container.trackUrl} alt={container.name} className="min-w-[60px] rounded-sm"/>
                                 </DialogDescription>                              
                             </DialogHeader>
 

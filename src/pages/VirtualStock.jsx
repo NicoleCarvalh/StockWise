@@ -11,11 +11,15 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useQrScanner } from "@/context/ScannerContextProvider"
 import { DialogDescription } from "@radix-ui/react-dialog"
 import { Info, PackagePlus, PackageSearch } from "lucide-react"
-import { useRef } from "react"
+import { useRef, useState } from "react"
+import { UpdateContainer } from "@/components/_virtualStock/UpdateContainer"
+import { QRCodeScanner } from "@/components/QRCodeScanner"
 
 function VirtualStock() {
     const createContainerModalRef = useRef()
     const { closeQrScanner } = useQrScanner();
+    const [modalIsOpen, setModalIsOpen] = useState(false)
+    const [foundContainer, setFoundContainer] = useState(null)
 
     return (
         <>
@@ -65,6 +69,24 @@ function VirtualStock() {
                 </section>
 
                 <section className='flex gap-4 items-center justify-center md:justify-normal flex-wrap'>
+                    
+                    <div className='flex gap-x-8 items-center flex-wrap'>
+                        <QRCodeScanner callAfterFound={(container) => {setFoundContainer(container); setModalIsOpen(true)}} />
+                    
+                        <Dialog open={modalIsOpen} onOpenChange={(open) => setModalIsOpen(open)}>
+                            <DialogContent className="max-w-[90%] md:max-w-[60%]">
+                                <DialogHeader>
+                                    <DialogTitle className="text-lg font-semibold border-b-2 border-wise-dark_green py-3">{foundContainer && foundContainer.name}</DialogTitle>
+                                    <DialogDescription>
+                                        Visualize e edite as informações do container como desejar.
+                                    </DialogDescription>
+                                </DialogHeader>
+
+                                <UpdateContainer container={foundContainer} />
+                            </DialogContent>
+                        </Dialog>
+                    </div>
+
                     <Select>
                         <SelectTrigger className="max-w-[250px]">
                             <SelectValue placeholder="Cor: selecionar" />
@@ -99,7 +121,7 @@ function VirtualStock() {
                     </Select>
                 </section>
 
-                <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-3">
+                <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-3 mb-8">
                     <ContainerList />
                 </section>
                 <ChatTab/>

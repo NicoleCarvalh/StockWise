@@ -6,11 +6,12 @@ import clsx from "clsx"
 import { AuthContext } from "@/auth/AuthProvider"
 import { useQrScanner } from "@/context/ScannerContextProvider"
 
-function QRCodeScanner({buttonClassName = "", callAfterFound = null, disableAbsoluteModal=false}) {
+function QRCodeScanner({buttonClassName = "", callAfterFound = null, disableAbsoluteModal=false, entity="product"}) {
     const { credentials } = useContext(AuthContext)
     const videoElement = useRef(null)
     const [result, setResult] = useState(null)
     const [foundProduct, setFoundProduct] = useState(null)
+    const [foundContainer, setFoundContainer] = useState(null)
     const [isScanning, setIsScanning] = useState(false)
     const [scannerInstance, setScannerInstance] = useState(null)
 
@@ -43,16 +44,17 @@ function QRCodeScanner({buttonClassName = "", callAfterFound = null, disableAbso
 
             setResult(foundCodeProduct)
 
-            fetch(`${import.meta.env.VITE_API_BASE_URL}/product?code=${foundCodeProduct.slice(1)}`, {
+            fetch(`${import.meta.env.VITE_API_BASE_URL}/${entity}?code=${foundCodeProduct.slice(1)}`, {
                 headers: {
                 "Authorization": `Bearded ${credentials.token}`
                 }
-            }).then(json => json.json()).then(product => {
-                if(product.length > 0) {
-                    setFoundProduct(product[0])
+            }).then(json => json.json()).then(entityFound => {
+                if(entityFound.length > 0) {
+                    entity == "product" && setFoundProduct(entityFound[0])
+                    entity == "virtualStock" && setFoundContainer(entityFound[0])
 
                     if(callAfterFound){
-                        callAfterFound(product[0])
+                        callAfterFound(entityFound[0])
 
                         if(!disableAbsoluteModal) {
                             document.querySelector("div[data-is-close-modal-element=true]")?.click()
@@ -116,7 +118,7 @@ function QRCodeScanner({buttonClassName = "", callAfterFound = null, disableAbso
                         <div className="flex justify-between flex-wrap gap-4 items-start">
                             <div className="max-w-[70%]">
                                 <h2 className="font-semibold">Leitor de QRCode</h2>
-                                <p className="text-sm">Aponte a câmera do dispositivo para o QRCode do produto que deseja buscar.</p>
+                                <p className="text-sm">Aponte a câmera do dispositivo para o QRCode do produto/container que deseja buscar.</p>
                             </div>
 
                             <Button 
@@ -146,7 +148,7 @@ function QRCodeScanner({buttonClassName = "", callAfterFound = null, disableAbso
                     <div className="flex justify-between flex-wrap gap-4 items-start">
                         <div className="max-w-[70%]">
                             <h2 className="font-semibold">Leitor de QRCode</h2>
-                            <p className="text-sm">Aponte a câmera do dispositivo para o QRCode do produto que deseja buscar.</p>
+                            <p className="text-sm">Aponte a câmera do dispositivo para o QRCode do produto/container que deseja buscar.</p>
                         </div>
 
                         <Button 
@@ -165,7 +167,7 @@ function QRCodeScanner({buttonClassName = "", callAfterFound = null, disableAbso
                         />
                     </div>
 
-                    {!callAfterFound && <p>Resultado: {foundProduct && foundProduct?.code}</p>}
+                    {!callAfterFound && <p>Resultado: {foundProduct ? foundProduct?.code : foundContainer ? foundContainer : null}</p>}
                 </div>
                 :
                 null

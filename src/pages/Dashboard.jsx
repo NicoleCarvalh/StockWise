@@ -137,7 +137,7 @@ function Dashboard() {
 
                     <div className='flex flex-col gap-5'>
                         <div className="flex gap-2 flex-wrap">
-                            <InfoCard title='Total de vendas em 2024' value={salesYear?.length ?? "--"} analysis='' />
+                            <InfoCard title={`Total de vendas em ${new Date().getFullYear()}`} value={salesYear?.length ?? "--"} analysis='' />
                             <InfoCard icon={<Package2 />} title='Total de produtos cadastrados' value={products.length ?? "--"} analysis='' />
                             <InfoCard title='Total de vendas nesse mês' value={salesMonth?.length ?? "--"} analysis='' />
                             <InfoCard title='Total de vendas hoje' value={salesDay?.length ?? "--"} analysis='' />

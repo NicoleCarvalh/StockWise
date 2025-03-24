@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/table"
 
 import { Checkbox } from "@/components/ui/checkbox"
-import { Expand, QrCode } from "lucide-react"
+import { Barcode as BarcodeLucide, Expand, QrCode } from "lucide-react"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog"
 import { Button } from "../ui/button"
 import { DeleteButton } from "../DeleteButton"
@@ -17,7 +17,7 @@ import { useContext, useEffect, useRef, useState } from "react"
 import { ProductsContext } from "@/context/ProductsContextProvider"
 import { useReactToPrint } from "react-to-print"
 import { UpdateProduct } from "./UpdateProduct"
-
+import Barcode from 'react-barcode'
 // TODO: change to component: Data table 
 // TODO: Create an pattern component to tables
 function ProductsTable() {
@@ -99,6 +99,45 @@ function ProductsTable() {
                                         </DialogContent>
                                     </Dialog>
                                     
+
+                                    <Dialog>
+                                        <DialogTrigger asChild>
+                                            <div className="relative group" onMouseOver={() => setQrCodeUrl(product.trackUrl)}>
+                                                <BarcodeLucide className="cursor-pointer" />
+                                                {/* <img id="qrcode" alt="QR Code" src={qrCodeUrl} className="hidden group-hover:block min-w-[50px] shadow-lg  rounded-md absolute left-[-50%] bottom-[100%]" />   */}
+                                                {/* <img id="qrcode" alt="QR Code" src={qrCodeUrl} className="hidden group-hover:block min-w-[50px] shadow-lg  rounded-md absolute left-[-50%] bottom-[100%]" />   */}
+                                            
+                                                <Barcode value={product.code} background="#1f1f1f" lineColor="#00cc74" className="hidden group-hover:block min-w-[50px] max-h-[80px] max-w-[100px] rounded-md absolute left-[-50%] bottom-[100%]" />
+                                            </div>
+                                        </DialogTrigger>
+
+                                        <DialogContent>
+                                            <DialogHeader>
+                                                <DialogTitle className="text-lg font-semibold border-b-2 border-wise-dark_green py-3">Código de barras do produto: {product.name}</DialogTitle>
+                                                <DialogDescription>
+                                                    Utilize esse código de barras para indentificar seus produtos, imprima e cole ele no produto da sua loja para cadastrar novas vendas e compras e muito mais de forma prática!
+                                                </DialogDescription>
+                                            </DialogHeader>
+
+                                            <div className="flex flex-col items-center gap-3">
+                                                <div className="print:max-w-[150px] w-full flex flex-col gap-1">
+                                                    <h2 className="text-xl min-w-full p-1">{product.name} - {product.code}</h2>
+                                                    {/* <img id="qrcodeToPrint"  alt="QRCode to print" src={qrCodeUrl} className="group-hover:block w-full shadow-lg rounded-md" />   */}
+                                                
+
+                                                    <div ref={qrCodeToPrintRef} className="flex justify-center w-full">
+                                                        <Barcode id="qrcodeToPrint" value={product.code} background="#1f1f1f" lineColor="#00cc74" className="group-hover:block rounded-md bg-transparent"/>
+                                                    </div>
+                                                
+                                                </div>
+
+                                                <Button type="button" className="w-full" onClick={() => {
+                                                    printQrCode()
+                                                }}>Imprimir código de barras</Button>
+                                            </div>
+                                        </DialogContent>
+                                    </Dialog>
+
 
                                     <DeleteButton databaseEntity='product' entityDeleted={product.id} />
 

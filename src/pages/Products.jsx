@@ -61,6 +61,7 @@ function Products() {
                 <section className='flex gap-x-4 items-center justify-between flex-wrap'>
                     <div className='flex gap-x-8 items-center flex-wrap'>
                         <QRCodeScanner callAfterFound={(product) => {setFoundProduct(product); setModalIsOpen(true)}} />
+                        <QRCodeScanner scannerType="código de barras" callAfterFound={(product) => {setFoundProduct(product); setModalIsOpen(true)}} />
 
                         <Dialog open={modalIsOpen} onOpenChange={(open) => setModalIsOpen(open)}>
                             <DialogContent className="max-w-[90%] md:max-w-[60%]">
